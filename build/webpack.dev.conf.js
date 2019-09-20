@@ -57,11 +57,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
-      title: 'vue-element-admin',
+      title: 'account book',
       templateParameters: {
-        BASE_URL: config.dev.assetsPublicPath + config.dev.assetsSubDirectory,
-      },
-    }),
+        BASE_URL: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
+      }
+    })
   ]
 })
 
@@ -81,9 +81,7 @@ module.exports = new Promise((resolve, reject) => {
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
             messages: [
-              `Your application is running here: http://${
-                devWebpackConfig.devServer.host
-              }:${port}`
+              `Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`
             ]
           },
           onErrors: config.dev.notifyOnErrors

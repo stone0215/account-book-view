@@ -1,5 +1,9 @@
 <template>
-  <div class="app-container">RemindSetting</div>
+  <div class="page remind-setting">
+    <div class="search-area base">
+      test
+    </div>
+  </div>
 </template>
 
 <script>
@@ -11,3 +15,4 @@ export default {
   created() {}
 }
 </script>
+
