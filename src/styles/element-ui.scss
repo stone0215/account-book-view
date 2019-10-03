@@ -6,7 +6,7 @@
 }
 
 .el-upload {
-  input[type="file"] {
+  input[type='file'] {
     display: none !important;
   }
 }
@@ -80,6 +80,17 @@
 //dropdown
 .el-dropdown-menu {
   a {
-    display: block
+    display: block;
+  }
+}
+
+// el-form
+.el-form-item {
+  &.last {
+    margin-bottom: 0;
+  }
+
+  .el-form-item__label {
+    font-size: 16px;
   }
 }

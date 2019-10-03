@@ -36,7 +36,7 @@ const settingRouter = {
     },
     {
       path: 'remind-setting',
-      component: () => import('@/views/setting/remindSetting'),
+      component: () => import('@/views/setting/remind/index'),
       name: 'RemindSetting',
       meta: { title: '定期支出提醒' }
     }

@@ -1,12 +1,39 @@
 .page {
   padding: 30px 20px;
 
-  .search-area {
-    &.base {
-      width: 100%;
-      border: 3px solid #d8dce5;
-      border-radius: 6px;
-      padding: 10px;
+  .input-tiny {
+    width: 50px;
+  }
+
+  .input-small {
+    width: 100px;
+  }
+
+  .input-medium {
+    width: 150px;
+  }
+
+  .btn-medium {
+    width: 100px;
+  }
+
+  .el-table {
+    margin-top: 10px;
+    border-radius: 5px;
+
+    .table-header {
+      background-color: #fa0;
+      color: white;
+    }
+
+    .el-checkbox__input {
+      &.is-checked,
+      &.is-indeterminate {
+        .el-checkbox__inner {
+          background-color: #f28c00;
+          border-color: #f28c00;
+        }
+      }
     }
   }
 }

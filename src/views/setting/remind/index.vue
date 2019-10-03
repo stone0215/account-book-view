@@ -1,45 +1,115 @@
 <template>
-  <div class="tab-container">
-    <el-tag>mounted times ：{{ createdTimes }}</el-tag>
-    <el-alert :closable="false" style="width:200px;display:inline-block;vertical-align: middle;margin-left:30px;" title="Tab with keep-alive" type="success"/>
-    <el-tabs v-model="activeName" style="margin-top:15px;" type="border-card">
-      <el-tab-pane v-for="item in tabMapOptions" :label="item.label" :key="item.key" :name="item.key">
-        <keep-alive>
-          <tab-pane v-if="activeName==item.key" :type="item.key" @create="showCreatedTimes"/>
-        </keep-alive>
-      </el-tab-pane>
-    </el-tabs>
+  <div class="page remind-setting">
+    <search-area>
+      <el-form slot="content">
+        <el-form-item label="提醒日期">
+          <el-input
+            v-model="conditions.date"
+            placeholder="mm/dd 或 dd"
+            class="input-medium"
+          />
+        </el-form-item>
+        <el-form-item class="last">
+          <el-button
+            type="primary"
+            class="btn-medium"
+            @click="search"
+          >搜尋</el-button>
+          <el-button
+            type="primary"
+            class="btn-medium"
+            @click="openDialog()"
+          >新增</el-button>
+        </el-form-item>
+      </el-form>
+    </search-area>
+    <el-table
+      v-show="showList"
+      :data="queryList"
+      stripe
+      header-cell-class-name="table-header"
+    >
+      <el-table-column
+        label="日期"
+        prop="alarm_date"
+        width="60"
+        align="center"
+      />
+      <el-table-column
+        label="內容"
+        prop="content"
+      />
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="150"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <el-button
+            type="success"
+            size="small"
+            @click="openDialog(scope.row)"
+          >编辑</el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteAlarm(scope.row.alarm_id)"
+          >刪除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <operating-dialog
+      :show-dialog="showDialog"
+      :raw-data="selectedData"
+      @hideDialog="showDialog = false"
+    />
   </div>
 </template>
 
 <script>
-import tabPane from './components/tabPane'
+import { mapState } from 'vuex'
+import OperatingDialog from './OperatingDialog'
+import SearchArea from '@/components/SearchArea'
 
 export default {
-  name: 'Tab',
-  components: { tabPane },
+  name: 'RemindSetting',
+  components: { OperatingDialog, SearchArea },
   data() {
     return {
-      tabMapOptions: [
-        { label: 'China', key: 'CN' },
-        { label: 'USA', key: 'US' },
-        { label: 'Japan', key: 'JP' },
-        { label: 'Eurozone', key: 'EU' }
-      ],
-      activeName: 'CN',
-      createdTimes: 0
+      showDialog: false,
+      showList: false,
+      conditions: {
+        date: ''
+      },
+      selectedData: {}
     }
   },
+  computed: {
+    ...mapState({
+      queryList: state => state.setting.alarm.dataList
+    })
+  },
   methods: {
-    showCreatedTimes() {
-      this.createdTimes = this.createdTimes + 1
+    search() {
+      this.$store
+        .dispatch('GetAlarmList', this.conditions)
+        .then(() => {
+          this.showList = true
+        })
+        .catch(() => {
+          this.showList = false
+        })
+    },
+    deleteAlarm(id) {
+      this.$store.dispatch('DeleteAlarmData', id)
+    },
+    openDialog(rawData) {
+      this.showDialog = true
+      this.selectedData = rawData || {}
     }
   }
 }
 </script>
 
-<style scoped>
-  .tab-container{
-    margin: 30px;
-  }
-</style>
