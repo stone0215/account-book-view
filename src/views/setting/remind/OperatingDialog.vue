@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :visible="showDialog"
+    :show-close="false"
     title="支出提醒"
   >
     <el-form label-width="80px">
