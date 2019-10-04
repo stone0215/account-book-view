@@ -10,8 +10,11 @@
         </el-form-item>
         <el-form-item label="是否啟用">
           <el-radio-group v-model="conditions.in_use">
-            <el-radio label="Y">是</el-radio>
-            <el-radio label="N">否</el-radio>
+            <el-radio
+              v-for="item in yesNo"
+              :key="item.key"
+              :label="item.key"
+            >{{ item.value }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item class="last">
@@ -101,10 +104,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { getMappingName, returnYesNo } from '@/utils/codeMapping'
-import OperatingDialog from './OperatingDialog'
+import { yesNo } from '@/assets/commonData/global'
 import SearchArea from '@/components/SearchArea'
+import OperatingDialog from './OperatingDialog'
+import { getMappingName } from '@/utils/codeMapping'
+import { mapState } from 'vuex'
 
 export default {
   name: 'CreditCardSetting',
@@ -117,7 +121,8 @@ export default {
         card_name: '',
         in_use: ''
       },
-      selectedData: {}
+      selectedData: {},
+      yesNo
     }
   },
   computed: {
@@ -130,7 +135,7 @@ export default {
       return getMappingName(column.property, cellValue)
     },
     mappingYesNo(row, column, cellValue) {
-      return returnYesNo(cellValue)
+      return getMappingName('yes_no', cellValue)
     },
     search() {
       this.$store

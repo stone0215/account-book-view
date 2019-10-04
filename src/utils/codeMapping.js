@@ -1,5 +1,6 @@
 import { feedbackWay } from '@/assets/commonData/creditCardData'
 import { fxCode } from '@/assets/commonData/fxData'
+import { yesNo } from '@/assets/commonData/global'
 
 let target = null
 
@@ -11,6 +12,9 @@ export function getMappingName(type, code) {
     case 'feedback_way':
       target = feedbackWay
       break
+    case 'yes_no':
+      target = yesNo
+      break
     default:
       return false
   }
@@ -20,8 +24,4 @@ export function getMappingName(type, code) {
 
 function findName(code) {
   return target.find(x => x.key === code).value
-}
-
-export function returnYesNo(code) {
-  return code === 'Y' ? '是' : '否'
 }
