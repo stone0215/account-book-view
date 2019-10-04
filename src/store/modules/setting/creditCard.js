@@ -18,7 +18,7 @@ export default {
     },
     UPDATE_CREDIT_CARD_DATA_LIST: (state, data) => {
       state.dataList.map(item => {
-        if (item.alarm_id === data.alarm_id) {
+        if (item.credit_card_id === data.credit_card_id) {
           item = Object.assign(item, data)
         }
       })

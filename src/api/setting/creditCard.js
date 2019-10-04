@@ -18,7 +18,7 @@ export function addCreditCardData(data) {
 
 export function updateCreditCardData(data) {
   return request({
-    url: '/credit-card',
+    url: `/credit-card/${data.credit_card_id}`,
     method: 'put',
     data: data
   })

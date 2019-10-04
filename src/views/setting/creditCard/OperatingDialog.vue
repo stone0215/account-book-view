@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     :visible="showDialog"
+    :show-close="false"
     title="信用卡"
   >
     <el-form label-width="100px">
@@ -112,7 +113,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.length > 0) {
+      if (this.rawData.credit_card_id) {
         result = this.$store.dispatch('UpdateCreditCardData', this.form)
       } else result = this.$store.dispatch('AddCreditCardData', this.form)
 

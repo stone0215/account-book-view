@@ -152,7 +152,7 @@ export default {
     },
     openDialog(rawData) {
       this.showDialog = true
-      this.selectedData = rawData || {}
+      this.selectedData = rawData || { note: '' }
     }
   }
 }
