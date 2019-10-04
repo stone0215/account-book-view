@@ -30,8 +30,8 @@ const settingRouter = {
     },
     {
       path: 'creditCard-setting',
-      component: () => import('@/views/table/complexTable'),
-      name: 'TreeTableDemo',
+      component: () => import('@/views/setting/creditCard/index'),
+      name: 'CreditCardSetting',
       meta: { title: '信用卡設定' }
     },
     {

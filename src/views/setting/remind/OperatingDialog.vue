@@ -47,7 +47,7 @@ export default {
     },
     rawData: {
       type: Object,
-      default: function() {}
+      default: null
     }
   },
   data() {
@@ -66,7 +66,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData) {
+      if (this.rawData.length > 0) {
         result = this.$store.dispatch('UpdateAlarmData', this.form)
       } else result = this.$store.dispatch('AddAlarmData', this.form)
 
