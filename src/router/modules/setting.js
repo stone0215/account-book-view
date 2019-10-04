@@ -12,19 +12,19 @@ const settingRouter = {
   children: [
     {
       path: 'initial-setting',
-      component: () => import('@/views/table/complexTable'),
+      component: () => import('@/views/setting/menu/index'),
       name: 'DynamicTable',
       meta: { title: '初始值設定' }
     },
     {
       path: 'menu-setting',
-      component: () => import('@/views/table/complexTable'),
-      name: 'DragTable',
+      component: () => import('@/views/setting/menu/index'),
+      name: 'MenuSetting',
       meta: { title: '選單設定' }
     },
     {
       path: 'budget-setting',
-      component: () => import('@/views/table/complexTable'),
+      component: () => import('@/views/setting/menu/index'),
       name: 'InlineEditTable',
       meta: { title: '預算設定' }
     },
