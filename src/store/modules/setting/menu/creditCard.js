@@ -3,7 +3,7 @@ import {
   deleteCreditCardData,
   getCreditCardList,
   updateCreditCardData
-} from '@/api/setting/creditCard'
+} from '@/api/setting/menu/creditCard'
 
 export default {
   state: {
