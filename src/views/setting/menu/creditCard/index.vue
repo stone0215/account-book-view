@@ -127,7 +127,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.setting.creditCard.dataList
+      queryList: state => state.setting.menu.creditCard.dataList
     })
   },
   methods: {

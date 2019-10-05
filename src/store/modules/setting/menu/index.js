@@ -1,7 +1,9 @@
 import account from './account'
+import creditCard from './creditCard'
 
 export default {
   modules: {
-    account
+    account,
+    creditCard
   }
 }
