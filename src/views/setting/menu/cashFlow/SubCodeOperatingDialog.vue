@@ -2,28 +2,16 @@
   <el-dialog
     :visible="showDialog"
     :show-close="false"
+    append-to-body
+    class="page"
   >
     <div slot="title">
-      <span>主選單</span>
+      <span>子選單</span>
       <span class="hint">(因未擋重複名稱與排序，新增時建議先查詢確認)</span>
     </div>
     <el-form label-width="80px">
-      <el-form-item label="代碼類別">
-        <el-select
-          v-model="form.code_type"
-          placeholder="選擇代碼類別"
-        >
-          <el-option
-            v-for="item in codeType"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="名稱">
         <el-input
-          :disabled="rawData.code_id"
           v-model="form.name"
           class="input-medium"
         />
@@ -60,7 +48,6 @@
 </template>
 
 <script>
-import { codeType } from '@/assets/commonData/codeData'
 import { yesNo } from '@/assets/commonData/global'
 
 export default {
@@ -68,6 +55,10 @@ export default {
     showDialog: {
       type: Boolean,
       default: false
+    },
+    parentData: {
+      type: Object,
+      default: null
     },
     rawData: {
       type: Object,
@@ -77,13 +68,16 @@ export default {
   data() {
     return {
       form: { code_index: '' },
-      codeType,
       yesNo
     }
   },
   watch: {
     rawData(newData) {
       this.form = JSON.parse(JSON.stringify(newData))
+
+      this.form.code_group = this.parentData.code_id
+      this.form.code_group_name = this.parentData.name
+      this.form.code_type = this.parentData.code_type
     }
   },
   methods: {
@@ -93,8 +87,8 @@ export default {
     submitForm() {
       let result = null
       if (this.rawData.code_id) {
-        result = this.$store.dispatch('UpdateMainCodeData', this.form)
-      } else result = this.$store.dispatch('AddMainCodeData', this.form)
+        result = this.$store.dispatch('UpdateSubCodeData', this.form)
+      } else result = this.$store.dispatch('AddSubCodeData', this.form)
 
       result.then(data => {
         this.hideDialog()
@@ -103,3 +97,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.hint {
+  display: block;
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+}
+</style>

@@ -30,7 +30,7 @@
           <el-button
             type="primary"
             class="btn-medium"
-            @click="openDialog()"
+            @click="openMainCodeDialog()"
           >新增</el-button>
         </el-form-item>
       </el-form>
@@ -52,7 +52,7 @@
           <el-button
             size="small"
             type="text"
-            @click="openDetail(scope.row.code_group)"
+            @click="openSubCodeDialog(scope.row)"
           >{{ scope.row.name }}</el-button>
         </template>
       </el-table-column>
@@ -77,7 +77,7 @@
           <el-button
             type="success"
             size="small"
-            @click="openDialog(scope.row)"
+            @click="openMainCodeDialog(scope.row)"
           >编辑</el-button>
           <el-button
             type="danger"
@@ -89,15 +89,22 @@
     </el-table>
 
     <operating-dialog
-      :show-dialog="showDialog"
+      :show-dialog="showMaintainCodeDialog"
       :raw-data="selectedData"
-      @hideDialog="showDialog = false"
+      @hideDialog="showMaintainCodeDialog = false"
+    />
+
+    <sub-code-dialog
+      :show-dialog="showSubCodeDialog"
+      :parent-data="selectedData"
+      @hideDialog="showSubCodeDialog = false"
     />
   </div>
 </template>
 
 <script>
 import OperatingDialog from './OperatingDialog'
+import SubCodeDialog from './SubCodeDialog'
 import { codeType } from '@/assets/commonData/codeData'
 import SearchArea from '@/components/SearchArea'
 import { getMappingName } from '@/utils/codeMapping'
@@ -105,10 +112,11 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'RemindSetting',
-  components: { OperatingDialog, SearchArea },
+  components: { OperatingDialog, SearchArea, SubCodeDialog },
   data() {
     return {
-      showDialog: false,
+      showMaintainCodeDialog: false,
+      showSubCodeDialog: false,
       showList: false,
       conditions: {
         name: '',
@@ -143,9 +151,13 @@ export default {
     deleteMainCode(id) {
       this.$store.dispatch('DeleteMainCodeData', id)
     },
-    openDialog(rawData) {
-      this.showDialog = true
+    openMainCodeDialog(rawData) {
+      this.showMaintainCodeDialog = true
       this.selectedData = rawData || { code_index: '' }
+    },
+    openSubCodeDialog(inputData) {
+      this.showSubCodeDialog = true
+      this.selectedData = inputData
     }
   }
 }
