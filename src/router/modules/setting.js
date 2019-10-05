@@ -20,7 +20,7 @@ const settingRouter = {
       path: 'menu-setting',
       component: () => import('@/views/setting/menu/index'),
       name: 'MenuSetting',
-      meta: { title: '選單設定' }
+      meta: { title: '選單設定', icon: 'tab' }
     },
     {
       path: 'budget-setting',
@@ -32,7 +32,7 @@ const settingRouter = {
       path: 'remind-setting',
       component: () => import('@/views/setting/remind/index'),
       name: 'RemindSetting',
-      meta: { title: '定期支出提醒' }
+      meta: { title: '定期支出提醒', icon: 'list' }
     }
   ]
 }
