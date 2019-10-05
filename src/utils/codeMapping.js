@@ -1,4 +1,5 @@
 import { accountType } from '@/assets/commonData/accountData'
+import { codeType } from '@/assets/commonData/codeData'
 import { feedbackWay } from '@/assets/commonData/creditCardData'
 import { fxCode } from '@/assets/commonData/fxData'
 import { yesNo } from '@/assets/commonData/global'
@@ -18,6 +19,9 @@ export function getMappingName(type, code) {
       break
     case 'account_type':
       target = accountType
+      break
+    case 'code_type':
+      target = codeType
       break
     default:
       return false
