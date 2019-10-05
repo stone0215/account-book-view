@@ -1,5 +1,5 @@
 <template>
-  <div class="page credit-card-setting">
+  <div class="credit-card-setting">
     <search-area>
       <el-form slot="content">
         <el-form-item label="信用卡名稱">

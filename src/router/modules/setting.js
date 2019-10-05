@@ -29,12 +29,6 @@ const settingRouter = {
       meta: { title: '預算設定' }
     },
     {
-      path: 'creditCard-setting',
-      component: () => import('@/views/setting/creditCard/index'),
-      name: 'CreditCardSetting',
-      meta: { title: '信用卡設定' }
-    },
-    {
       path: 'remind-setting',
       component: () => import('@/views/setting/remind/index'),
       name: 'RemindSetting',
