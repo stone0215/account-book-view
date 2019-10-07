@@ -84,6 +84,11 @@
         align="center"
       />
       <el-table-column
+        label="排序"
+        prop="account_index"
+        align="center"
+      />
+      <el-table-column
         fixed="right"
         label="操作"
         width="150"
@@ -164,7 +169,7 @@ export default {
     },
     openDialog(rawData) {
       this.showDialog = true
-      this.selectedData = rawData || { discount: null }
+      this.selectedData = rawData || { discount: null, account_index: null }
     }
   }
 }

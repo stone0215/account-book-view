@@ -64,6 +64,14 @@
           class="input-small"
         />
       </el-form-item>
+      <el-form-item label="排序">
+        <el-input
+          v-model="form.account_index"
+          autocomplete="off"
+          placeholder="ex:1"
+          class="input-small"
+        />
+      </el-form-item>
     </el-form>
     <div
       slot="footer"
@@ -97,7 +105,7 @@ export default {
   },
   data() {
     return {
-      form: { discount: null },
+      form: {},
       accountType,
       feedbackWay,
       fxCode: fxCode.filter(x => x.inUse),

@@ -70,6 +70,11 @@
         align="center"
       />
       <el-table-column
+        label="排序"
+        prop="credit_card_index"
+        align="center"
+      />
+      <el-table-column
         label="備註"
         prop="note"
         width="400px"
@@ -152,7 +157,7 @@ export default {
     },
     openDialog(rawData) {
       this.showDialog = true
-      this.selectedData = rawData || { note: '' }
+      this.selectedData = rawData || { credit_card_index: '', note: '' }
     }
   }
 }

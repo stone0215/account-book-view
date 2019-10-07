@@ -58,6 +58,14 @@
           <el-radio label="N">否</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="排序">
+        <el-input
+          v-model="form.credit_card_index"
+          autocomplete="off"
+          placeholder="ex:1"
+          class="input-small"
+        />
+      </el-form-item>
       <el-form-item label="備註">
         <el-input
           v-model="form.note"

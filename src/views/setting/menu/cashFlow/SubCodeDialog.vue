@@ -94,7 +94,9 @@ export default {
   },
   watch: {
     parentData(newData) {
-      this.$store.dispatch('GetSubCodeList', newData.code_id)
+      if (this.showDialog) {
+        this.$store.dispatch('GetSubCodeList', newData.code_id)
+      }
     }
   },
   methods: {
