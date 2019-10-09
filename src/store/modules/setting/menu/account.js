@@ -2,12 +2,14 @@ import {
   addAccountData,
   deleteAccountData,
   getAccountList,
+  getAccountSelection,
   updateAccountData
 } from '@/api/setting/menu/account'
 
 export default {
   state: {
-    dataList: null
+    dataList: null,
+    accountSelectList: []
   },
   mutations: {
     SET_ACCOUNT_DATA_LIST: (state, datas) => {
@@ -22,6 +24,9 @@ export default {
           item = Object.assign(item, data)
         }
       })
+    },
+    SET_ACCOUNT_SELECT_LIST: (state, datas) => {
+      state.accountSelectList = datas
     }
   },
   actions: {
@@ -73,6 +78,18 @@ export default {
         updateAccountData(data)
           .then(() => {
             commit('UPDATE_ACCOUNT_DATA_LIST', data)
+            resolve()
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    GetAccountSelection({ commit }) {
+      return new Promise((resolve, reject) => {
+        getAccountSelection()
+          .then(response => {
+            commit('SET_ACCOUNT_SELECT_LIST', response.data)
             resolve()
           })
           .catch(error => {

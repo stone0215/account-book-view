@@ -30,3 +30,10 @@ export function deleteAccountData(id) {
     method: 'delete'
   })
 }
+
+export function getAccountSelection() {
+  return request({
+    url: '/account/selection',
+    method: 'get'
+  })
+}
