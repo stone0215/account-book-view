@@ -72,6 +72,12 @@ export const constantRouterMap = [
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
         meta: { title: '首頁', icon: 'dashboard', noCache: true }
+      },
+      {
+        path: 'testPDF2Img',
+        component: () => import('@/views/testPDF2Img'),
+        name: 'testPDF2Img',
+        meta: { title: '首頁', icon: 'dashboard', noCache: true }
       }
     ]
   },
