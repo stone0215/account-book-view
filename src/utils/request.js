@@ -26,9 +26,12 @@ service.interceptors.response.use(
       return respBody
     } else {
       Notification({
-        message: respBody.msg + ' ' + respBody.error,
+        message: respBody.msg, // + ' ' + respBody.error,
         type: 'error',
         duration: 5 * 1000
+      })
+      return new Promise((resolve, reject) => {
+        reject(respBody.msg)
       })
     }
     // 回傳下載檔案

@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function checkServerAlive() {
+export function getSelectionGroups() {
   return request({
-    url: '/global/server-alive',
+    url: '/util/wallet-selection-group',
     method: 'get'
   })
 }

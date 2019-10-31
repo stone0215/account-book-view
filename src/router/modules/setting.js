@@ -12,9 +12,9 @@ const settingRouter = {
   children: [
     {
       path: 'initial-setting',
-      component: () => import('@/views/setting/menu/index'),
-      name: 'DynamicTable',
-      meta: { title: '初始值設定' }
+      component: () => import('@/views/setting/initial/index'),
+      name: 'InitialSetting',
+      meta: { title: '初始值設定', icon: 'money' }
     },
     {
       path: 'menu-setting',
