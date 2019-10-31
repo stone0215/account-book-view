@@ -20,6 +20,11 @@
         prop="account_name"
       />
       <el-table-column
+        :formatter="mappingName"
+        label="資產類別"
+        prop="asset_type"
+      />
+      <el-table-column
         label="預計投入總額"
         prop="expected_spend"
         align="center"
@@ -86,6 +91,9 @@ export default {
     this.$store.dispatch('GetOtherAssetsList')
   },
   methods: {
+    mappingName(row, column, cellValue) {
+      return getMappingName(column.property, cellValue)
+    },
     mappingYesNo(row, column, cellValue) {
       return getMappingName('yes_no', cellValue)
     },

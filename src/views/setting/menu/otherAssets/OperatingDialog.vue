@@ -27,6 +27,19 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="資產類別">
+        <el-select
+          v-model="form.asset_type"
+          placeholder="選擇資產類別"
+        >
+          <el-option
+            v-for="item in otherAssetType"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="預計投入總額">
         <el-input
           v-model="form.expected_spend"
@@ -66,7 +79,7 @@
 </template>
 
 <script>
-import { yesNo } from '@/assets/commonData/global'
+import { otherAssetType, yesNo } from '@/assets/commonData/global'
 import { mapState } from 'vuex'
 
 export default {
@@ -83,6 +96,7 @@ export default {
   data() {
     return {
       form: {},
+      otherAssetType,
       yesNo
     }
   },
