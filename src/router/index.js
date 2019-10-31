@@ -7,12 +7,10 @@ Vue.use(Router)
 import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
-// import chartsRouter from './modules/charts'
 import monthlyReport from './modules/monthlyReport'
 import otherAssets from './modules/otherAssets'
 import overview from './modules/overview'
 import settingRouter from './modules/setting'
-// import nestedRouter from './modules/nested'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -82,32 +80,6 @@ export const constantRouterMap = [
   monthlyReport,
   otherAssets,
   settingRouter
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   redirect: '/documentation/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: 'documentation', icon: 'documentation', noCache: true }
-  //     }
-  //   ]
-  // },
-  // {
-  //   path: '/guide',
-  //   component: Layout,
-  //   redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/guide/index'),
-  //       name: 'Guide',
-  //       meta: { title: 'guide', icon: 'guide', noCache: true }
-  //     }
-  //   ]
-  // }
 ]
 
 export default new Router({

@@ -13,7 +13,7 @@ export default {
     {
       path: '',
       component: () => import('@/views/setting/initial/index'),
-      name: 'OtherAssets',
+      name: 'OtherAssetsDetail',
       meta: { title: '其他資產明細', icon: 'money' }
     }
   ]
