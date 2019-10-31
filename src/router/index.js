@@ -8,6 +8,9 @@ import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
 // import chartsRouter from './modules/charts'
+import monthlyReport from './modules/monthlyReport'
+import otherAssets from './modules/otherAssets'
+import overview from './modules/overview'
 import settingRouter from './modules/setting'
 // import nestedRouter from './modules/nested'
 
@@ -75,6 +78,9 @@ export const constantRouterMap = [
       }
     ]
   },
+  overview,
+  monthlyReport,
+  otherAssets,
   settingRouter
   // {
   //   path: '/documentation',
