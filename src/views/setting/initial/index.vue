@@ -24,14 +24,20 @@
           <el-button
             type="primary"
             class="btn-medium"
-            @click="openDialog()"
+            @click="showDialog = true"
           >新增</el-button>
+          <el-button
+            v-show="showList"
+            type="primary"
+            class="btn-medium"
+            @click="doAction"
+          >{{ getEditButtonText }}</el-button>
         </el-form-item>
       </el-form>
     </search-area>
     <el-table
       v-show="showList"
-      :data="queryList"
+      :data="listData"
       stripe
       header-cell-class-name="table-header"
     >
@@ -46,10 +52,16 @@
         prop="initial_type"
         align="center"
       />
-      <el-table-column
-        label="初始值"
-        prop="setting_value"
-      />
+      <el-table-column label="初始值">
+        <template slot-scope="scope">
+          <span v-if="!isEditMode">{{ scope.row.setting_value }}</span>
+          <el-input
+            v-else
+            v-model="scope.row.setting_value"
+            autocomplete="off"
+          />
+        </template>
+      </el-table-column>
       <el-table-column
         label="設定時間"
         prop="setting_date"
@@ -62,11 +74,6 @@
       >
         <template slot-scope="scope">
           <el-button
-            type="success"
-            size="small"
-            @click="openDialog(scope.row)"
-          >编辑</el-button>
-          <el-button
             type="danger"
             size="small"
             @click="deleteInitial(scope.row)"
@@ -77,7 +84,6 @@
 
     <operating-dialog
       :show-dialog="showDialog"
-      :raw-data="selectedData"
       @hideDialog="showDialog = false"
     />
   </div>
@@ -97,17 +103,26 @@ export default {
     return {
       showDialog: false,
       showList: false,
+      isEditMode: false,
       conditions: {
         initial_type: ''
       },
-      selectedData: {},
+      listData: [],
       assetType
     }
   },
   computed: {
     ...mapState({
       queryList: state => state.setting.initial.dataList
-    })
+    }),
+    getEditButtonText() {
+      return this.isEditMode ? '送出' : '編輯'
+    }
+  },
+  watch: {
+    queryList(newValue) {
+      this.listData = JSON.parse(JSON.stringify(newValue))
+    }
   },
   methods: {
     mappingName(row, column, cellValue) {
@@ -126,9 +141,17 @@ export default {
     deleteInitial(id) {
       this.$store.dispatch('DeleteInitialData', id)
     },
-    openDialog(rawData) {
-      this.showDialog = true
-      this.selectedData = rawData || {}
+    doAction() {
+      if (
+        this.isEditMode &&
+        JSON.stringify(this.listData) !== JSON.stringify(this.queryList)
+      ) {
+        this.$store.dispatch('UpdateInitialData', this.listData).catch(() => {
+          this.listData = JSON.parse(JSON.stringify(this.queryList))
+          return
+        })
+      }
+      this.isEditMode = !this.isEditMode
     }
   }
 }

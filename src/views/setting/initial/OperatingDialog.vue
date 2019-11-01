@@ -7,7 +7,6 @@
     <el-form label-width="80px">
       <el-form-item label="名稱">
         <el-select
-          :disabled="!!form.setting_date"
           v-model="form.code_name"
           placeholder="请选择"
           @change="handelSelectedItem"
@@ -54,10 +53,6 @@ export default {
     showDialog: {
       type: Boolean,
       default: false
-    },
-    rawData: {
-      type: Object,
-      default: null
     }
   },
   data() {
@@ -70,25 +65,16 @@ export default {
       selectionGroup: state => state.setting.initial.selectionGroup
     })
   },
-  watch: {
-    rawData(newData) {
-      this.form = JSON.parse(JSON.stringify(newData))
-    }
-  },
   created() {
     this.$store.dispatch('GetSelectionGroup')
   },
   methods: {
     hideDialog() {
       this.$emit('hideDialog')
+      this.form = {}
     },
     submitForm() {
-      let result = null
-      if (this.rawData.setting_date) {
-        result = this.$store.dispatch('UpdateInitialData', this.form)
-      } else result = this.$store.dispatch('AddInitialData', this.form)
-
-      result.then(data => {
+      this.$store.dispatch('AddInitialData', this.form).then(data => {
         this.hideDialog()
       })
     },
