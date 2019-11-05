@@ -105,7 +105,14 @@ export default {
       this.selectedData = inputData || { asset_index: '' }
     },
     deleteOtherAsset(id) {
-      this.$store.dispatch('DeleteOtherAssetData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteOtherAssetData', id)
+        })
+        .catch(() => {})
     }
   }
 }

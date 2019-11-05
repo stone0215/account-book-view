@@ -111,7 +111,14 @@ export default {
       this.selectedData = inputData || { code_index: '' }
     },
     deleteSubCode(id) {
-      this.$store.dispatch('DeleteSubCodeData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteSubCodeData', id)
+        })
+        .catch(() => {})
     }
   }
 }

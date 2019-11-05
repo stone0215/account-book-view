@@ -63,10 +63,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="設定時間"
-        prop="setting_date"
-      />
-      <el-table-column
         fixed="right"
         label="操作"
         width="150"
@@ -139,7 +135,14 @@ export default {
         })
     },
     deleteInitial(id) {
-      this.$store.dispatch('DeleteInitialData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteInitialData', id)
+        })
+        .catch(() => {})
     },
     doAction() {
       if (

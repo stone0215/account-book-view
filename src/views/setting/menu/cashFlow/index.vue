@@ -149,7 +149,14 @@ export default {
         })
     },
     deleteMainCode(id) {
-      this.$store.dispatch('DeleteMainCodeData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteMainCodeData', id)
+        })
+        .catch(() => {})
     },
     openMainCodeDialog(rawData) {
       this.showMaintainCodeDialog = true

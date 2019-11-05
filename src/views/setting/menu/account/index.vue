@@ -165,7 +165,14 @@ export default {
         })
     },
     deleteAccount(id) {
-      this.$store.dispatch('DeleteAccountData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteAccountData', id)
+        })
+        .catch(() => {})
     },
     openDialog(rawData) {
       this.showDialog = true

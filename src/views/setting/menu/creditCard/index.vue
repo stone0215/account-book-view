@@ -153,7 +153,14 @@ export default {
         })
     },
     deleteCreditCard(id) {
-      this.$store.dispatch('DeleteCreditCardData', id)
+      this.$confirm('確定要刪除嗎？', '', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消'
+      })
+        .then(() => {
+          this.$store.dispatch('DeleteCreditCardData', id)
+        })
+        .catch(() => {})
     },
     openDialog(rawData) {
       this.showDialog = true
