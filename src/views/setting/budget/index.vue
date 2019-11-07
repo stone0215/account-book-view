@@ -17,7 +17,6 @@
           v-model="thisYear"
           :min="yearRange.min"
           :max="yearRange.max"
-          controls-position="right"
           @change="search"
         />
       </span>
