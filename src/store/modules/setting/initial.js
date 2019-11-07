@@ -21,16 +21,6 @@ export default {
     },
     ADD_INITIAL_DATA_TO_LIST: (state, data) => {
       state.dataList.push(data)
-    },
-    UPDATE_INITIAL_DATA_LIST: (state, data) => {
-      state.dataList.map(item => {
-        if (
-          item.code_id === data.code_id &&
-          item.code_type === data.code_type
-        ) {
-          item = Object.assign(item, data)
-        }
-      })
     }
   },
   actions: {
@@ -92,11 +82,10 @@ export default {
           })
       })
     },
-    UpdateInitialData({ commit }, data) {
+    UpdateInitialData({ commit }, datas) {
       return new Promise((resolve, reject) => {
-        updateInitialData(data)
+        updateInitialData(datas)
           .then(() => {
-            commit('UPDATE_INITIAL_DATA_LIST', data)
             resolve()
           })
           .catch(error => {

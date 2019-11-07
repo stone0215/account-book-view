@@ -16,11 +16,11 @@ export function addInitialData(data) {
   })
 }
 
-export function updateInitialData(data) {
+export function updateInitialData(datas) {
   return request({
     url: '/initial',
     method: 'put',
-    data: data
+    data: datas
   })
 }
 
