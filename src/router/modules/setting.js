@@ -11,25 +11,25 @@ const settingRouter = {
   },
   children: [
     {
-      path: 'initial-setting',
+      path: 'initial',
       component: () => import('@/views/setting/initial/index'),
       name: 'InitialSetting',
       meta: { title: '初始值設定', icon: 'money' }
     },
     {
-      path: 'menu-setting',
+      path: 'menu',
       component: () => import('@/views/setting/menu/index'),
       name: 'MenuSetting',
       meta: { title: '選單設定', icon: 'tab' }
     },
     {
-      path: 'budget-setting',
-      component: () => import('@/views/setting/menu/index'),
-      name: 'InlineEditTable',
-      meta: { title: '預算設定' }
+      path: 'budget',
+      component: () => import('@/views/setting/budget'),
+      name: 'BudgetSetting',
+      meta: { title: '預算設定', icon: 'money' }
     },
     {
-      path: 'remind-setting',
+      path: 'remind',
       component: () => import('@/views/setting/remind/index'),
       name: 'RemindSetting',
       meta: { title: '定期支出提醒', icon: 'list' }
