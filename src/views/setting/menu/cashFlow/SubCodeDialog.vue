@@ -5,54 +5,19 @@
     width="80%"
     @close="hideDialog"
   >
-    <el-table
-      :data="queryList"
-      stripe
-      header-cell-class-name="table-header"
-    >
-      <el-table-column
-        label="名稱"
-        prop="name"
-      />
-      <el-table-column
-        :formatter="mappingYesNo"
-        label="是否啟用"
-        prop="in_use"
-        align="center"
-      />
-      <el-table-column
-        label="排序"
-        prop="code_index"
-        align="center"
-      />
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="150"
-        align="center"
-      >
+    <el-table :data="queryList" stripe header-cell-class-name="table-header">
+      <el-table-column label="名稱" prop="name"/>
+      <el-table-column :formatter="mappingYesNo" label="是否啟用" prop="in_use" align="center"/>
+      <el-table-column label="排序" prop="code_index" align="center"/>
+      <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="small"
-            @click="openMaintainSubCodeDialog(scope.row)"
-          >编辑</el-button>
-          <el-button
-            type="danger"
-            size="small"
-            @click="deleteSubCode(scope.row.code_id)"
-          >刪除</el-button>
+          <el-button type="success" size="small" @click="openMaintainSubCodeDialog(scope.row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteSubCode(scope.row.code_id)">刪除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button
-        type="primary"
-        @click="openMaintainSubCodeDialog()"
-      >新增</el-button>
+    <div slot="footer" class="dialog-footer">
+      <el-button type="primary" @click="openMaintainSubCodeDialog()">新增</el-button>
     </div>
 
     <operating-dialog
@@ -94,9 +59,7 @@ export default {
   },
   watch: {
     parentData(newData) {
-      if (this.showDialog) {
-        this.$store.dispatch('GetSubCodeList', newData.code_id)
-      }
+      this.$store.dispatch('GetSubCodeList', newData.code_id)
     }
   },
   methods: {
@@ -123,12 +86,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.hint {
-  display: block;
-  color: red;
-  margin-top: 10px;
-  font-size: 14px;
-}
-</style>
