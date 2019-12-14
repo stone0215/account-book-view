@@ -1,5 +1,5 @@
 export const accountType = [
-  { key: 'N', value: '一般帳戶' },
-  { key: 'F', value: '財務規劃帳戶' },
-  { key: 'W', value: '電子錢包' }
+  { key: 'Normal', value: '一般帳戶' },
+  { key: 'Finance', value: '財務規劃帳戶' },
+  { key: 'EWallet', value: '電子錢包' }
 ]
