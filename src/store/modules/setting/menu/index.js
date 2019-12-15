@@ -1,6 +1,7 @@
 import account from './account'
 import cashFlow from './cashFlow'
 import creditCard from './creditCard'
+import loan from './loan'
 import otherAssets from './otherAssets'
 
 export default {
@@ -8,6 +9,7 @@ export default {
     account,
     cashFlow,
     creditCard,
+    loan,
     otherAssets
   }
 }

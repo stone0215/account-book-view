@@ -114,7 +114,7 @@ export default {
     },
     openMainCodeDialog(rawData) {
       this.showMaintainCodeDialog = true
-      this.selectedData = rawData || { code_index: '' }
+      this.selectedData = rawData || {}
     },
     openSubCodeDialog(inputData) {
       this.showSubCodeDialog = true

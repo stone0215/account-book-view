@@ -59,7 +59,9 @@ export default {
   },
   watch: {
     parentData(newData) {
-      this.$store.dispatch('GetSubCodeList', newData.code_id)
+      if (newData.code_id) {
+        this.$store.dispatch('GetSubCodeList', newData.code_id)
+      }
     }
   },
   methods: {
@@ -71,7 +73,7 @@ export default {
     },
     openMaintainSubCodeDialog(inputData) {
       this.showMaintainDialog = true
-      this.selectedData = inputData || { code_index: '' }
+      this.selectedData = inputData || {}
     },
     deleteSubCode(id) {
       this.$confirm('確定要刪除嗎？', '', {

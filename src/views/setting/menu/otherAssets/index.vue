@@ -1,10 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button
-        type="primary"
-        @click="openDialog()"
-      >新增</el-button>
+      <el-button type="primary" @click="openDialog()">新增</el-button>
     </div>
     <el-table
       :data="queryList"
@@ -47,16 +44,8 @@
         align="center"
       >
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="small"
-            @click="openDialog(scope.row)"
-          >编辑</el-button>
-          <el-button
-            type="danger"
-            size="small"
-            @click="deleteOtherAsset(scope.row.asset_id)"
-          >刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteOtherAsset(scope.row.asset_id)">刪除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -117,12 +106,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.hint {
-  display: block;
-  color: red;
-  margin-top: 10px;
-  font-size: 14px;
-}
-</style>
