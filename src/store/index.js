@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import app from './modules/app'
 import errorLog from './modules/errorLog'
 import global from './global'
+import otherAssets from './modules/otherAssets'
 import permission from './modules/permission'
 import setting from './modules/setting/index'
 import tagsView from './modules/tagsView'
@@ -18,6 +19,7 @@ const store = new Vuex.Store({
     app,
     errorLog,
     global,
+    otherAssets,
     permission,
     setting,
     tagsView,

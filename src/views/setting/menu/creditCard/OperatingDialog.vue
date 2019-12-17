@@ -1,9 +1,5 @@
 <template>
-  <el-dialog
-    :visible="showDialog"
-    :show-close="false"
-    title="信用卡"
-  >
+  <el-dialog :visible="showDialog" :show-close="false" title="信用卡">
     <el-form label-width="100px">
       <el-form-item label="信用卡名稱">
         <el-input
@@ -26,11 +22,15 @@
           class="input-medium"
         />
       </el-form-item>
+      <el-form-item label="到期日">
+        <el-date-picker
+          v-model="form.limit_date"
+          type="date"
+          placeholder="選擇日期"
+        />
+      </el-form-item>
       <el-form-item label="回饋方式">
-        <el-select
-          v-model="form.feedback_way"
-          placeholder="選擇回饋方式"
-        >
+        <el-select v-model="form.feedback_way" placeholder="選擇回饋方式">
           <el-option
             v-for="item in feedbackWay"
             :key="item.key"
@@ -40,10 +40,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="幣別">
-        <el-select
-          v-model="form.fx_code"
-          placeholder="選擇幣別"
-        >
+        <el-select v-model="form.fx_code" placeholder="選擇幣別">
           <el-option
             v-for="item in fxCode"
             :key="item.key"
@@ -75,20 +72,16 @@
         />
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>
-      <el-button
-        type="primary"
-        @click="submitForm"
-      >確定</el-button>
+      <el-button type="primary" @click="submitForm">確定</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import moment from 'moment'
+
 import { feedbackWay } from '@/assets/commonData/creditCardData'
 import { fxCode } from '@/assets/commonData/fxData'
 
@@ -112,7 +105,14 @@ export default {
   },
   watch: {
     rawData(newData) {
-      this.form = JSON.parse(JSON.stringify(newData))
+      if (newData) {
+        this.form = JSON.parse(JSON.stringify(newData))
+        if (this.form.limit_date) {
+          this.form.limit_date = moment(`${this.form.limit_date} UTC`)
+        }
+      } else {
+        this.form = { credit_card_index: '', note: '', in_use: 'Y' }
+      }
     }
   },
   methods: {
@@ -121,7 +121,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.credit_card_id) {
+      if (this.rawData) {
         result = this.$store.dispatch('UpdateCreditCardData', this.form)
       } else result = this.$store.dispatch('AddCreditCardData', this.form)
 

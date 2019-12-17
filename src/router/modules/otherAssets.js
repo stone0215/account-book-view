@@ -7,14 +7,14 @@ export default {
   name: 'OtherAssets',
   meta: {
     title: '其他資產',
-    icon: 'money'
+    icon: 'tab'
   },
   children: [
     {
       path: '',
-      component: () => import('@/views/setting/initial/index'),
+      component: () => import('@/views/otherAssets/index'),
       name: 'OtherAssetsDetail',
-      meta: { title: '其他資產明細', icon: 'money' }
+      meta: { title: '其他資產明細', icon: 'tab' }
     }
   ]
 }

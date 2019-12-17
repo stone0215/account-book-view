@@ -3,19 +3,9 @@
     <div>
       <el-button type="primary" @click="openDialog()">新增</el-button>
     </div>
-    <el-table
-      :data="queryList"
-      stripe
-      header-cell-class-name="table-header"
-    >
-      <el-table-column
-        label="名稱"
-        prop="asset_name"
-      />
-      <el-table-column
-        label="關聯帳戶"
-        prop="account_name"
-      />
+    <el-table :data="queryList" stripe header-cell-class-name="table-header">
+      <el-table-column label="名稱" prop="asset_name" />
+      <el-table-column label="關聯帳戶" prop="account_name" />
       <el-table-column
         :formatter="mappingName"
         label="資產類別"
@@ -32,20 +22,19 @@
         prop="in_use"
         align="center"
       />
-      <el-table-column
-        label="排序"
-        prop="asset_index"
-        align="center"
-      />
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="150"
-        align="center"
-      >
+      <el-table-column label="排序" prop="asset_index" align="center" />
+      <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteOtherAsset(scope.row.asset_id)">刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)">
+            编辑
+          </el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteOtherAsset(scope.row.asset_id)"
+          >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -91,7 +80,7 @@ export default {
     },
     openDialog(inputData) {
       this.showDialog = true
-      this.selectedData = inputData || { asset_index: '' }
+      this.selectedData = inputData || { asset_index: '', expected_spend: '' }
     },
     deleteOtherAsset(id) {
       this.$confirm('確定要刪除嗎？', '', {

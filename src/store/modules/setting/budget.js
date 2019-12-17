@@ -21,8 +21,10 @@ export default {
       state.yearRange = data
     },
     SET_BUDGET_DATA_LIST: (state, datas) => {
-      state.dataList.floatingList = datas.filter(x => x.code_type === 'F')
-      state.dataList.stableList = datas.filter(x => x.code_type === 'S')
+      state.dataList.floatingList = datas.filter(
+        x => x.code_type === 'Floating'
+      )
+      state.dataList.stableList = datas.filter(x => x.code_type === 'Fixed')
     }
   },
   actions: {

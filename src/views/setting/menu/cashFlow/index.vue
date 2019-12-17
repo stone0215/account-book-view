@@ -26,7 +26,6 @@
       <el-table-column label="名稱">
         <template slot-scope="scope">
           <el-button
-            size="small"
             type="text"
             @click="openSubCodeDialog(scope.row)"
           >{{ scope.row.name }}</el-button>
