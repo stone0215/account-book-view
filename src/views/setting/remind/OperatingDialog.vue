@@ -1,9 +1,5 @@
 <template>
-  <el-dialog
-    :visible="showDialog"
-    :show-close="false"
-    title="支出提醒"
-  >
+  <el-dialog :visible="showDialog" :show-close="false" title="支出提醒">
     <el-form label-width="80px">
       <el-form-item label="日期">
         <el-input
@@ -20,21 +16,12 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="內容">
-        <el-input
-          v-model="form.content"
-          autocomplete="off"
-        />
+        <el-input v-model="form.content" autocomplete="off"/>
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>
-      <el-button
-        type="primary"
-        @click="submitForm"
-      >確定</el-button>
+      <el-button type="primary" @click="submitForm">確定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -58,7 +45,11 @@ export default {
   },
   watch: {
     rawData(newData) {
-      this.form = JSON.parse(JSON.stringify(newData))
+      if (newData) {
+        this.form = JSON.parse(JSON.stringify(newData))
+      } else {
+        this.form = {}
+      }
     }
   },
   methods: {
@@ -67,7 +58,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.length > 0) {
+      if (this.rawData) {
         result = this.$store.dispatch('UpdateAlarmData', this.form)
       } else result = this.$store.dispatch('AddAlarmData', this.form)
 

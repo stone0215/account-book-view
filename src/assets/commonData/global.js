@@ -5,7 +5,7 @@ export const yesNo = [
 
 export const assetType = [
   { key: 'Account', value: '銀行帳戶' },
-  { key: 'Credit', value: '信用卡' },
+  { key: 'CreditCard', value: '信用卡' },
   { key: 'Money', value: '現金' },
   { key: 'Loan', value: '貸款' }
 ]

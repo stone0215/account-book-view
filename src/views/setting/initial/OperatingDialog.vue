@@ -20,7 +20,7 @@
               v-for="item in group.selections"
               :key="item.key"
               :label="item.value"
-              :value="item.key + '/' + item.value + '/' + group.type"
+              :value="item.key + '/' + item.value + '/' + item.type"
             />
           </el-option-group>
         </el-select>

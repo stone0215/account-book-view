@@ -6,11 +6,7 @@
         class="btn-medium"
         @click="isEditMode = !isEditMode"
       >{{ getEditButtonText }}</el-button>
-      <el-button
-        type="danger"
-        class="btn-large"
-        @click="createNextYearBudget"
-      >建立下一年度預算</el-button>
+      <el-button type="danger" class="btn-large" @click="createNextYearBudget">建立下一年度預算</el-button>
       <span class="fr">
         年度：
         <el-input-number
@@ -22,27 +18,20 @@
       </span>
     </div>
     <p>浮動支出：</p>
-    <list-table
-      :is-edit-mode="isEditMode"
-      :raw-data="floatingList"
-    />
+    <list-table :is-edit-mode="isEditMode" :raw-data="floatingList"/>
     <p>固定支出：</p>
-    <list-table
-      :is-edit-mode="isEditMode"
-      :raw-data="stableList"
-    />
+    <list-table :is-edit-mode="isEditMode" :raw-data="stableList"/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ListTable from './ListTableComponent'
-import OperatingDialog from './OperatingDialog'
 import SearchArea from '@/components/SearchArea'
 
 export default {
   name: 'BudgetSetting',
-  components: { ListTable, OperatingDialog, SearchArea },
+  components: { ListTable, SearchArea },
   data() {
     return {
       isEditMode: false,

@@ -3,59 +3,21 @@
     <search-area>
       <el-form slot="content">
         <el-form-item label="提醒日期">
-          <el-input
-            v-model="conditions.date"
-            placeholder="mm/dd 或 dd"
-            class="input-medium"
-          />
+          <el-input v-model="conditions.date" placeholder="mm/dd 或 dd" class="input-medium"/>
         </el-form-item>
         <el-form-item class="last">
-          <el-button
-            type="primary"
-            class="btn-medium"
-            @click="search"
-          >搜尋</el-button>
-          <el-button
-            type="primary"
-            class="btn-medium"
-            @click="openDialog()"
-          >新增</el-button>
+          <el-button type="primary" class="btn-medium" @click="search">搜尋</el-button>
+          <el-button type="primary" class="btn-medium" @click="openDialog()">新增</el-button>
         </el-form-item>
       </el-form>
     </search-area>
-    <el-table
-      v-show="showList"
-      :data="queryList"
-      stripe
-      header-cell-class-name="table-header"
-    >
-      <el-table-column
-        label="日期"
-        prop="alarm_date"
-        width="60"
-        align="center"
-      />
-      <el-table-column
-        label="內容"
-        prop="content"
-      />
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="150"
-        align="center"
-      >
+    <el-table v-show="showList" :data="queryList" stripe header-cell-class-name="table-header">
+      <el-table-column label="日期" prop="alarm_date" width="60" align="center"/>
+      <el-table-column label="內容" prop="content"/>
+      <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="small"
-            @click="openDialog(scope.row)"
-          >编辑</el-button>
-          <el-button
-            type="danger"
-            size="small"
-            @click="deleteAlarm(scope.row.alarm_id)"
-          >刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteAlarm(scope.row.alarm_id)">刪除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -114,7 +76,7 @@ export default {
     },
     openDialog(rawData) {
       this.showDialog = true
-      this.selectedData = rawData || {}
+      this.selectedData = rawData || null
     }
   }
 }

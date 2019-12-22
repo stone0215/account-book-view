@@ -56,7 +56,7 @@
         align="center"
       />
       <el-table-column label="排序" prop="credit_card_index" align="center" />
-      <el-table-column label="備註" prop="note" width="400px" />
+      <el-table-column label="備註" prop="note" width="300px" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
           <el-button type="success" size="small" @click="openDialog(scope.row)">

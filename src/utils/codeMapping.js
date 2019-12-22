@@ -7,6 +7,7 @@ import { assetType, otherAssetType, yesNo } from '@/assets/commonData/global'
 let target = null
 
 export function getMappingName(type, code) {
+  console.log('123', type, code)
   switch (type) {
     case 'account_type':
       target = accountType
