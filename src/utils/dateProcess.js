@@ -8,7 +8,6 @@ export function formatDateTimeSlash(input, format = 'YYYY-MM-DD') {
   // moment.locale(Cookies.get('Accept-Language'))
   if (input) {
     // console.log(moment.utc('2020-04-17 05:20:37').fromNow())
-    console.log(input)
     if (moment(input)._pf.iso) {
       return moment(`${input} UTC`).format(format)
     } else return moment(input).format(format)

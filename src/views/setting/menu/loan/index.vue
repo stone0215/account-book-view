@@ -7,7 +7,7 @@
       <el-table-column label="名稱" prop="loan_name"/>
       <el-table-column label="關聯帳戶" prop="account_name"/>
       <el-table-column label="利率" prop="interest_rate"/>
-      <el-table-column :formatter="mappingYesNo" label="申請日期" prop="apply_date" align="center"/>
+      <el-table-column :formatter="formatDateTime" label="申請日期" prop="apply_date" align="center"/>
       <el-table-column label="每月扣款日" prop="pay_day" align="center"/>
       <el-table-column label="排序" prop="loan_index" align="center"/>
       <el-table-column fixed="right" label="操作" width="150" align="center">
@@ -19,6 +19,7 @@
     </el-table>
 
     <operating-dialog
+      v-if="showDialog"
       :show-dialog="showDialog"
       :raw-data="selectedData"
       @hideDialog="showDialog = false"
@@ -28,7 +29,8 @@
 
 <script>
 import { mapState } from 'vuex'
-// import moment from 'moment'
+
+import { formatDateTimeSlash } from '@/utils/dateProcess'
 
 import OperatingDialog from './OperatingDialog'
 
@@ -49,15 +51,15 @@ export default {
     this.$store.dispatch('GetLoanList')
   },
   methods: {
-    dateFormater(row, column, cellValue) {
-      // return moment(cellValue, 'YYYY-MM-DD')
+    formatDateTime(row, column, cellValue) {
+      return formatDateTimeSlash(cellValue)
     },
     hideDialog() {
       this.$emit('hideDialog')
     },
     openDialog(inputData) {
       this.showDialog = true
-      this.selectedData = inputData || { loan_index: '' }
+      this.selectedData = inputData || null
     },
     deleteLoan(id) {
       this.$store.dispatch('DeleteLoanData', id)

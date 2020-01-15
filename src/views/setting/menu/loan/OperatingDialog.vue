@@ -40,8 +40,10 @@
 </template>
 
 <script>
-import { yesNo } from '@/assets/commonData/global'
 import { mapState } from 'vuex'
+import moment from 'moment'
+
+import { yesNo } from '@/assets/commonData/global'
 
 export default {
   props: {
@@ -65,13 +67,17 @@ export default {
       accountSelectList: state => state.setting.menu.account.accountSelectList
     })
   },
-  watch: {
-    rawData(newData) {
-      this.form = JSON.parse(JSON.stringify(newData))
-    }
-  },
   created() {
-    this.$store.dispatch('GetAccountSelection')
+    this.$store.dispatch('GetAccountSelection').then(() => {
+      if (this.rawData) {
+        this.form = JSON.parse(JSON.stringify(this.rawData))
+        if (this.form.apply_date) {
+          this.form.apply_date = moment(`${this.form.apply_date} UTC`)
+        }
+      } else {
+        this.form = { loan_index: '' }
+      }
+    })
   },
   methods: {
     hideDialog() {
@@ -79,7 +85,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.asset_id) {
+      if (this.rawData) {
         result = this.$store.dispatch('UpdateLoanData', this.form)
       } else result = this.$store.dispatch('AddLoanData', this.form)
 

@@ -1,8 +1,5 @@
 <template>
-  <el-tabs
-    v-model="activeTab"
-    class="page"
-  >
+  <el-tabs v-model="activeTab" class="page">
     <el-tab-pane
       v-for="(item, index) in itemList"
       :key="index"
@@ -43,8 +40,10 @@ export default {
   methods: {
     getComponentName(type) {
       switch (type) {
-        case 'S':
+        case 'Stock':
           return 'StockContent'
+        case 'Insurence':
+          return 'InsurenceContent'
       }
     }
   }

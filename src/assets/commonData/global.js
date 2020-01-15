@@ -13,6 +13,5 @@ export const assetType = [
 export const otherAssetType = [
   { key: 'Stock', value: '股票' },
   { key: 'Insurence', value: '保險' },
-  { key: 'Estate', value: '房地產' },
-  { key: 'Other', value: '其他' }
+  { key: 'Estate', value: '房地產' }
 ]
