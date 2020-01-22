@@ -17,11 +17,11 @@
 
 <script>
 import { mapState } from 'vuex'
-// import StockContent from './StockContentComponent'
+import StockContent from './StockContentComponent'
 
 export default {
   name: 'OtherAssetsDetail',
-  // components: { StockContent },
+  components: { StockContent },
   data() {
     return {
       activeTab: ''
@@ -49,4 +49,3 @@ export default {
   }
 }
 </script>
-
