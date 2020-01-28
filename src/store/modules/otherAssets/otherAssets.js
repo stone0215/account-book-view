@@ -1,4 +1,6 @@
-import { getOtherAssetItems } from '@/api/otherAssets'
+import {
+  getOtherAssetItems
+} from '@/api/otherAssets'
 
 export default {
   state: {

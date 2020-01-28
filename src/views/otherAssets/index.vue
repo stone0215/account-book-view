@@ -6,18 +6,14 @@
       :label="item.asset_name"
       :name="item.asset_name"
     >
-      <component
-        :is="getComponentName(item.asset_type)"
-        :asset-id="item.asset_id"
-        :type="item.asset_type"
-      />
+      <component :is="getComponentName(item.asset_type)" :asset-id="item.asset_id" />
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import StockContent from './StockContentComponent'
+import StockContent from './Stock/index'
 
 export default {
   name: 'OtherAssetsDetail',
@@ -29,7 +25,7 @@ export default {
   },
   computed: {
     ...mapState({
-      itemList: state => state.otherAssets.itemList
+      itemList: state => state.otherAssets.otherAssets.itemList
     })
   },
   created() {
