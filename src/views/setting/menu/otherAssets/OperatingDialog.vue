@@ -1,9 +1,5 @@
 <template>
-  <el-dialog
-    :visible="showDialog"
-    :show-close="false"
-    title="其他資產"
-  >
+  <el-dialog :visible="showDialog" :show-close="false" title="其他資產">
     <el-form label-width="130px">
       <el-form-item label="資產名稱">
         <el-input
@@ -13,25 +9,8 @@
           autocomplete="off"
         />
       </el-form-item>
-      <el-form-item label="連結帳戶">
-        <el-select
-          v-model="form.account_id"
-          placeholder="選擇帳戶類別"
-          @change="getAccountName"
-        >
-          <el-option
-            v-for="item in accountSelectList"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="資產類別">
-        <el-select
-          v-model="form.asset_type"
-          placeholder="選擇資產類別"
-        >
+        <el-select v-model="form.asset_type" placeholder="選擇資產類別">
           <el-option
             v-for="item in otherAssetType"
             :key="item.key"
@@ -40,20 +19,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="預計投入總額">
-        <el-input
-          v-model="form.expected_spend"
-          class="input-medium"
-          autocomplete="off"
-        />
-      </el-form-item>
       <el-form-item label="是否啟用">
         <el-radio-group v-model="form.in_use">
-          <el-radio
-            v-for="item in yesNo"
-            :key="item.key"
-            :label="item.key"
-          >{{ item.value }}</el-radio>
+          <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
+            item.value
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="排序">
@@ -65,22 +35,15 @@
         />
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>
-      <el-button
-        type="primary"
-        @click="submitForm"
-      >確定</el-button>
+      <el-button type="primary" @click="submitForm">確定</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import { otherAssetType, yesNo } from '@/assets/commonData/global'
-import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -100,18 +63,10 @@ export default {
       yesNo
     }
   },
-  computed: {
-    ...mapState({
-      accountSelectList: state => state.setting.menu.account.accountSelectList
-    })
-  },
   watch: {
     rawData(newData) {
       this.form = JSON.parse(JSON.stringify(newData))
     }
-  },
-  created() {
-    this.$store.dispatch('GetAccountSelection')
   },
   methods: {
     hideDialog() {
@@ -126,11 +81,6 @@ export default {
       result.then(data => {
         this.hideDialog()
       })
-    },
-    getAccountName(value) {
-      this.form.account_name = this.accountSelectList.find(
-        item => item.key === value
-      ).value
     }
   }
 }

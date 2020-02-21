@@ -1,14 +1,30 @@
 <template>
-  <el-dialog
-    :visible="showDialog"
-    :show-close="false"
-    title="其他資產"
-  >
+  <el-dialog :visible="showDialog" :show-close="false" title="保險資產">
     <el-form label-width="130px">
-      <el-form-item label="資產名稱">
+      <el-form-item label="名稱">
         <el-input
           :disabled="!!rawData.asset_id"
           v-model="form.asset_name"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <el-form-item label="購買日期">
+        <el-date-picker
+          v-model="form.excute_date"
+          type="date"
+          placeholder="選擇日期"
+        />
+      </el-form-item>
+      <el-form-item label="預計到期日">
+        <el-date-picker
+          v-model="form.excute_date"
+          type="date"
+          placeholder="選擇日期"
+        />
+      </el-form-item>
+      <el-form-item label="預計投入總額">
+        <el-input
+          v-model="form.expected_spend"
           class="input-medium"
           autocomplete="off"
         />
@@ -27,53 +43,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="資產類別">
-        <el-select
-          v-model="form.asset_type"
-          placeholder="選擇資產類別"
-        >
-          <el-option
-            v-for="item in otherAssetType"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="預計投入總額">
-        <el-input
-          v-model="form.expected_spend"
-          class="input-medium"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <el-form-item label="是否啟用">
-        <el-radio-group v-model="form.in_use">
-          <el-radio
-            v-for="item in yesNo"
-            :key="item.key"
-            :label="item.key"
-          >{{ item.value }}</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="排序">
-        <el-input
-          v-model="form.asset_index"
-          autocomplete="off"
-          placeholder="ex:1"
-          class="input-small"
-        />
-      </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>
-      <el-button
-        type="primary"
-        @click="submitForm"
-      >確定</el-button>
+      <el-button type="primary" @click="submitForm">確定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -109,9 +82,6 @@ export default {
     rawData(newData) {
       this.form = JSON.parse(JSON.stringify(newData))
     }
-  },
-  created() {
-    this.$store.dispatch('GetAccountSelection')
   },
   methods: {
     hideDialog() {

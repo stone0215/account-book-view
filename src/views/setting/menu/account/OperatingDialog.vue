@@ -1,22 +1,11 @@
 <template>
-  <el-dialog
-    :visible="showDialog"
-    :show-close="false"
-    title="帳戶"
-  >
+  <el-dialog :visible="showDialog" :show-close="false" title="帳戶">
     <el-form label-width="130px">
       <el-form-item label="帳戶名稱">
-        <el-input
-          v-model="form.name"
-          class="input-medium"
-          autocomplete="off"
-        />
+        <el-input v-model="form.name" class="input-medium" autocomplete="off" />
       </el-form-item>
       <el-form-item label="帳戶類別">
-        <el-select
-          v-model="form.account_type"
-          placeholder="選擇帳戶類別"
-        >
+        <el-select v-model="form.account_type" placeholder="選擇帳戶類別">
           <el-option
             v-for="item in accountType"
             :key="item.key"
@@ -26,10 +15,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="幣別">
-        <el-select
-          v-model="form.fx_code"
-          placeholder="選擇幣別"
-        >
+        <el-select v-model="form.fx_code" placeholder="選擇幣別">
           <el-option
             v-for="item in fxCode"
             :key="item.key"
@@ -40,20 +26,16 @@
       </el-form-item>
       <el-form-item label="是否列入總資產">
         <el-radio-group v-model="form.is_calculate">
-          <el-radio
-            v-for="item in yesNo"
-            :key="item.key"
-            :label="item.key"
-          >{{ item.value }}</el-radio>
+          <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
+            item.value
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="是否啟用">
         <el-radio-group v-model="form.in_use">
-          <el-radio
-            v-for="item in yesNo"
-            :key="item.key"
-            :label="item.key"
-          >{{ item.value }}</el-radio>
+          <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
+            item.value
+          }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="手續費折數">
@@ -73,15 +55,9 @@
         />
       </el-form-item>
     </el-form>
-    <div
-      slot="footer"
-      class="dialog-footer"
-    >
+    <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>
-      <el-button
-        type="primary"
-        @click="submitForm"
-      >確定</el-button>
+      <el-button type="primary" @click="submitForm">確定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -128,6 +104,7 @@ export default {
       } else result = this.$store.dispatch('AddAccountData', this.form)
 
       result.then(data => {
+        this.$store.dispatch('GetAccountSelection')
         this.hideDialog()
       })
     }

@@ -4,20 +4,55 @@
       <el-button type="primary" @click="openDialog()">新增</el-button>
     </div>
     <el-table :data="queryList" stripe header-cell-class-name="table-header">
-      <el-table-column label="名稱">
+      <el-table-column label="名稱" align="right">
         <template slot-scope="scope">
-          <el-button type="text" @click="openSubItemDialog(scope.row.id)">{{ scope.row.name }}</el-button>
+          <el-button type="text" @click="openDetailDialog(scope.row)">{{
+            scope.row.stock_code
+          }}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="建立日期" prop="account_name"/>
-      <el-table-column :formatter="mappingName" label="繳別" prop="asset_type"/>
-      <el-table-column label="扣款日" prop="expected_spend" align="center"/>
-      <el-table-column label="預計扣款金額" prop="in_use" align="center"/>
-      <el-table-column label="排序" prop="asset_index" align="center"/>
+      <el-table-column
+        :formatter="formatDateTime"
+        label="購買日期"
+        prop="now_price"
+        align="center"
+      />
+      <el-table-column
+        :formatter="formatDateTime"
+        label="預計到期日"
+        prop="hold_amount"
+        align="center"
+      />
+      <el-table-column
+        :formatter="formatDateTime"
+        label="實際到期日"
+        prop="hold_amount"
+        align="center"
+      />
+      <el-table-column label="預計投入金額" prop="sold_amount" align="right" />
+      <el-table-column label="實際投入金額" prop="buy_price" align="right" />
+      <el-table-column label="報酬率" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="內部報酬率" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="損益" prop="gain_lose" align="right" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteOtherAsset(scope.row.asset_id)">刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)"
+          >编辑</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteStockAsset(scope.row.stock_id)"
+          >刪除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -27,49 +62,74 @@
       :raw-data="selectedData"
       @hideDialog="showDialog = false"
     />
+
+    <detail-dialog
+      :show-dialog="showDetailDialog"
+      :parent-data="selectedDetailData"
+      @hideDialog="showDetailDialog = false"
+    />
   </div>
 </template>
 
 <script>
-import OperatingDialog from './OperatingDialog'
-import { getMappingName } from '@/utils/codeMapping'
 import { mapState } from 'vuex'
 
+import { formatDateTimeSlash } from '@/utils/dateProcess'
+
+import DetailDialog from './DetailDialog'
+import OperatingDialog from './OperatingDialog'
+
 export default {
-  components: { OperatingDialog },
+  components: { DetailDialog, OperatingDialog },
+  props: {
+    assetId: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       showDialog: false,
+      showDetailDialog: false,
+      selectedDetailData: {},
       selectedData: {}
     }
   },
   computed: {
     ...mapState({
-      queryList: state => state.setting.menu.otherAssets.dataList
+      queryList: state => state.otherAssets.stockAsset.stockContentList
     })
   },
-  created() {
-    this.$store.dispatch('GetOtherAssetsList')
+  watch: {
+    assetId: {
+      immediate: true,
+      handler(val) {
+        this.$store.dispatch('GetStockAssetList', val)
+      }
+    }
   },
   methods: {
-    mappingName(row, column, cellValue) {
-      return getMappingName(column.property, cellValue)
+    formatDateTime(row, column, cellValue) {
+      return formatDateTimeSlash(cellValue)
     },
     hideDialog() {
       this.$emit('hideDialog')
     },
     openDialog(inputData) {
       this.showDialog = true
-      this.selectedData = inputData || { asset_index: '', expected_spend: '' }
+      this.selectedData = inputData || { asset_id: this.assetId }
     },
-    openSubItemDialog() {},
-    deleteOtherAsset(id) {
+    openDetailDialog(inputData) {
+      this.showDetailDialog = true
+      this.selectedDetailData = inputData
+    },
+    deleteStockAsset(id) {
       this.$confirm('確定要刪除嗎？', '', {
         confirmButtonText: '確定',
         cancelButtonText: '取消'
       })
         .then(() => {
-          this.$store.dispatch('DeleteOtherAssetData', id)
+          this.$store.dispatch('DeleteStockAssetData', id)
         })
         .catch(() => {})
     }

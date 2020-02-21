@@ -5,7 +5,6 @@
     </div>
     <el-table :data="queryList" stripe header-cell-class-name="table-header">
       <el-table-column label="名稱" prop="asset_name" />
-      <el-table-column label="關聯帳戶" prop="account_name" />
       <el-table-column
         :formatter="mappingName"
         label="資產類別"

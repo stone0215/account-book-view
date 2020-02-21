@@ -6,10 +6,18 @@
     <el-table :data="queryList" stripe header-cell-class-name="table-header">
       <el-table-column label="代號" align="center">
         <template slot-scope="scope">
-          <el-button type="text" @click="openDetailDialog(scope.row)">{{ scope.row.stock_code }}</el-button>
+          <el-button type="text" @click="openDetailDialog(scope.row)">{{
+            scope.row.stock_code
+          }}</el-button>
         </template>
       </el-table-column>
       <el-table-column label="名稱" prop="stock_name" align="right" />
+      <el-table-column label="關連帳戶" prop="account_name" align="right" />
+      <el-table-column
+        label="預計投入金額"
+        prop="expected_spend"
+        align="right"
+      />
       <el-table-column label="現價" prop="now_price" align="right" />
       <el-table-column label="持有股數" prop="hold_amount" align="right" />
       <el-table-column label="賣出股數" prop="sold_amount" align="right" />
@@ -37,13 +45,22 @@
       </el-table-column>
       <el-table-column label="目前殖利率" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.dividend_yield ? `${scope.row.dividend_yield}%` : '' }}</span>
+          <span>{{
+            scope.row.dividend_yield ? `${scope.row.dividend_yield}%` : ''
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteStockAsset(scope.row.stock_id)">刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)"
+          >编辑</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteStockAsset(scope.row.stock_id)"
+          >刪除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>

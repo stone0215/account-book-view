@@ -10,7 +10,32 @@
         />
       </el-form-item>
       <el-form-item label="股票名稱">
-        <el-input v-model="form.stock_name" class="input-medium" autocomplete="off" />
+        <el-input
+          v-model="form.stock_name"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <el-form-item label="連結帳戶">
+        <el-select
+          v-model="form.account_id"
+          placeholder="選擇帳戶類別"
+          @change="getAccountName"
+        >
+          <el-option
+            v-for="item in accountSelectList"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="預計投入總額">
+        <el-input
+          v-model="form.expected_spend"
+          class="input-medium"
+          autocomplete="off"
+        />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
