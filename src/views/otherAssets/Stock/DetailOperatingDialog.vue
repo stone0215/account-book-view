@@ -1,8 +1,17 @@
 <template>
-  <el-dialog :visible="showDialog" :show-close="false" append-to-body title="股票交易">
+  <el-dialog
+    :visible="showDialog"
+    :show-close="false"
+    append-to-body
+    title="股票交易"
+  >
     <el-form label-width="130px">
       <el-form-item label="交易日期">
-        <el-date-picker v-model="form.excute_date" type="date" placeholder="選擇日期" />
+        <el-date-picker
+          v-model="form.excute_date"
+          type="date"
+          placeholder="選擇日期"
+        />
       </el-form-item>
       <el-form-item label="交易類型">
         <el-select v-model="form.excute_type" placeholder="選擇交易類型">
@@ -15,10 +24,26 @@
         </el-select>
       </el-form-item>
       <el-form-item label="交易數量">
-        <el-input v-model="form.excute_amount" class="input-medium" autocomplete="off" />
+        <el-input
+          v-model="form.excute_amount"
+          class="input-medium"
+          autocomplete="off"
+        />
       </el-form-item>
       <el-form-item label="交易價格">
-        <el-input v-model="form.excute_price" class="input-medium" autocomplete="off" />
+        <el-input
+          v-model="form.excute_price"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <el-form-item label="交易日誌">
+        <el-input
+          v-model="form.memo"
+          :rows="3"
+          autocomplete="off"
+          type="textarea"
+        />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

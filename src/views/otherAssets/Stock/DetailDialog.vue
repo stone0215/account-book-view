@@ -6,19 +6,42 @@
     @close="hideDialog"
   >
     <el-table :data="queryList" stripe header-cell-class-name="table-header">
-      <el-table-column :formatter="formatDateTime" label="日期" prop="excute_date" align="center" />
-      <el-table-column :formatter="mappingName" label="類型" prop="excute_type" align="center" />
+      <el-table-column
+        :formatter="formatDateTime"
+        label="日期"
+        prop="excute_date"
+        align="center"
+      />
+      <el-table-column
+        :formatter="mappingName"
+        label="類型"
+        prop="excute_type"
+        align="center"
+      />
       <el-table-column label="數量" prop="excute_amount" align="right" />
       <el-table-column label="價格" prop="excute_price" align="right" />
+      <el-table-column label="交易日誌" prop="memo" align="left" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openMaintainDetailDialog(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteSubCode(scope.row.distinct_number)">刪除</el-button>
+          <el-button
+            type="success"
+            size="small"
+            @click="openMaintainDetailDialog(scope.row)"
+          >编辑</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteSubCode(scope.row.distinct_number)"
+          >刪除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="openMaintainDetailDialog()">新增</el-button>
+      <el-button type="primary" @click="openMaintainDetailDialog()"
+      >新增</el-button
+      >
     </div>
 
     <operating-dialog
@@ -86,7 +109,8 @@ export default {
       this.selectedData = inputData || {
         stock_id: this.parentData.stock_id,
         excute_amount: '',
-        excute_price: ''
+        excute_price: '',
+        memo: ''
       }
     },
     closeMaintainDialog(isRefresh) {
