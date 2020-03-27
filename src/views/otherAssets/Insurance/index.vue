@@ -7,30 +7,34 @@
       <el-table-column label="名稱" align="right">
         <template slot-scope="scope">
           <el-button type="text" @click="openDetailDialog(scope.row)">{{
-            scope.row.stock_code
+            scope.row.insurance_name
           }}</el-button>
         </template>
       </el-table-column>
       <el-table-column
         :formatter="formatDateTime"
         label="購買日期"
-        prop="now_price"
+        prop="start_date"
         align="center"
       />
       <el-table-column
         :formatter="formatDateTime"
         label="預計到期日"
-        prop="hold_amount"
+        prop="expected_end_date"
         align="center"
       />
       <el-table-column
-        :formatter="formatDateTime"
-        label="實際到期日"
-        prop="hold_amount"
+        :formatter="mappingYesNo"
+        label="是否贖回"
+        prop="has_closed"
         align="center"
       />
-      <el-table-column label="預計投入金額" prop="sold_amount" align="right" />
-      <el-table-column label="實際投入金額" prop="buy_price" align="right" />
+      <el-table-column
+        label="預計投入金額"
+        prop="expected_spend"
+        align="right"
+      />
+      <el-table-column label="實際投入金額" prop="actual_spend" align="right" />
       <el-table-column label="報酬率" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
@@ -38,7 +42,7 @@
       </el-table-column>
       <el-table-column label="內部報酬率" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
+          <span>{{ scope.row.IRR ? `${scope.row.IRR}%` : '' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="損益" prop="gain_lose" align="right" />
@@ -74,6 +78,7 @@
 <script>
 import { mapState } from 'vuex'
 
+import { getMappingName } from '@/utils/codeMapping'
 import { formatDateTimeSlash } from '@/utils/dateProcess'
 
 import DetailDialog from './DetailDialog'
@@ -104,13 +109,16 @@ export default {
     assetId: {
       immediate: true,
       handler(val) {
-        this.$store.dispatch('GetStockAssetList', val)
+        this.$store.dispatch('GetInsurenceAssetList', val)
       }
     }
   },
   methods: {
     formatDateTime(row, column, cellValue) {
       return formatDateTimeSlash(cellValue)
+    },
+    mappingYesNo(row, column, cellValue) {
+      return getMappingName('yes_no', cellValue)
     },
     hideDialog() {
       this.$emit('hideDialog')
