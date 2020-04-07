@@ -40,7 +40,7 @@
           <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="內部報酬率" align="center">
+      <el-table-column label="年化內部報酬率" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.IRR ? `${scope.row.IRR}%` : '' }}</span>
         </template>

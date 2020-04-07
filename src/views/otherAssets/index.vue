@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import InsurenceContent from './Insurence/index'
+import InsurenceContent from './Insurance/index'
 import StockContent from './Stock/index'
 
 export default {
