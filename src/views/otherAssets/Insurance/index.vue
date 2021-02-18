@@ -40,23 +40,24 @@
           <span>{{ scope.row.ROI ? `${scope.row.ROI}%` : '' }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="年化內部報酬率" align="center">
+      <!-- <el-table-column label="年化內部報酬率" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.IRR ? `${scope.row.IRR}%` : '' }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="損益" prop="gain_lose" align="right" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)"
-          >编辑</el-button
-          >
+          <el-button type="success" size="small" @click="openDialog(scope.row)">
+            编辑
+          </el-button>
           <el-button
             type="danger"
             size="small"
-            @click="deleteStockAsset(scope.row.stock_id)"
-          >刪除</el-button
+            @click="deleteInsuranceAsset(scope.row.insurance_id)"
           >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,7 +103,8 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.otherAssets.stockAsset.stockContentList
+      queryList: (state) =>
+        state.otherAssets.insuranceAsset.insuranceContentList
     })
   },
   watch: {
@@ -125,19 +127,22 @@ export default {
     },
     openDialog(inputData) {
       this.showDialog = true
-      this.selectedData = inputData || { asset_id: this.assetId }
+      this.selectedData = inputData || {
+        asset_id: this.assetId,
+        pay_day: null
+      }
     },
     openDetailDialog(inputData) {
       this.showDetailDialog = true
       this.selectedDetailData = inputData
     },
-    deleteStockAsset(id) {
+    deleteInsuranceAsset(id) {
       this.$confirm('確定要刪除嗎？', '', {
         confirmButtonText: '確定',
         cancelButtonText: '取消'
       })
         .then(() => {
-          this.$store.dispatch('DeleteStockAssetData', id)
+          this.$store.dispatch('DeleteInsuranceAssetData', id)
         })
         .catch(() => {})
     }

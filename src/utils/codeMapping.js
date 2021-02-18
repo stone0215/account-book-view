@@ -5,7 +5,7 @@ import { codeType } from '@/assets/commonData/codeData'
 import { feedbackWay } from '@/assets/commonData/creditCardData'
 import { fxCode } from '@/assets/commonData/fxData'
 import { assetType, otherAssetType, yesNo } from '@/assets/commonData/global'
-import { stockExcuteType } from '@/assets/commonData/otherAssets'
+import { insuranceExcuteType, insurancePayType, stockExcuteType } from '@/assets/commonData/otherAssets'
 
 let target = null
 let code = ''
@@ -37,6 +37,12 @@ export function getMappingName(type, inputCode) {
       break
     case 'initial_type':
       target = assetType
+      break
+    case 'pay_type':
+      target = insurancePayType
+      break
+    case 'insurance_excute_type':
+      target = insuranceExcuteType
       break
     case 'yes_no':
       target = yesNo

@@ -3,21 +3,41 @@
     <el-form label-width="130px">
       <el-form-item label="名稱">
         <el-input
-          :disabled="!!rawData.asset_id"
-          v-model="form.asset_name"
+          v-model="form.insurance_name"
+          :disabled="!!form.insurance_id"
           autocomplete="off"
+          class="input-medium"
         />
       </el-form-item>
       <el-form-item label="購買日期">
         <el-date-picker
-          v-model="form.excute_date"
+          v-model="form.start_date"
+          :disabled="!!form.insurance_id"
           type="date"
           placeholder="選擇日期"
         />
       </el-form-item>
+      <el-form-item label="繳別">
+        <el-select v-model="form.pay_type" placeholder="選擇繳別">
+          <el-option
+            v-for="item in insurancePayType"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="繳費日期">
+        <el-input
+          v-model="form.pay_day"
+          autocomplete="off"
+          placeholder="月:dd/ 季:mm/dd,mm/dd.../ 年:mm/dd/ 躉:免填"
+        />
+      </el-form-item>
       <el-form-item label="預計到期日">
         <el-date-picker
-          v-model="form.excute_date"
+          v-model="form.expected_end_date"
+          :disabled="!!form.insurance_id"
           type="date"
           placeholder="選擇日期"
         />
@@ -25,15 +45,16 @@
       <el-form-item label="預計投入總額">
         <el-input
           v-model="form.expected_spend"
+          :disabled="!!form.insurance_id"
           class="input-medium"
           autocomplete="off"
         />
       </el-form-item>
-      <el-form-item label="連結帳戶">
+      <el-form-item label="入金帳戶">
         <el-select
-          v-model="form.account_id"
+          v-model="form.in_account_id"
           placeholder="選擇帳戶類別"
-          @change="getAccountName"
+          @change="(value) => getAccountName(value, 'in')"
         >
           <el-option
             v-for="item in accountSelectList"
@@ -42,6 +63,27 @@
             :value="item.key"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="出金帳戶">
+        <el-select
+          v-model="form.out_account_id"
+          placeholder="選擇帳戶類別"
+          @change="(value) => getAccountName(value, 'out')"
+        >
+          <el-option
+            v-for="item in accountSelectList"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="是否結束">
+        <el-radio-group v-model="form.has_closed">
+          <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
+            item.value
+          }}</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -52,7 +94,8 @@
 </template>
 
 <script>
-import { otherAssetType, yesNo } from '@/assets/commonData/global'
+import { yesNo } from '@/assets/commonData/global'
+import { insurancePayType } from '@/assets/commonData/otherAssets'
 import { mapState } from 'vuex'
 
 export default {
@@ -68,14 +111,14 @@ export default {
   },
   data() {
     return {
-      form: {},
-      otherAssetType,
-      yesNo
+      insurancePayType,
+      yesNo,
+      form: {}
     }
   },
   computed: {
     ...mapState({
-      accountSelectList: state => state.setting.menu.account.accountSelectList
+      accountSelectList: (state) => state.setting.menu.account.accountSelectList
     })
   },
   watch: {
@@ -89,18 +132,29 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.asset_id) {
-        result = this.$store.dispatch('UpdateOtherAssetData', this.form)
-      } else result = this.$store.dispatch('AddOtherAssetData', this.form)
+      if (this.form.insurance_id) {
+        result = this.$store.dispatch('UpdateInsuranceAssetData', this.form)
+      } else result = this.$store.dispatch('AddInsuranceAssetData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog()
       })
     },
-    getAccountName(value) {
-      this.form.account_name = this.accountSelectList.find(
-        item => item.key === value
-      ).value
+    getAccountName(value, type) {
+      if (type === 'in') {
+        const account_name = this.accountSelectList.find(
+          (item) => item.key === value
+        ).value
+
+        this.form.in_account_name = account_name
+
+        this.form.out_account_id = value
+        this.form.out_account_name = account_name
+      } else {
+        this.form.out_account_name = this.accountSelectList.find(
+          (item) => item.key === value
+        ).value
+      }
     }
   }
 }

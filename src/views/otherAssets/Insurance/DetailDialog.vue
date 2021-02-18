@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible="showDialog"
-    :title="parentData.stock_name + ' 交易紀錄'"
+    :title="parentData.insurance_name + ' 歷史紀錄'"
     width="80%"
     @close="hideDialog"
   >
@@ -15,12 +15,11 @@
       <el-table-column
         :formatter="mappingName"
         label="類型"
-        prop="excute_type"
+        prop="insurance_excute_type"
         align="center"
       />
-      <el-table-column label="數量" prop="excute_amount" align="right" />
-      <el-table-column label="價格" prop="excute_price" align="right" />
-      <el-table-column label="交易日誌" prop="memo" align="left" />
+      <el-table-column label="金額" prop="excute_price" align="right" />
+      <el-table-column label="備註" prop="memo" align="left" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
           <el-button
@@ -32,7 +31,7 @@
           <el-button
             type="danger"
             size="small"
-            @click="deleteSubCode(scope.row.distinct_number)"
+            @click="deleteDetail(scope.row.distinct_number)"
           >刪除</el-button
           >
         </template>
@@ -80,7 +79,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.otherAssets.stockAsset.stockDetailList
+      queryList: (state) => state.otherAssets.insuranceAsset.insuranceDetailList
     })
   },
   watch: {
@@ -88,8 +87,8 @@ export default {
       immediate: true,
       deep: true,
       handler(newData) {
-        if (newData.stock_id) {
-          this.$store.dispatch('GetStockDetailList', newData.stock_id)
+        if (newData.insurance_id) {
+          this.$store.dispatch('GetInsuranceDetailList', newData.insurance_id)
         }
       }
     }
@@ -107,7 +106,7 @@ export default {
     openMaintainDetailDialog(inputData) {
       this.showMaintainDialog = true
       this.selectedData = inputData || {
-        stock_id: this.parentData.stock_id,
+        insurance_id: this.parentData.insurance_id,
         excute_amount: '',
         excute_price: '',
         memo: ''
@@ -116,19 +115,22 @@ export default {
     closeMaintainDialog(isRefresh) {
       this.showMaintainDialog = false
       if (isRefresh) {
-        this.$store.dispatch('GetStockAssetList', this.parentData.asset_id)
+        this.$store.dispatch('GetInsuranceAssetList', this.parentData.asset_id)
       }
     },
-    deleteSubCode(id) {
+    deleteDetail(id) {
       this.$confirm('確定要刪除嗎？', '', {
         confirmButtonText: '確定',
         cancelButtonText: '取消'
       })
         .then(() => {
-          return this.$store.dispatch('DeleteStockDetailData', id)
+          return this.$store.dispatch('DeleteInsuranceDetailData', id)
         })
         .then(() => {
-          this.$store.dispatch('GetStockAssetList', this.parentData.asset_id)
+          this.$store.dispatch(
+            'GetInsuranceAssetList',
+            this.parentData.asset_id
+          )
         })
         .catch(() => {})
     }

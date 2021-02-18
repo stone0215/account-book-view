@@ -3,41 +3,34 @@
     :visible="showDialog"
     :show-close="false"
     append-to-body
-    title="股票交易"
+    title="資料登錄"
   >
     <el-form label-width="130px">
-      <el-form-item label="交易日期">
+      <el-form-item label="日期">
         <el-date-picker
           v-model="form.excute_date"
           type="date"
           placeholder="選擇日期"
         />
       </el-form-item>
-      <el-form-item label="交易類型">
-        <el-select v-model="form.excute_type" placeholder="選擇交易類型">
+      <el-form-item label="類型">
+        <el-select v-model="form.insurance_excute_type" placeholder="選擇類型">
           <el-option
-            v-for="item in stockExcuteType"
+            v-for="item in insuranceExcuteType"
             :key="item.key"
             :label="item.value"
             :value="item.key"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="交易數量">
-        <el-input
-          v-model="form.excute_amount"
-          class="input-medium"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <el-form-item label="交易價格">
+      <el-form-item label="金額">
         <el-input
           v-model="form.excute_price"
-          class="input-medium"
           autocomplete="off"
+          class="input-medium"
         />
       </el-form-item>
-      <el-form-item label="交易日誌">
+      <el-form-item label="備註">
         <el-input
           v-model="form.memo"
           :rows="3"
@@ -56,7 +49,7 @@
 <script>
 import moment from 'moment'
 
-import { stockExcuteType } from '@/assets/commonData/otherAssets'
+import { insuranceExcuteType } from '@/assets/commonData/otherAssets'
 
 export default {
   props: {
@@ -72,7 +65,7 @@ export default {
   data() {
     return {
       form: {},
-      stockExcuteType
+      insuranceExcuteType
     }
   },
   watch: {
@@ -83,9 +76,6 @@ export default {
       }
     }
   },
-  created() {
-    this.$store.dispatch('GetAccountSelection')
-  },
   methods: {
     hideDialog(isRefresh = false) {
       this.$emit('hideDialog', isRefresh)
@@ -93,10 +83,10 @@ export default {
     submitForm() {
       let result = null
       if (this.rawData.distinct_number) {
-        result = this.$store.dispatch('UpdateStockDetailData', this.form)
-      } else result = this.$store.dispatch('AddStockDetailData', this.form)
+        result = this.$store.dispatch('UpdateInsuranceDetailData', this.form)
+      } else result = this.$store.dispatch('AddInsuranceDetailData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog(true)
       })
     }
