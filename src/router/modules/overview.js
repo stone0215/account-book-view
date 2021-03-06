@@ -32,7 +32,7 @@ export default {
       path: 'otherAssets',
       component: () => import('@/views/setting/initial/index'),
       name: 'OtherAssetOverview',
-      meta: { title: '其他資產一覽' }
+      meta: { title: '非現金資產一覽' }
     }
   ]
 }

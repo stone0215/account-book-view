@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="showDialog" :show-close="false" title="其他資產">
+  <el-dialog :visible="showDialog" :show-close="false" title="非現金資產">
     <el-form label-width="130px">
       <el-form-item label="資產名稱">
         <el-input

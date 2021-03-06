@@ -24,7 +24,7 @@
       <credit-card-component />
     </el-tab-pane>
     <el-tab-pane
-      label="其他資產"
+      label="非現金資產"
       name="asset"
       lazy
     >
