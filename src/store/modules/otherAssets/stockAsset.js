@@ -7,7 +7,7 @@ import {
   getStockDetailList,
   updateStockAssetData,
   updateStockDetailData
-} from '@/api/otherAssets'
+} from '@/api/otherAssets/stock'
 
 export default {
   state: {

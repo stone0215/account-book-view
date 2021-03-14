@@ -5,9 +5,9 @@ import {
   deleteInsuranceDetailData,
   getInsuranceAssetList,
   getInsuranceDetailList,
-  updateInsurenceAssetData,
+  updateInsuranceAssetData,
   updateInsuranceDetailData
-} from '@/api/otherAssets'
+} from '@/api/otherAssets/insurance'
 
 export default {
   state: {
@@ -71,7 +71,7 @@ export default {
     },
     UpdateInsuranceAssetData({ commit }, data) {
       return new Promise((resolve, reject) => {
-        updateInsurenceAssetData(data)
+        updateInsuranceAssetData(data)
           .then(() => {
             commit('UPDATE_INSURANCE_ASSET_LIST', data)
             resolve()
