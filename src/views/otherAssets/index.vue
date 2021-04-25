@@ -16,12 +16,14 @@
 
 <script>
 import { mapState } from 'vuex'
+
+import EstateContent from './Estate/index'
 import InsurenceContent from './Insurance/index'
 import StockContent from './Stock/index'
 
 export default {
   name: 'OtherAssetsDetail',
-  components: { InsurenceContent, StockContent },
+  components: { EstateContent, InsurenceContent, StockContent },
   data() {
     return {
       activeTab: ''
@@ -29,7 +31,7 @@ export default {
   },
   computed: {
     ...mapState({
-      itemList: state => state.otherAssets.otherAssets.itemList
+      itemList: (state) => state.otherAssets.otherAssets.itemList
     })
   },
   created() {
@@ -44,6 +46,8 @@ export default {
           return 'StockContent'
         case 'Insurence':
           return 'InsurenceContent'
+        case 'Estate':
+          return 'EstateContent'
       }
     }
   }

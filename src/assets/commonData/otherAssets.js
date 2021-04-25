@@ -18,3 +18,27 @@ export const insuranceExcuteType = [
     { key: 'expect', value: '預期價值' },
     { key: 'return', value: '贖回' }
 ]
+
+export const estateStatus = [
+    { key: 'idle', value: '閒置' },
+    { key: 'live', value: '居住' },
+    { key: 'rent', value: '出租' },
+    { key: 'sold', value: '賣出' }
+]
+
+export const estateType = [
+    { key: 'house', value: '獨棟透天' },
+    { key: 'townhouse', value: '連棟透天' },
+    { key: 'condo', value: '公寓' },
+    { key: 'apartment', value: '電梯大樓' },
+    { key: 'highrise', value: '商辦' },
+    { key: 'land', value: '土地' }
+]
+
+export const estateExcuteType = [
+    { key: 'tax', value: '稅金' },
+    { key: 'fee', value: '雜費' },
+    { key: 'fix', value: '修繕' },
+    { key: 'rent', value: '租金' },
+    { key: 'deposit', value: '押金' }
+]
