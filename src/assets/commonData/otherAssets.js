@@ -38,6 +38,7 @@ export const estateType = [
 export const estateExcuteType = [
     { key: 'tax', value: '稅金' },
     { key: 'fee', value: '雜費' },
+    { key: 'insurance', value: '保險' },
     { key: 'fix', value: '修繕' },
     { key: 'rent', value: '租金' },
     { key: 'deposit', value: '押金' }

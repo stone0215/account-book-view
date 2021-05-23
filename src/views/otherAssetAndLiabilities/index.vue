@@ -1,10 +1,14 @@
 <template>
   <el-tabs v-model="activeTab" class="page">
+    <el-tab-pane label="貸款" name="貸款" lazy>
+      <Liability />
+    </el-tab-pane>
     <el-tab-pane
       v-for="(item, index) in itemList"
       :key="index"
       :label="item.asset_name"
       :name="item.asset_name"
+      lazy
     >
       <component
         :is="getComponentName(item.asset_type)"
@@ -19,14 +23,15 @@ import { mapState } from 'vuex'
 
 import EstateContent from './Estate/index'
 import InsurenceContent from './Insurance/index'
+import Liability from './Liability/index'
 import StockContent from './Stock/index'
 
 export default {
   name: 'OtherAssetsDetail',
-  components: { EstateContent, InsurenceContent, StockContent },
+  components: { EstateContent, InsurenceContent, Liability, StockContent },
   data() {
     return {
-      activeTab: ''
+      activeTab: '貸款'
     }
   },
   computed: {
@@ -35,9 +40,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('GetOtherAssetItems').then(() => {
-      this.activeTab = this.itemList[0].asset_name
-    })
+    this.$store.dispatch('GetOtherAssetItems')
   },
   methods: {
     getComponentName(type) {

@@ -6,15 +6,15 @@ export default {
   redirect: 'noredirect',
   name: 'OtherAssets',
   meta: {
-    title: '非現金資產',
+    title: '其他資產/負債',
     icon: 'tab'
   },
   children: [
     {
       path: '',
-      component: () => import('@/views/otherAssets/index'),
+      component: () => import('@/views/otherAssetAndLiabilities/index'),
       name: 'OtherAssetsDetail',
-      meta: { title: '非現金資產明細', icon: 'tab' }
+      meta: { title: '其他資產/負債', icon: 'tab' }
     }
   ]
 }
