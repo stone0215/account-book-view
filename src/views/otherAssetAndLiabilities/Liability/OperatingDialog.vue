@@ -54,7 +54,13 @@
           placeholder="選擇日期"
         />
       </el-form-item>
-
+      <el-form-item label="寬限到期日期">
+        <el-date-picker
+          v-model="form.grace_expire_date"
+          type="date"
+          placeholder="選擇日期"
+        />
+      </el-form-item>
       <el-form-item label="繳費日期">
         <el-input
           v-model="form.pay_day"
@@ -93,9 +99,11 @@
 </template>
 
 <script>
+import moment from 'moment'
+import { mapState } from 'vuex'
+
 import { yesNo } from '@/assets/commonData/global'
 import { loanType } from '@/assets/commonData/liability'
-import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -103,8 +111,8 @@ export default {
       type: Boolean,
       default: false
     },
-    rawData: {
-      type: Object,
+    loanId: {
+      type: Number,
       default: null
     }
   },
@@ -117,12 +125,21 @@ export default {
   },
   computed: {
     ...mapState({
-      accountSelectList: (state) => state.setting.menu.account.accountSelectList
+      accountSelectList: state => state.setting.menu.account.accountSelectList
     })
   },
-  watch: {
-    rawData(newData) {
-      this.form = JSON.parse(JSON.stringify(newData))
+  // watch: {
+  //   rawData(newData) {
+  //     this.form = JSON.parse(JSON.stringify(newData))
+  //   }
+  // },
+  created() {
+    if (this.loanId) {
+      this.$store.dispatch('GetLiabilityById', this.loanId).then(response => {
+        this.form = response.data
+        this.form.apply_date = moment(this.form.apply_date)
+        this.form.grace_expire_date = moment(this.form.grace_expire_date)
+      })
     }
   },
   methods: {
@@ -131,17 +148,17 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.form.insurance_id) {
+      if (this.loanId) {
         result = this.$store.dispatch('UpdateLiabilityData', this.form)
       } else result = this.$store.dispatch('AddLiabilityData', this.form)
 
-      result.then((data) => {
+      result.then(data => {
         this.hideDialog()
       })
     },
     getAccountName(value) {
       this.form.account_name = this.accountSelectList.find(
-        (item) => item.key === value
+        item => item.key === value
       ).value
     }
   }

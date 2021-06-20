@@ -14,9 +14,9 @@
         />
       </el-form-item>
       <el-form-item label="類型">
-        <el-select v-model="form.insurance_excute_type" placeholder="選擇類型">
+        <el-select v-model="form.loan_excute_type" placeholder="選擇類型">
           <el-option
-            v-for="item in insuranceExcuteType"
+            v-for="item in loanExecuteType"
             :key="item.key"
             :label="item.value"
             :value="item.key"
@@ -49,7 +49,7 @@
 <script>
 import moment from 'moment'
 
-import { insuranceExcuteType } from '@/assets/commonData/otherAssets'
+import { loanExecuteType } from '@/assets/commonData/liability'
 
 export default {
   props: {
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       form: {},
-      insuranceExcuteType
+      loanExecuteType
     }
   },
   watch: {
@@ -83,10 +83,10 @@ export default {
     submitForm() {
       let result = null
       if (this.rawData.distinct_number) {
-        result = this.$store.dispatch('UpdateInsuranceDetailData', this.form)
-      } else result = this.$store.dispatch('AddInsuranceDetailData', this.form)
+        result = this.$store.dispatch('UpdateLoanDetailData', this.form)
+      } else result = this.$store.dispatch('AddLoanDetailData', this.form)
 
-      result.then((data) => {
+      result.then(data => {
         this.hideDialog(true)
       })
     }

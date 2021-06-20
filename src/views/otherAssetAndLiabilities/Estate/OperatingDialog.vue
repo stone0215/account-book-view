@@ -36,13 +36,9 @@
         />
       </el-form-item>
       <el-form-item label="貸款">
-        <el-select
-          v-model="form.loan_id"
-          placeholder="選擇帳戶類別"
-          @change="(value) => getAccountName(value, 'in')"
-        >
+        <el-select v-model="form.loan_id" placeholder="選擇對應貸款">
           <el-option
-            v-for="item in accountSelectList"
+            v-for="item in loanSelectList"
             :key="item.key"
             :label="item.value"
             :value="item.key"
@@ -93,7 +89,7 @@ export default {
   },
   computed: {
     ...mapState({
-      accountSelectList: (state) => state.setting.menu.account.accountSelectList
+      loanSelectList: state => state.otherAssets.liability.loanSelectList
     })
   },
   watch: {
@@ -106,6 +102,9 @@ export default {
       }
     }
   },
+  created() {
+    this.$store.dispatch('GetLoanSelection')
+  },
   methods: {
     hideDialog() {
       this.$emit('hideDialog')
@@ -116,26 +115,10 @@ export default {
         result = this.$store.dispatch('UpdateEstateAssetData', this.form)
       } else result = this.$store.dispatch('AddEstateAssetData', this.form)
 
-      result.then((data) => {
+      result.then(data => {
         this.$store.dispatch('GetEstateAssetList', this.rawData.asset_id)
         this.hideDialog()
       })
-    },
-    getAccountName(value, type) {
-      if (type === 'in') {
-        const account_name = this.accountSelectList.find(
-          (item) => item.key === value
-        ).value
-
-        this.form.in_account_name = account_name
-
-        this.form.out_account_id = value
-        this.form.out_account_name = account_name
-      } else {
-        this.form.out_account_name = this.accountSelectList.find(
-          (item) => item.key === value
-        ).value
-      }
     }
   }
 }

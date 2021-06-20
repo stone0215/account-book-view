@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible="showDialog"
-    :title="parentData.insurance_name + ' 歷史紀錄'"
+    :title="parentData.loan_name + ' 歷程'"
     width="80%"
     @close="hideDialog"
   >
@@ -15,7 +15,7 @@
       <el-table-column
         :formatter="mappingName"
         label="類型"
-        prop="insurance_excute_type"
+        prop="loan_excute_type"
         align="center"
       />
       <el-table-column label="金額" prop="excute_price" align="right" />
@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: (state) => state.otherAssets.insuranceAsset.insuranceDetailList
+      queryList: state => state.otherAssets.liability.liabilityDetailList
     })
   },
   watch: {
@@ -87,8 +87,8 @@ export default {
       immediate: true,
       deep: true,
       handler(newData) {
-        if (newData.insurance_id) {
-          this.$store.dispatch('GetInsuranceDetailList', newData.insurance_id)
+        if (newData.loan_id) {
+          this.$store.dispatch('GetLoanDetailList', newData.loan_id)
         }
       }
     }
@@ -106,7 +106,7 @@ export default {
     openMaintainDetailDialog(inputData) {
       this.showMaintainDialog = true
       this.selectedData = inputData || {
-        insurance_id: this.parentData.insurance_id,
+        loan_id: this.parentData.loan_id,
         excute_amount: '',
         excute_price: '',
         memo: ''
@@ -115,7 +115,7 @@ export default {
     closeMaintainDialog(isRefresh) {
       this.showMaintainDialog = false
       if (isRefresh) {
-        this.$store.dispatch('GetInsuranceAssetList', this.parentData.asset_id)
+        this.$store.dispatch('GetLoanDetailList', this.parentData.loan_id)
       }
     },
     deleteDetail(id) {
@@ -124,13 +124,10 @@ export default {
         cancelButtonText: '取消'
       })
         .then(() => {
-          return this.$store.dispatch('DeleteInsuranceDetailData', id)
+          return this.$store.dispatch('DeleteLoanDetailData', id)
         })
         .then(() => {
-          this.$store.dispatch(
-            'GetInsuranceAssetList',
-            this.parentData.asset_id
-          )
+          this.$store.dispatch('GetLoanDetailList', this.parentData.loan_id)
         })
         .catch(() => {})
     }

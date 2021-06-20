@@ -18,6 +18,12 @@
         align="center"
       />
       <el-table-column
+        :formatter="formatDateTime"
+        label="寬限到期日期"
+        prop="grace_expire_date"
+        align="center"
+      />
+      <el-table-column
         :formatter="mappingName"
         label="類型"
         prop="loan_type"
@@ -34,7 +40,11 @@
       />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)">
+          <el-button
+            type="success"
+            size="small"
+            @click="openDialog(scope.row.loan_id)"
+          >
             编辑
           </el-button>
           <el-button
@@ -49,8 +59,9 @@
     </el-table>
 
     <operating-dialog
+      v-if="showDialog"
       :show-dialog="showDialog"
-      :raw-data="selectedData"
+      :loan-id="selectedId"
       @hideDialog="showDialog = false"
     />
 
@@ -77,13 +88,14 @@ export default {
     return {
       showDialog: false,
       showDetailDialog: false,
-      selectedDetailData: {},
-      selectedData: {}
+      selectedId: null,
+      selectedDetailData: {}
+      // selectedData: {}
     }
   },
   computed: {
     ...mapState({
-      queryList: (state) => state.otherAssets.liability.liabilityContentList
+      queryList: state => state.otherAssets.liability.liabilityContentList
     })
   },
   created() {
@@ -102,11 +114,13 @@ export default {
     hideDialog() {
       this.$emit('hideDialog')
     },
-    openDialog(inputData) {
+    openDialog(loan_id) {
+      this.selectedId = loan_id
       this.showDialog = true
-      this.selectedData = inputData || {
-        loan_index: null
-      }
+      // this.selectedData = inputData || {
+      //   grace_expire_date: null,
+      //   loan_index: null
+      // }
     },
     openDetailDialog(inputData) {
       this.showDetailDialog = true
@@ -119,6 +133,9 @@ export default {
       })
         .then(() => {
           this.$store.dispatch('DeleteLiabilityData', id)
+        })
+        .then(() => {
+          this.$store.dispatch('GetLiabilityList')
         })
         .catch(() => {})
     }
