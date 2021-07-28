@@ -15,11 +15,8 @@ import {
   estateType
 } from '@/assets/commonData/otherAssets'
 
-let target = null
-let code = ''
-
 export function getMappingName(type, inputCode) {
-  code = inputCode
+  let target = null
 
   switch (type) {
     case 'account':
@@ -72,12 +69,8 @@ export function getMappingName(type, inputCode) {
       break
 
     default:
-      return code
+      return inputCode
   }
 
-  return findName()
-}
-
-function findName() {
-  return target.find(x => x.key === code).value
+  return target.find(x => x.key === inputCode).value
 }

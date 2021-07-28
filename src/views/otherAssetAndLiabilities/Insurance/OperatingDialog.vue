@@ -54,7 +54,7 @@
         <el-select
           v-model="form.in_account_id"
           placeholder="選擇帳戶類別"
-          @change="(value) => getAccountName(value, 'in')"
+          @change="value => getAccountName(value, 'in')"
         >
           <el-option
             v-for="item in accountSelectList"
@@ -68,7 +68,7 @@
         <el-select
           v-model="form.out_account_id"
           placeholder="選擇帳戶類別"
-          @change="(value) => getAccountName(value, 'out')"
+          @change="value => getAccountName(value, 'out')"
         >
           <el-option
             v-for="item in accountSelectList"
@@ -113,12 +113,12 @@ export default {
     return {
       insurancePayType,
       yesNo,
-      form: {}
+      form: { asset_id: null, out_account_id: null }
     }
   },
   computed: {
     ...mapState({
-      accountSelectList: (state) => state.setting.menu.account.accountSelectList
+      accountSelectList: state => state.setting.menu.account.accountSelectList
     })
   },
   watch: {
@@ -136,24 +136,22 @@ export default {
         result = this.$store.dispatch('UpdateInsuranceAssetData', this.form)
       } else result = this.$store.dispatch('AddInsuranceAssetData', this.form)
 
-      result.then((data) => {
+      result.then(data => {
         this.hideDialog()
       })
     },
     getAccountName(value, type) {
-      if (type === 'in') {
-        const account_name = this.accountSelectList.find(
-          (item) => item.key === value
-        ).value
+      const account_name = this.accountSelectList.find(
+        item => item.key === value
+      ).value
 
+      if (type === 'in') {
         this.form.in_account_name = account_name
 
         this.form.out_account_id = value
         this.form.out_account_name = account_name
       } else {
-        this.form.out_account_name = this.accountSelectList.find(
-          (item) => item.key === value
-        ).value
+        this.form.out_account_name = account_name
       }
     }
   }

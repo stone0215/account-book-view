@@ -55,6 +55,15 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="備註">
+        <el-input
+          v-model="form.memo"
+          :rows="3"
+          autocomplete="off"
+          type="textarea"
+          placeholder="記錄坪數/建造日/總樓高/有什麼車位/格局/有無管理"
+        />
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hideDialog">取消</el-button>

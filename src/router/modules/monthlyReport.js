@@ -18,7 +18,7 @@ export default {
     },
     {
       path: 'cashFlow',
-      component: () => import('@/views/setting/initial/index'),
+      component: () => import('@/views/monthlyReport/CashFlow/index'),
       name: 'CashFlow',
       meta: { title: '現金流明細' }
     }

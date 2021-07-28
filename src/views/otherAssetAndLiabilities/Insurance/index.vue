@@ -103,8 +103,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: (state) =>
-        state.otherAssets.insuranceAsset.insuranceContentList
+      queryList: state => state.otherAssets.insuranceAsset.insuranceContentList
     })
   },
   watch: {
@@ -129,7 +128,8 @@ export default {
       this.showDialog = true
       this.selectedData = inputData || {
         asset_id: this.assetId,
-        pay_day: null
+        pay_day: null,
+        out_account_id: null
       }
     },
     openDetailDialog(inputData) {

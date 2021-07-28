@@ -5,17 +5,11 @@ import {
   updateInitialData
 } from '@/api/setting/initial'
 
-import { getSelectionGroups } from '@/api/util'
-
 export default {
   state: {
-    dataList: null,
-    selectionGroup: []
+    dataList: null
   },
   mutations: {
-    SET_SELECTION_GROUP: (state, datas) => {
-      state.selectionGroup = datas
-    },
     SET_INITIAL_DATA_LIST: (state, datas) => {
       state.dataList = datas
     },
@@ -24,18 +18,6 @@ export default {
     }
   },
   actions: {
-    GetSelectionGroup({ commit }) {
-      return new Promise((resolve, reject) => {
-        getSelectionGroups()
-          .then(response => {
-            commit('SET_SELECTION_GROUP', response.data)
-            resolve()
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
     GetInitialList({ commit }, conditions) {
       return new Promise((resolve, reject) => {
         getInitialList(conditions)

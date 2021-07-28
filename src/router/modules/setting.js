@@ -10,12 +10,12 @@ const settingRouter = {
     icon: 'table'
   },
   children: [
-    {
-      path: 'initial',
-      component: () => import('@/views/setting/initial/index'),
-      name: 'InitialSetting',
-      meta: { title: '初始值設定', icon: 'money' }
-    },
+    // {
+    //   path: 'initial',
+    //   component: () => import('@/views/setting/initial/index'),
+    //   name: 'InitialSetting',
+    //   meta: { title: '初始值設定', icon: 'money' }
+    // },
     {
       path: 'menu',
       component: () => import('@/views/setting/menu/index'),

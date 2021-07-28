@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapState({
-      itemList: (state) => state.otherAssets.otherAssets.itemList
+      itemList: state => state.otherAssets.otherAssets.itemList
     })
   },
   created() {
@@ -47,7 +47,7 @@ export default {
       switch (type) {
         case 'Stock':
           return 'StockContent'
-        case 'Insurence':
+        case 'Insurance':
           return 'InsurenceContent'
         case 'Estate':
           return 'EstateContent'
