@@ -91,7 +91,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: (state) => state.otherAssets.estateAsset.estateContentList
+      queryList: state => state.otherAssets.estateAsset.estateContentList
     })
   },
   watch: {
@@ -116,7 +116,8 @@ export default {
       this.showDialog = true
       this.selectedData = inputData || {
         asset_id: this.assetId,
-        pay_day: null
+        pay_day: null,
+        memo: null
       }
     },
     openDetailDialog(inputData) {

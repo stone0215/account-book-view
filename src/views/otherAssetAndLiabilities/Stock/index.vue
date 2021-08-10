@@ -12,7 +12,6 @@
         </template>
       </el-table-column>
       <el-table-column label="名稱" prop="stock_name" align="right" />
-      <el-table-column label="關連帳戶" prop="account_name" align="right" />
       <el-table-column
         label="預計投入金額"
         prop="expected_spend"
@@ -52,15 +51,16 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)"
-          >编辑</el-button
-          >
+          <el-button type="success" size="small" @click="openDialog(scope.row)">
+            编辑
+          </el-button>
           <el-button
             type="danger"
             size="small"
             @click="deleteStockAsset(scope.row.stock_id)"
-          >刪除</el-button
           >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

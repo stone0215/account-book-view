@@ -3,10 +3,7 @@
     <search-area>
       <el-form slot="content">
         <el-form-item label="帳戶名稱">
-          <el-input
-            v-model="conditions.name"
-            class="input-medium"
-          />
+          <el-input v-model="conditions.name" class="input-medium" />
         </el-form-item>
         <el-form-item label="帳戶類別">
           <el-select
@@ -23,24 +20,18 @@
         </el-form-item>
         <el-form-item label="是否啟用">
           <el-radio-group v-model="conditions.in_use">
-            <el-radio
-              v-for="item in yesNo"
-              :key="item.key"
-              :label="item.key"
-            >{{ item.value }}</el-radio>
+            <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
+              item.value
+            }}</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item class="last">
-          <el-button
-            type="primary"
-            class="btn-medium"
-            @click="search"
-          >搜尋</el-button>
-          <el-button
-            type="primary"
-            class="btn-medium"
-            @click="openDialog()"
-          >新增</el-button>
+          <el-button type="primary" class="btn-medium" @click="search">
+            搜尋
+          </el-button>
+          <el-button type="primary" class="btn-medium" @click="openDialog()">
+            新增
+          </el-button>
         </el-form-item>
       </el-form>
     </search-area>
@@ -50,10 +41,8 @@
       stripe
       header-cell-class-name="table-header"
     >
-      <el-table-column
-        label="帳戶名稱"
-        prop="name"
-      />
+      <el-table-column label="帳號" prop="account_id" />
+      <el-table-column label="帳戶名稱" prop="name" />
       <el-table-column
         :formatter="mappingName"
         label="帳戶類別"
@@ -78,33 +67,21 @@
         prop="in_use"
         align="center"
       />
-      <el-table-column
-        label="手續費折數"
-        prop="discount"
-        align="center"
-      />
-      <el-table-column
-        label="排序"
-        prop="account_index"
-        align="center"
-      />
-      <el-table-column
-        fixed="right"
-        label="操作"
-        width="150"
-        align="center"
-      >
+      <el-table-column label="手續費折數" prop="discount" align="center" />
+      <el-table-column label="備註" prop="memo" />
+      <el-table-column label="排序" prop="account_index" align="center" />
+      <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button
-            type="success"
-            size="small"
-            @click="openDialog(scope.row)"
-          >编辑</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)">
+            编辑
+          </el-button>
           <el-button
             type="danger"
             size="small"
-            @click="deleteAccount(scope.row.account_id)"
-          >刪除</el-button>
+            @click="deleteAccount(scope.row.id)"
+          >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

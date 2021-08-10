@@ -16,20 +16,6 @@
           autocomplete="off"
         />
       </el-form-item>
-      <el-form-item label="連結帳戶">
-        <el-select
-          v-model="form.account_id"
-          placeholder="選擇帳戶類別"
-          @change="getAccountName"
-        >
-          <el-option
-            v-for="item in accountSelectList"
-            :key="item.key"
-            :label="item.value"
-            :value="item.key"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="預計投入總額">
         <el-input
           v-model="form.expected_spend"
@@ -47,7 +33,6 @@
 
 <script>
 import { otherAssetType, yesNo } from '@/assets/commonData/global'
-import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -66,11 +51,6 @@ export default {
       otherAssetType,
       yesNo
     }
-  },
-  computed: {
-    ...mapState({
-      accountSelectList: state => state.setting.menu.account.accountSelectList
-    })
   },
   watch: {
     rawData(newData) {
@@ -93,11 +73,6 @@ export default {
       result.then(data => {
         this.hideDialog()
       })
-    },
-    getAccountName(value) {
-      this.form.account_name = this.accountSelectList.find(
-        item => item.key === value
-      ).value
     }
   }
 }

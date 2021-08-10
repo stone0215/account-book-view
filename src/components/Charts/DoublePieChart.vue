@@ -19,7 +19,15 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '400px'
+    },
+    innerPie: {
+      type: Array,
+      default: null
+    },
+    outerPie: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -41,81 +49,72 @@ export default {
       return
     }
     window.removeEventListener('resize', this.__resizeHandler)
-    // this.chart.dispose()
-    // this.chart = null
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
+      this.chart = echarts.init(this.$el, 'dark')
+      const _this = this
+      this.chart.on('click', function(event) {
+        if (!event.data.type) {
+          _this.chart.setOption({
+            series: {
+              id: 'detail',
+              name: event.name,
+              data: _this.outerPie.filter(x => x.type === event.name)
+            }
+          })
+        }
+      })
       this.chart.setOption({
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
-        },
+        tooltip: {},
         legend: {
-          data: [
-            '直达',
-            '营销广告',
-            '搜索引擎',
-            '邮件营销',
-            '联盟广告',
-            '视频广告',
-            '百度',
-            '谷歌',
-            '必应',
-            '其他'
-          ]
+          data: this.innerPie.map(item => item.name),
+          show: false
         },
         series: [
           {
-            name: '访问来源',
+            name: '收支比',
             type: 'pie',
             selectedMode: 'single',
             radius: [0, '30%'],
             label: {
+              formatter: '{b}\n{d}',
               position: 'inner',
               fontSize: 14
             },
             labelLine: {
               show: false
             },
-            data: [
-              { value: 1548, name: '搜索引擎' },
-              { value: 775, name: '直达' },
-              { value: 679, name: '营销广告', selected: true }
-            ]
+            data: this.innerPie
           },
           {
-            name: '访问来源',
+            id: 'detail',
+            name: '固定支出',
             type: 'pie',
             radius: ['45%', '60%'],
             labelLine: {
               length: 30
             },
             label: {
-              formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+              formatter: ' {b|{b}：}{c|{c}}  {per|{d}%}  ',
               backgroundColor: '#F6F8FC',
               borderColor: '#8C8D8E',
               borderWidth: 1,
               borderRadius: 4,
 
               rich: {
-                a: {
-                  color: '#6E7079',
-                  lineHeight: 22,
-                  align: 'center'
-                },
-                hr: {
-                  borderColor: '#8C8D8E',
-                  width: '100%',
-                  borderWidth: 1,
-                  height: 0
-                },
                 b: {
                   color: '#4C5058',
                   fontSize: 14,
                   fontWeight: 'bold',
                   lineHeight: 33
+                },
+                c: {
+                  color: '#4C5058',
+                  fontSize: 14,
+                  fontWeight: 'bold'
                 },
                 per: {
                   color: '#fff',
@@ -125,16 +124,7 @@ export default {
                 }
               }
             },
-            data: [
-              { value: 1048, name: '百度' },
-              { value: 335, name: '直达' },
-              { value: 310, name: '邮件营销' },
-              { value: 251, name: '谷歌' },
-              { value: 234, name: '联盟广告' },
-              { value: 147, name: '必应' },
-              { value: 135, name: '视频广告' },
-              { value: 102, name: '其他' }
-            ]
+            data: this.outerPie.filter(x => x.type === '固定支出')
           }
         ]
       })

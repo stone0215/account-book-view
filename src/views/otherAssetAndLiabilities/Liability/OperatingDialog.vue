@@ -42,7 +42,7 @@
       </el-form-item>
       <el-form-item label="年限">
         <el-input
-          v-model="form.perid"
+          v-model="form.period"
           class="input-medium"
           autocomplete="off"
         />
@@ -84,7 +84,7 @@
       </el-form-item>
       <el-form-item label="排序">
         <el-input
-          v-model="form.loan_index"
+          v-model.number="form.loan_index"
           autocomplete="off"
           placeholder="ex:1"
           class="input-small"
@@ -120,7 +120,9 @@ export default {
     return {
       loanType,
       yesNo,
-      form: {}
+      form: {
+        loan_index: null
+      }
     }
   },
   computed: {

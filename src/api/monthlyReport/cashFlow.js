@@ -36,3 +36,10 @@ export function setMonthlySummary(vestingMonth) {
     method: 'put'
   })
 }
+
+export function getExpenditureRatioByVestingMonth(vestingMonth) {
+  return request({
+    url: `/journal/expenditure-ratio/${vestingMonth}`,
+    method: 'get'
+  })
+}

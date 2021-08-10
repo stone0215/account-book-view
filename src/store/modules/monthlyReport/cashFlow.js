@@ -1,6 +1,7 @@
 import {
   addJournalData,
   deleteJournalData,
+  getExpenditureRatioByVestingMonth,
   getJournalListByVestingMonth,
   setMonthlySummary,
   updateJournalData
@@ -98,6 +99,9 @@ export default {
             reject(error)
           })
       })
+    },
+    GetExpenditureRatioByVestingMonth({ commit }, vestingMonth) {
+      return getExpenditureRatioByVestingMonth(vestingMonth)
     }
   }
 }

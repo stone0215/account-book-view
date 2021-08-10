@@ -20,6 +20,7 @@
       />
       <el-table-column label="數量" prop="excute_amount" align="right" />
       <el-table-column label="價格" prop="excute_price" align="right" />
+      <el-table-column label="關連帳戶" prop="account_name" align="right" />
       <el-table-column label="交易日誌" prop="memo" align="left" />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
@@ -27,21 +28,23 @@
             type="success"
             size="small"
             @click="openMaintainDetailDialog(scope.row)"
-          >编辑</el-button
           >
+            编辑
+          </el-button>
           <el-button
             type="danger"
             size="small"
             @click="deleteSubCode(scope.row.distinct_number)"
-          >刪除</el-button
           >
+            刪除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="openMaintainDetailDialog()"
-      >新增</el-button
-      >
+      <el-button type="primary" @click="openMaintainDetailDialog()">
+        新增
+      </el-button>
     </div>
 
     <operating-dialog

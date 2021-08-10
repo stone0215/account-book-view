@@ -1,6 +1,13 @@
 <template>
   <el-dialog :visible="showDialog" :show-close="false" title="帳戶">
     <el-form label-width="130px">
+      <el-form-item label="帳號">
+        <el-input
+          v-model="form.account_id"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
       <el-form-item label="帳戶名稱">
         <el-input v-model="form.name" class="input-medium" autocomplete="off" />
       </el-form-item>
@@ -44,6 +51,14 @@
           autocomplete="off"
           placeholder="ex:0.6"
           class="input-small"
+        />
+      </el-form-item>
+      <el-form-item label="備註">
+        <el-input
+          v-model="form.memo"
+          :rows="3"
+          autocomplete="off"
+          type="textarea"
         />
       </el-form-item>
       <el-form-item label="排序">
@@ -99,7 +114,7 @@ export default {
     },
     submitForm() {
       let result = null
-      if (this.rawData.account_id) {
+      if (this.rawData.id) {
         result = this.$store.dispatch('UpdateAccountData', this.form)
       } else result = this.$store.dispatch('AddAccountData', this.form)
 

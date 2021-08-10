@@ -28,6 +28,7 @@
           v-model="form.excute_amount"
           class="input-medium"
           autocomplete="off"
+          placeholder="單位：股"
         />
       </el-form-item>
       <el-form-item label="交易價格">
@@ -35,7 +36,24 @@
           v-model="form.excute_price"
           class="input-medium"
           autocomplete="off"
+          placeholder="總金額"
         />
+      </el-form-item>
+      <el-form-item label="連結帳戶">
+        <el-select
+          v-model="form.account_id"
+          placeholder="選擇帳戶類別"
+          @change="getAccountName"
+        >
+          <el-option
+            v-for="item in accountSelectList.filter(
+              x => x.type === 'normal' || x.type === 'finance'
+            )"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="交易日誌">
         <el-input
@@ -55,6 +73,7 @@
 
 <script>
 import moment from 'moment'
+import { mapState } from 'vuex'
 
 import { stockExcuteType } from '@/assets/commonData/otherAssets'
 
@@ -74,6 +93,11 @@ export default {
       form: {},
       stockExcuteType
     }
+  },
+  computed: {
+    ...mapState({
+      accountSelectList: state => state.setting.menu.account.accountSelectList
+    })
   },
   watch: {
     rawData(newData) {
@@ -99,6 +123,11 @@ export default {
       result.then(data => {
         this.hideDialog(true)
       })
+    },
+    getAccountName(value) {
+      this.form.account_name = this.accountSelectList.find(
+        item => item.key === value
+      ).value
     }
   }
 }

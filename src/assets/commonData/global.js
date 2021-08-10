@@ -11,17 +11,35 @@ export const assetType = [
 ]
 
 export const otherAssetType = [
-  { key: 'Stock', value: '股票' },
-  { key: 'Insurance', value: '保險' },
-  { key: 'Estate', value: '房地產' }
+  {
+    key: 'Stock',
+    value: '股票',
+    index: 1,
+    table: 'Stock_Detail',
+    type: 'Asset'
+  },
+  {
+    key: 'Insurance',
+    value: '保險',
+    index: 2,
+    table: 'Insurance_Journal',
+    type: 'Asset'
+  },
+  {
+    key: 'Estate',
+    value: '房地產',
+    index: 3,
+    table: 'Estate_Journal',
+    type: 'Asset'
+  }
 ]
 
 export const financialBehavior = [
   // {
-  //   key: 'Withdraw',
-  //   value: '提款',
+  //   key: 'Invest',
+  //   value: '投資',
   //   index: 1,
-  //   table: 'Account'
+  //   table: 'Asset'
   // },
   {
     key: 'Transfer',
