@@ -8,9 +8,7 @@
         placeholder="選擇月"
         @change="fetchData"
       />
-      <el-button type="danger" @click="closeAccounts">
-        關帳
-      </el-button>
+      <el-button type="danger" @click="closeAccounts"> 關帳 </el-button>
     </div>
     <div class="main-content">
       <div class="up-side">
@@ -20,65 +18,113 @@
           "
           :inner-pie="innerExpenditureRatio"
           :outer-pie="outerExpenditureRatio"
+          default-inner-title="收支比"
+          default-outer-title="固定支出"
           width="50%"
         />
-        <DoublePie :inner-pie="innerExpenditureRatio" width="50%" />
+        <div v-else class="no-data">尚無消費行為</div>
+        <!-- <DoublePie
+          v-if="innerAssetRatio.length > 0 && outerAssetRatio.length > 0"
+          :inner-pie="innerAssetRatio"
+          :outer-pie="outerAssetRatio"
+          default-inner-title="資產變化"
+          default-outer-title="買入資產"
+          width="50%"
+        /> -->
+        <MutiBarChart
+          v-if="assetRecordList.length > 0"
+          :input-list="assetRecordList"
+          width="50%"
+        />
+        <div v-else class="no-data">尚無資產異動行為</div>
       </div>
       <div class="down-side">
         <div class="left-side">
-          <!-- <v-chart :options="innerExpenditureRatioOption" /> -->
-          <p>支出</p>
+          <p>支出預算</p>
           <el-table
-            :data="queryList"
+            :data="expenditureBudget"
+            :span-method="processBudgetTypeSpan"
             stripe
+            show-summary
+            sum-text="合計"
             header-cell-class-name="table-header"
           >
+            <el-table-column label="分類" header-align="center" align="center">
+              <template slot-scope="scope">
+                {{ getMappingName('code_type', scope.row.type) }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="項目"
+              prop="name"
+              header-align="center"
+              align="center"
+            />
+            <!-- <el-table-column label="項目" header-align="center" align="right">
+              <template slot-scope="scope">
+                {{ getMappingName('code_type', scope.row.type) }}-{{
+                  scope.row.name
+                }}
+              </template>
+            </el-table-column> -->
             <el-table-column
               label="本月支出"
-              prop="asset_name"
+              prop="spending"
               header-align="center"
               align="right"
             />
             <el-table-column
-              label="本月存入"
-              prop="asset_type"
+              label="本月預算"
+              prop="budget"
               header-align="center"
               align="right"
             />
             <el-table-column
-              label="帳戶餘額"
-              prop="expected_spend"
+              label="餘額"
+              prop="quota"
               header-align="center"
               align="right"
-            />
-            <el-table-column
-              label="上月餘額"
-              prop="expected_spend"
-              header-align="center"
-              align="right"
-            />
+            >
+              <template slot-scope="scope">
+                <span :class="{ negative: scope.row.quota > 0 }" class="money">
+                  {{ scope.row.quota | toThousandFilter }}
+                </span>
+              </template>
+            </el-table-column>
           </el-table>
-          <p>負債</p>
+          <p>負債增減</p>
           <el-table
-            :data="queryList"
+            :data="liabilities"
+            :span-method="processLiabilityTypeSpan"
             stripe
             header-cell-class-name="table-header"
           >
+            <el-table-column label="分類" header-align="center" align="center">
+              <template slot-scope="scope">
+                {{ getMappingName('code_type', scope.row.type) }}
+              </template>
+            </el-table-column>
             <el-table-column
-              label="本月刷卡金額"
-              prop="asset_name"
+              label="項目"
+              prop="name"
+              header-align="center"
+              align="center"
+            />
+            <el-table-column
+              label="本月新增金額"
+              prop="spending"
               header-align="center"
               align="right"
             />
             <el-table-column
               label="本月繳款金額"
-              prop="asset_type"
+              prop="payment"
               header-align="center"
               align="right"
             />
             <el-table-column
               label="尚未繳清餘額"
-              prop="expected_spend"
+              prop="balance"
               header-align="center"
               align="right"
             />
@@ -122,7 +168,7 @@
                   :disabled="!scope.row.isEditMode"
                   placeholder="請選擇"
                   @change="
-                    value => afterSelectedWay(value, scope.row, scope.$index)
+                    (value) => afterSelectedWay(value, scope.row, scope.$index)
                   "
                 >
                   <el-option-group
@@ -155,7 +201,7 @@
                   :disabled="!scope.row.isEditMode || !scope.row.spend_way"
                   placeholder="請選擇"
                   @change="
-                    value => afterSelectedMain(value, scope.row, scope.$index)
+                    (value) => afterSelectedMain(value, scope.row, scope.$index)
                   "
                 >
                   <el-option-group
@@ -182,13 +228,17 @@
                 <el-select
                   :value="
                     scope.row.action_sub
-                      ? scope.row.action_sub + '/' + scope.row.action_sub_table
+                      ? scope.row.action_sub +
+                        '/' +
+                        scope.row.action_sub_type +
+                        '/' +
+                        scope.row.action_sub_table
                       : null
                   "
                   :disabled="!scope.row.isEditMode || !scope.row.action_main"
                   placeholder="請選擇"
                   @change="
-                    value => afterSelectedSub(value, scope.row, scope.$index)
+                    (value) => afterSelectedSub(value, scope.row, scope.$index)
                   "
                 >
                   <template
@@ -207,7 +257,7 @@
                         v-for="item in group.selections"
                         :key="item.key"
                         :label="item.value"
-                        :value="item.key + '/' + item.table"
+                        :value="item.key + '/' + item.type + '/' + item.table"
                       />
                     </el-option-group>
                   </template>
@@ -216,7 +266,7 @@
                       v-for="item in scope.row.actionSubSelectionGroup"
                       :key="item.key"
                       :label="item.value"
-                      :value="item.key + '/'"
+                      :value="item.key + '/' + '/'"
                     />
                   </template>
                 </el-select>
@@ -246,7 +296,12 @@
             >
               <template slot-scope="scope">
                 <span v-if="!scope.row.isEditMode">{{ scope.row.note }}</span>
-                <el-input v-else v-model="scope.row.note" autocomplete="off" />
+                <el-input
+                  v-else
+                  v-model="scope.row.note"
+                  placeholder="如為換匯，務必寫上匯率"
+                  autocomplete="off"
+                />
               </template>
             </el-table-column>
             <el-table-column
@@ -302,6 +357,7 @@ import moment from 'moment'
 import { mapState } from 'vuex'
 
 import DoublePie from '@/components/Charts/DoublePieChart'
+import MutiBarChart from '@/components/Charts/MutiBarChart'
 
 import {
   getCreditCardSelectionGroups,
@@ -317,7 +373,8 @@ import { getMappingName } from '@/utils/codeMapping'
 export default {
   name: 'CashFlow',
   components: {
-    DoublePie
+    DoublePie,
+    MutiBarChart
   },
   data() {
     return {
@@ -337,13 +394,30 @@ export default {
       spendWaySelectionGroup: [],
       journalDataList: [],
       innerExpenditureRatio: [],
-      outerExpenditureRatio: []
+      outerExpenditureRatio: [],
+      // innerAssetRatio: [],
+      // outerAssetRatio: [],
+      assetRecordList: [],
+      expenditureBudget: [],
+      liabilities: []
     }
   },
   computed: {
     ...mapState({
-      journalListSource: state => state.monthlyReport.cashFlow.journalDataList
-    })
+      journalListSource: (state) => state.monthlyReport.cashFlow.journalDataList
+    }),
+    getBugetTypeNumber() {
+      // 因目前只有兩種支出，所以找出第一種支出數量就可以
+      return this.expenditureBudget.filter(
+        (item) => item.type === this.expenditureBudget[0].type
+      ).length
+    },
+    getLiabilityTypeNumber() {
+      // 因目前只有兩種負債，所以找出第一種負債數量就可以
+      return this.liabilities.filter(
+        (item) => item.type === this.liabilities[0].type
+      ).length
+    }
   },
   created() {
     this.thisMonth = moment().format('YYYYMM')
@@ -355,6 +429,7 @@ export default {
     this.fetchData(this.thisMonth)
   },
   methods: {
+    getMappingName,
     disabledDate(time) {
       return (
         moment(time).format('YYYYMM') < this.thisMonth ||
@@ -367,15 +442,39 @@ export default {
       })
       this.$store
         .dispatch('GetExpenditureRatioByVestingMonth', val)
-        .then(response => {
-          response.data.innerPie.forEach(item => {
+        .then((response) => {
+          response.data.expendingInnerPie.forEach((item) => {
             item.name = getMappingName('code_type', item.name)
           })
-          response.data.outerPie.forEach(item => {
+          response.data.expendingOuterPie.forEach((item) => {
             item.type = getMappingName('code_type', item.type)
           })
-          this.innerExpenditureRatio = response.data.innerPie
-          this.outerExpenditureRatio = response.data.outerPie
+          this.innerExpenditureRatio = response.data.expendingInnerPie
+          this.outerExpenditureRatio = response.data.expendingOuterPie
+        })
+
+      this.$store
+        .dispatch('GetInvestRatioByVestingMonth', val)
+        .then((response) => {
+          console.log(response.data)
+          this.assetRecordList = response.data
+          // this.innerAssetRatio = response.data.assetInnerPie
+          // response.data.assetOuterPie.forEach((item) => {
+          //   item.name = getMappingName('asset_type', item.name)
+          // })
+          // this.outerAssetRatio = response.data.assetOuterPie
+        })
+
+      this.$store
+        .dispatch('GetExpenditureBudgetByVestingMonth', val)
+        .then((response) => {
+          this.expenditureBudget = response.data
+        })
+
+      this.$store
+        .dispatch('GetLiabilitiesByVestingMonth', val)
+        .then((response) => {
+          this.liabilities = response.data
         })
     },
     async processDataList() {
@@ -411,8 +510,8 @@ export default {
     getSpendWaySelectionList() {
       this.spendWaySelectionGroup.push(this.otherAssetGroup)
 
-      getWalletSelectionGroups().then(response => {
-        response.data.forEach(element => {
+      getWalletSelectionGroups().then((response) => {
+        response.data.forEach((element) => {
           element.name = getMappingName('account_type', element.title)
         })
         this.accountSelectionGroups = response.data
@@ -421,23 +520,25 @@ export default {
         )
       })
 
-      getCreditCardSelectionGroups().then(response => {
+      getCreditCardSelectionGroups().then((response) => {
         this.creditCardSelectionList = response.data
         this.spendWaySelectionGroup = this.spendWaySelectionGroup.concat(
           response.data
         )
       })
 
-      getLoanSelectionGroups().then(response => {
+      getLoanSelectionGroups().then((response) => {
         this.loanSelectionGroups = response.data
-        this.spendWaySelectionGroup = this.spendWaySelectionGroup.concat(
-          response.data
-        )
+        if (response.data.length > 0) {
+          this.spendWaySelectionGroup = this.spendWaySelectionGroup.concat(
+            response.data
+          )
+        }
       })
     },
     getActionMainSelectionList() {
-      getCodeSelectionGroups().then(response => {
-        response.data.forEach(element => {
+      getCodeSelectionGroups().then((response) => {
+        response.data.forEach((element) => {
           element.name = getMappingName('code_type', element.title)
         })
         this.codeSelectionGroups = response.data
@@ -452,11 +553,11 @@ export default {
 
       if (type === 'cash' || type === 'Credit_Card') {
         // 沒有被動收入
-        returnValue = returnValue.filter(item => item.title !== 'Passive')
+        returnValue = returnValue.filter((item) => item.title !== 'Passive')
       } else if (type === 'eWallet' || type === 'gift') {
         // 沒有主動/被動收入
         returnValue = returnValue.filter(
-          item => item.title !== 'Income' && item.title !== 'Passive'
+          (item) => item.title !== 'Income' && item.title !== 'Passive'
         )
       }
 
@@ -468,7 +569,7 @@ export default {
       if (type === 'cash') {
         // 現金沒有存/提操作
         concatTarget.selections = financialBehavior.filter(
-          item => item.key !== 'Transfer'
+          (item) => item.key !== 'Transfer'
         )
       } else if (
         type === 'Credit_Card' ||
@@ -478,14 +579,14 @@ export default {
       ) {
         // 沒有繳信用卡/繳貸款操作
         concatTarget.selections = financialBehavior.filter(
-          item =>
+          (item) =>
             item.key !== 'CreditCardRepayment' && item.key !== 'LoanRepayment'
         )
 
         //  沒有繳保費操作
         if (type === 'eWallet' || type === 'gift' || type === 'Asset') {
           concatTarget.selections = concatTarget.selections.filter(
-            item => item.key !== 'Premiums'
+            (item) => item.key !== 'Premiums'
           )
         }
       } else {
@@ -500,8 +601,10 @@ export default {
     },
     afterSelectedWay(value, rawData, index) {
       rawData.action_main = ''
+      rawData.action_main_type = ''
       rawData.action_main_table = ''
       rawData.action_sub = ''
+      rawData.action_sub_type = ''
       rawData.action_sub_table = ''
 
       const valueToArray = value.split('/')
@@ -512,6 +615,7 @@ export default {
     },
     async afterSelectedMain(value, rawData, index) {
       rawData.action_sub = ''
+      rawData.action_sub_type = ''
       rawData.action_sub_table = ''
 
       const valueToArray = value.split('/')
@@ -528,14 +632,14 @@ export default {
     },
     async getSubSelectionGroup(parent_id, table, row) {
       let returnValue = null
-      // 不知為何動態生成無法監聽變化，暫存入各資料內取
+      // 因 asnyc 只能回 promise，暫存入各資料內取
       switch (table) {
         // case 'Asset':
         //   returnValue = otherAssetType
         //   break
 
         case 'Code':
-          await getSubCodeSelectionGroups(parent_id).then(response => {
+          await getSubCodeSelectionGroups(parent_id).then((response) => {
             returnValue = response.data
           })
 
@@ -548,9 +652,10 @@ export default {
           ) {
             this.accountSelectionGroups.push(this.otherAssetGroup)
           } else if (row.spend_way_type === 'cash') {
-            this.otherAssetGroup.selections = this.otherAssetGroup.selections.filter(
-              item => item.key !== 'Stock'
-            )
+            this.otherAssetGroup.selections =
+              this.otherAssetGroup.selections.filter(
+                (item) => item.key !== 'Stock'
+              )
             this.accountSelectionGroups.push(this.otherAssetGroup)
           }
 
@@ -566,7 +671,7 @@ export default {
           break
 
         case 'Insurance':
-          await getInsuranceSelectionGroups().then(response => {
+          await getInsuranceSelectionGroups().then((response) => {
             returnValue = response.data
           })
           break
@@ -577,7 +682,8 @@ export default {
     afterSelectedSub(value, rawData, index) {
       const valueToArray = value.split('/')
       rawData.action_sub = valueToArray[0]
-      rawData.action_sub_table = valueToArray[1]
+      rawData.action_sub_type = valueToArray[1]
+      rawData.action_sub_table = valueToArray[2]
       this.journalDataList[index] = rawData
     },
     handelDataSummit(data) {
@@ -586,13 +692,14 @@ export default {
       delete data.actionSubSelectionGroup
       if (
         this.journalListSource.some(
-          item => item.distinct_number === data.distinct_number
+          (item) => item.distinct_number === data.distinct_number
         )
       ) {
+        data.spend_date = moment(`${data.spend_date} UTC`)
         result = this.$store.dispatch('UpdateJournalData', data)
       } else result = this.$store.dispatch('AddJournalData', data)
 
-      result.then(data => {
+      result.then((data) => {
         this.processDataList()
       })
     },
@@ -623,6 +730,44 @@ export default {
     },
     closeAccounts() {
       this.$store.dispatch('SetMonthlySummary', this.thisMonth)
+    },
+    processBudgetTypeSpan({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        if (rowIndex === 0) {
+          return {
+            rowspan: this.getBugetTypeNumber,
+            colspan: 1
+          }
+        } else if (rowIndex === this.getBugetTypeNumber) {
+          return {
+            rowspan: this.expenditureBudget.length - this.getBugetTypeNumber,
+            colspan: 1
+          }
+        }
+        return {
+          rowspan: 0,
+          colspan: 0
+        }
+      }
+    },
+    processLiabilityTypeSpan({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        if (rowIndex === 0) {
+          return {
+            rowspan: this.getLiabilityTypeNumber,
+            colspan: 1
+          }
+        } else if (rowIndex === this.getLiabilityTypeNumber) {
+          return {
+            rowspan: this.liabilities.length - this.getLiabilityTypeNumber,
+            colspan: 1
+          }
+        }
+        return {
+          rowspan: 0,
+          colspan: 0
+        }
+      }
     }
   }
 }
@@ -632,37 +777,45 @@ export default {
 .cash-flow {
   .main-content {
     .up-side {
+      min-height: 100px;
       display: flex;
       padding-top: 10px;
+
+      .no-data {
+        width: 50%;
+        height: 100%;
+        text-align: center;
+        margin: auto;
+      }
     }
 
     .down-side {
       display: flex;
 
+      .money {
+        letter-spacing: 1px;
+        font-weight: bold;
+
+        &.positive {
+          color: #409eff;
+        }
+
+        &.negative {
+          color: #f56c6c;
+        }
+      }
+
       .left-side {
-        width: 30%;
+        width: 35%;
         padding-right: 10px;
         padding-top: 5px;
       }
 
       .right-side {
-        width: 70%;
+        width: 65%;
         padding-left: 10px;
         padding-top: 10px;
         text-align: right;
-
-        .money {
-          letter-spacing: 1px;
-          font-weight: bold;
-
-          &.positive {
-            color: #409eff;
-          }
-
-          &.negative {
-            color: #f56c6c;
-          }
-        }
       }
     }
   }

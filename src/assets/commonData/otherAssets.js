@@ -36,12 +36,14 @@ export const estateType = [
 ]
 
 export const estateExcuteType = [
-  { key: 'payment', value: '增加本金' },
-  { key: 'increment', value: '減少本金/增貸' },
+  // { key: 'payment', value: '增加本金/還款' },
+  // { key: 'increment', value: '減少本金/增貸' },
+  { key: 'downPayment', value: '初始本金/頭期款' },
   { key: 'tax', value: '稅金' },
   { key: 'fee', value: '雜費' },
   { key: 'insurance', value: '保險' },
   { key: 'fix', value: '修繕' },
   { key: 'rent', value: '租金' },
-  { key: 'deposit', value: '押金' }
+  { key: 'deposit', value: '押金' },
+  { key: 'sold', value: '賣出' }
 ]

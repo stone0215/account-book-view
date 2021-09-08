@@ -43,3 +43,24 @@ export function getExpenditureRatioByVestingMonth(vestingMonth) {
     method: 'get'
   })
 }
+
+export function getInvestRatioByVestingMonth(vestingMonth) {
+  return request({
+    url: `/journal/invest-ratio/${vestingMonth}`,
+    method: 'get'
+  })
+}
+
+export function getExpenditureBudgetByVestingMonth(vestingMonth) {
+  return request({
+    url: `/journal/expenditure-budget/${vestingMonth}`,
+    method: 'get'
+  })
+}
+
+export function getLiabilitiesByVestingMonth(vestingMonth) {
+  return request({
+    url: `/journal/liability/${vestingMonth}`,
+    method: 'get'
+  })
+}

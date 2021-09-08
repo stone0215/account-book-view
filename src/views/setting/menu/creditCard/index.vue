@@ -29,6 +29,12 @@
       header-cell-class-name="table-header"
     >
       <el-table-column label="信用卡名稱" prop="card_name" />
+      <el-table-column
+        label="信用卡名稱"
+        prop="card_no"
+        header-align="center"
+        align="right"
+      />
       <el-table-column label="結帳日" prop="last_day" align="center" />
       <el-table-column label="扣款日" prop="charge_day" align="center" />
       <el-table-column
@@ -106,7 +112,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.setting.menu.creditCard.dataList
+      queryList: (state) => state.setting.menu.creditCard.dataList
     })
   },
   methods: {

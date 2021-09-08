@@ -25,7 +25,7 @@
       />
       <el-table-column label="地址" prop="estate_address" align="right" />
       <el-table-column label="貸款" prop="loan_name" align="right" />
-      <el-table-column label="初始本金" prop="down_payment" align="right" />
+      <!-- <el-table-column label="初始本金" prop="down_payment" align="right" /> -->
       <el-table-column label="目前總花費" prop="cost" align="right" />
       <el-table-column label="平均月現金流" prop="profit" align="right" />
       <el-table-column

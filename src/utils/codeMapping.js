@@ -72,5 +72,9 @@ export function getMappingName(type, inputCode) {
       return inputCode
   }
 
-  return target.find(x => x.key === inputCode).value
+  const data = target.find(x => x.key === inputCode)
+
+  if (data) return data.value
+
+  return inputCode
 }

@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{ height: height, width: width }" />
+  <div :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -9,10 +9,6 @@ import { debounce } from '@/utils'
 
 export default {
   props: {
-    className: {
-      type: String,
-      default: 'chart'
-    },
     width: {
       type: String,
       default: '100%'
@@ -21,6 +17,8 @@ export default {
       type: String,
       default: '400px'
     },
+    defaultInnerTitle: { type: String, default: '' },
+    defaultOuterTitle: { type: String, default: '' },
     innerPie: {
       type: Array,
       default: null
@@ -62,7 +60,7 @@ export default {
             series: {
               id: 'detail',
               name: event.name,
-              data: _this.outerPie.filter(x => x.type === event.name)
+              data: _this.outerPie.filter((x) => x.type === event.name)
             }
           })
         }
@@ -70,17 +68,17 @@ export default {
       this.chart.setOption({
         tooltip: {},
         legend: {
-          data: this.innerPie.map(item => item.name),
+          data: this.innerPie.map((item) => item.name),
           show: false
         },
         series: [
           {
-            name: '收支比',
+            name: this.defaultInnerTitle,
             type: 'pie',
             selectedMode: 'single',
             radius: [0, '30%'],
             label: {
-              formatter: '{b}\n{d}',
+              formatter: '{b}\n\n{d}%',
               position: 'inner',
               fontSize: 14
             },
@@ -91,7 +89,7 @@ export default {
           },
           {
             id: 'detail',
-            name: '固定支出',
+            name: this.defaultOuterTitle,
             type: 'pie',
             radius: ['45%', '60%'],
             labelLine: {
@@ -124,7 +122,7 @@ export default {
                 }
               }
             },
-            data: this.outerPie.filter(x => x.type === '固定支出')
+            data: this.outerPie.filter((x) => x.type === this.defaultOuterTitle)
           }
         ]
       })

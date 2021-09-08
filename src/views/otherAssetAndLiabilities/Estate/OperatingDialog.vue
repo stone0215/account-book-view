@@ -28,13 +28,13 @@
           placeholder="選擇日期"
         />
       </el-form-item>
-      <el-form-item label="頭期款">
+      <!-- <el-form-item label="頭期款">
         <el-input
           v-model="form.down_payment"
           class="input-medium"
           autocomplete="off"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="貸款">
         <el-select v-model="form.loan_id" placeholder="選擇對應貸款">
           <el-option

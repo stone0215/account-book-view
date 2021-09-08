@@ -1,8 +1,11 @@
 import {
   addJournalData,
   deleteJournalData,
+  getExpenditureBudgetByVestingMonth,
   getExpenditureRatioByVestingMonth,
+  getInvestRatioByVestingMonth,
   getJournalListByVestingMonth,
+  getLiabilitiesByVestingMonth,
   setMonthlySummary,
   updateJournalData
 } from '@/api/monthlyReport/cashFlow'
@@ -102,6 +105,15 @@ export default {
     },
     GetExpenditureRatioByVestingMonth({ commit }, vestingMonth) {
       return getExpenditureRatioByVestingMonth(vestingMonth)
+    },
+    GetInvestRatioByVestingMonth({ commit }, vestingMonth) {
+      return getInvestRatioByVestingMonth(vestingMonth)
+    },
+    GetExpenditureBudgetByVestingMonth({ commit }, vestingMonth) {
+      return getExpenditureBudgetByVestingMonth(vestingMonth)
+    },
+    GetLiabilitiesByVestingMonth({ commit }, vestingMonth) {
+      return getLiabilitiesByVestingMonth(vestingMonth)
     }
   }
 }

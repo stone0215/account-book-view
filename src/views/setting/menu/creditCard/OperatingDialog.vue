@@ -8,6 +8,13 @@
           autocomplete="off"
         />
       </el-form-item>
+      <el-form-item label="卡號">
+        <el-input
+          v-model="form.card_no"
+          class="input-large"
+          autocomplete="off"
+        />
+      </el-form-item>
       <el-form-item label="結帳日">
         <el-input
           v-model="form.last_day"
@@ -100,7 +107,7 @@ export default {
     return {
       form: {},
       feedbackWay,
-      fxCode: fxCode.filter(x => x.inUse)
+      fxCode: fxCode.filter((x) => x.inUse)
     }
   },
   watch: {
@@ -125,7 +132,7 @@ export default {
         result = this.$store.dispatch('UpdateCreditCardData', this.form)
       } else result = this.$store.dispatch('AddCreditCardData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog()
       })
     }

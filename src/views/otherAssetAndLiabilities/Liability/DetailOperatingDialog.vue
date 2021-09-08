@@ -28,6 +28,7 @@
           v-model="form.excute_price"
           autocomplete="off"
           class="input-medium"
+          placeholder="償還本金需填負值"
         />
       </el-form-item>
       <el-form-item label="備註">
@@ -86,7 +87,7 @@ export default {
         result = this.$store.dispatch('UpdateLoanDetailData', this.form)
       } else result = this.$store.dispatch('AddLoanDetailData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog(true)
       })
     }
