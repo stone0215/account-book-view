@@ -6,6 +6,10 @@
     text-align: right;
   }
 
+  .float-left {
+    float: left;
+  }
+
   .float-right {
     float: right;
   }
@@ -51,6 +55,19 @@
           border-color: #f28c00;
         }
       }
+    }
+  }
+
+  .money {
+    letter-spacing: 1px;
+    font-weight: bold;
+
+    &.positive {
+      color: #409eff;
+    }
+
+    &.negative {
+      color: #f56c6c;
     }
   }
 }

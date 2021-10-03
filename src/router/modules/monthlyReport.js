@@ -6,16 +6,10 @@ export default {
   redirect: 'noredirect',
   name: 'MonthlyReport',
   meta: {
-    title: '月報',
+    title: '現金流明細',
     icon: 'chart'
   },
   children: [
-    {
-      path: 'balanceSheet',
-      component: () => import('@/views/setting/initial/index'),
-      name: 'BalanceSheet',
-      meta: { title: '資產負債表' }
-    },
     {
       path: 'cashFlow',
       component: () => import('@/views/monthlyReport/CashFlow/index'),

@@ -45,5 +45,6 @@ export const estateExcuteType = [
   { key: 'fix', value: '修繕' },
   { key: 'rent', value: '租金' },
   { key: 'deposit', value: '押金' },
-  { key: 'sold', value: '賣出' }
+  { key: 'sold', value: '賣出' },
+  { key: 'marketValue', value: '市值' }
 ]

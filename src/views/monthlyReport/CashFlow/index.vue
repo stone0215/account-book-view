@@ -1,5 +1,11 @@
 <template>
   <div class="page cash-flow">
+    <span class="float-left">
+      本月損益：
+      <span :class="[gainLoss >= 0 ? 'positive' : 'negative']" class="money">
+        {{ gainLoss }}
+      </span>
+    </span>
     <div class="position-right">
       <el-date-picker
         v-model="thisMonth"
@@ -23,14 +29,6 @@
           width="50%"
         />
         <div v-else class="no-data">尚無消費行為</div>
-        <!-- <DoublePie
-          v-if="innerAssetRatio.length > 0 && outerAssetRatio.length > 0"
-          :inner-pie="innerAssetRatio"
-          :outer-pie="outerAssetRatio"
-          default-inner-title="資產變化"
-          default-outer-title="買入資產"
-          width="50%"
-        /> -->
         <MutiBarChart
           v-if="assetRecordList.length > 0"
           :input-list="assetRecordList"
@@ -58,15 +56,8 @@
               label="項目"
               prop="name"
               header-align="center"
-              align="center"
+              align="right"
             />
-            <!-- <el-table-column label="項目" header-align="center" align="right">
-              <template slot-scope="scope">
-                {{ getMappingName('code_type', scope.row.type) }}-{{
-                  scope.row.name
-                }}
-              </template>
-            </el-table-column> -->
             <el-table-column
               label="本月支出"
               prop="spending"
@@ -96,8 +87,9 @@
           <el-table
             :data="liabilities"
             :span-method="processLiabilityTypeSpan"
-            stripe
             header-cell-class-name="table-header"
+            show-summary
+            sum-text="合計"
           >
             <el-table-column label="分類" header-align="center" align="center">
               <template slot-scope="scope">
@@ -108,7 +100,7 @@
               label="項目"
               prop="name"
               header-align="center"
-              align="center"
+              align="right"
             />
             <el-table-column
               label="本月新增金額"
@@ -147,6 +139,7 @@
                   v-else
                   v-model="scope.row.spend_date"
                   :picker-options="pickerOptions"
+                  :default-value="getDefaultDate"
                   type="date"
                   placeholder="選擇日期"
                   class="input-medium"
@@ -383,6 +376,7 @@ export default {
         selections: otherAssetType
       },
       thisMonth: null,
+      gainLoss: 0,
       pickerOptions: {
         disabledDate: this.disabledDate
       },
@@ -417,6 +411,11 @@ export default {
       return this.liabilities.filter(
         (item) => item.type === this.liabilities[0].type
       ).length
+    },
+    getDefaultDate() {
+      return new Date(
+        `${this.thisMonth.substr(0, 4)}/${this.thisMonth.substr(4, 2)}/01`
+      )
     }
   },
   created() {
@@ -437,9 +436,12 @@ export default {
       )
     },
     fetchData(val) {
-      this.$store.dispatch('GetJournalListByVestingMonth', val).then(() => {
-        this.processDataList()
-      })
+      this.$store
+        .dispatch('GetJournalListByVestingMonth', val)
+        .then((response) => {
+          this.gainLoss = response
+          this.processDataList()
+        })
       this.$store
         .dispatch('GetExpenditureRatioByVestingMonth', val)
         .then((response) => {
@@ -456,7 +458,6 @@ export default {
       this.$store
         .dispatch('GetInvestRatioByVestingMonth', val)
         .then((response) => {
-          console.log(response.data)
           this.assetRecordList = response.data
           // this.innerAssetRatio = response.data.assetInnerPie
           // response.data.assetOuterPie.forEach((item) => {
@@ -700,7 +701,7 @@ export default {
       } else result = this.$store.dispatch('AddJournalData', data)
 
       result.then((data) => {
-        this.processDataList()
+        this.fetchData()
       })
     },
     deleteJournal(id) {
@@ -775,6 +776,14 @@ export default {
 
 <style lang="scss" scoped>
 .cash-flow {
+  /deep/.el-input {
+    &.is-disabled {
+      .el-input__inner {
+        color: #5b5b5b;
+      }
+    }
+  }
+
   .main-content {
     .up-side {
       min-height: 100px;
@@ -792,19 +801,6 @@ export default {
     .down-side {
       display: flex;
 
-      .money {
-        letter-spacing: 1px;
-        font-weight: bold;
-
-        &.positive {
-          color: #409eff;
-        }
-
-        &.negative {
-          color: #f56c6c;
-        }
-      }
-
       .left-side {
         width: 35%;
         padding-right: 10px;
@@ -816,18 +812,6 @@ export default {
         padding-left: 10px;
         padding-top: 10px;
         text-align: right;
-      }
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-.cash-flow {
-  .el-input {
-    &.is-disabled {
-      .el-input__inner {
-        color: #5b5b5b;
       }
     }
   }

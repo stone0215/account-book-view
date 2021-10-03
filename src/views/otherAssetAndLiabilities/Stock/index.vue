@@ -105,7 +105,7 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.otherAssets.stockAsset.stockContentList
+      queryList: (state) => state.otherAssets.stockAsset.stockContentList
     })
   },
   watch: {

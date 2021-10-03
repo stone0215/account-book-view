@@ -11,6 +11,7 @@
       lazy
     >
       <component
+        v-if="activeTab === item.asset_name"
         :is="getComponentName(item.asset_type)"
         :asset-id="item.asset_id"
       />
@@ -36,7 +37,7 @@ export default {
   },
   computed: {
     ...mapState({
-      itemList: state => state.otherAssets.otherAssets.itemList
+      itemList: (state) => state.otherAssets.otherAssets.itemList
     })
   },
   created() {

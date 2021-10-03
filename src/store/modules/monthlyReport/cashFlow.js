@@ -41,8 +41,8 @@ export default {
       return new Promise((resolve, reject) => {
         getJournalListByVestingMonth(vestingMonth)
           .then(response => {
-            commit('SET_JOURNAL_DATA_LIST', response.data)
-            resolve()
+            commit('SET_JOURNAL_DATA_LIST', response.data.journalList)
+            resolve(response.data.gainLoss)
           })
           .catch(error => {
             reject(error)

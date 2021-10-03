@@ -95,10 +95,10 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.otherAssets.liability.liabilityContentList
+      queryList: (state) => state.otherAssets.liability.liabilityContentList
     })
   },
-  created() {
+  mounted() {
     this.$store.dispatch('GetLiabilityList')
   },
   methods: {

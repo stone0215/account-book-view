@@ -11,28 +11,22 @@ export default {
   },
   children: [
     {
-      path: 'accounting',
-      component: () => import('@/views/setting/initial/index'),
-      name: 'Accounting',
-      meta: { title: '帳務一覽' }
+      path: 'balanceSheet',
+      component: () => import('@/views/yearReport/BalanceSheet/index'),
+      name: 'BalanceSheet',
+      meta: { title: '資產負債表' }
     },
     {
       path: 'spendings',
-      component: () => import('@/views/setting/initial/index'),
+      component: () => import('@/views/yearReport/Spending/index'),
       name: 'Spendings',
-      meta: { title: '支出一覽' }
+      meta: { title: '收支一覽' }
     },
     {
-      path: 'passiveIncome',
-      component: () => import('@/views/setting/initial/index'),
-      name: 'PassiveIncome',
-      meta: { title: '財務規劃一覽' }
-    },
-    {
-      path: 'otherAssets',
-      component: () => import('@/views/setting/initial/index'),
-      name: 'OtherAssetOverview',
-      meta: { title: '非現金資產一覽' }
+      path: 'assets',
+      component: () => import('@/views//yearReport/Asset/index'),
+      name: 'AssetOverview',
+      meta: { title: '資產一覽' }
     }
   ]
 }
