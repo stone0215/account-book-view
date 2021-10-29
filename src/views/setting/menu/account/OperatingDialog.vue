@@ -31,6 +31,13 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="持有人">
+        <el-input
+          v-model="form.owner"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
       <el-form-item label="是否列入總資產">
         <el-radio-group v-model="form.is_calculate">
           <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
@@ -99,7 +106,7 @@ export default {
       form: {},
       accountType,
       feedbackWay,
-      fxCode: fxCode.filter(x => x.inUse),
+      fxCode: fxCode.filter((x) => x.inUse),
       yesNo
     }
   },
@@ -118,7 +125,7 @@ export default {
         result = this.$store.dispatch('UpdateAccountData', this.form)
       } else result = this.$store.dispatch('AddAccountData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.$store.dispatch('GetAccountSelection')
         this.hideDialog()
       })

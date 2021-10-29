@@ -3,26 +3,58 @@
     <search-area>
       <el-form slot="content">
         <el-form-item label="提醒日期">
-          <el-input v-model="conditions.date" placeholder="mm/dd 或 dd" class="input-medium"/>
+          <el-input
+            v-model="conditions.date"
+            placeholder="mm/dd 或 dd"
+            class="input-medium"
+          />
         </el-form-item>
         <el-form-item class="last">
-          <el-button type="primary" class="btn-medium" @click="search">搜尋</el-button>
-          <el-button type="primary" class="btn-medium" @click="openDialog()">新增</el-button>
+          <el-button type="primary" class="btn-medium" @click="search"
+          >搜尋</el-button
+          >
+          <el-button type="primary" class="btn-medium" @click="openDialog()"
+          >新增</el-button
+          >
         </el-form-item>
       </el-form>
     </search-area>
-    <el-table v-show="showList" :data="queryList" stripe header-cell-class-name="table-header">
-      <el-table-column label="日期" prop="alarm_date" width="60" align="center"/>
-      <el-table-column label="內容" prop="content"/>
+    <el-table
+      v-show="showList"
+      :data="queryList"
+      stripe
+      header-cell-class-name="table-header"
+    >
+      <el-table-column
+        label="日期"
+        prop="alarm_date"
+        width="60"
+        align="center"
+      />
+      <el-table-column label="內容" prop="content" />
+      <el-table-column
+        :formatter="formatDateTime"
+        label="到期日"
+        prop="due_date"
+        align="center"
+      />
       <el-table-column fixed="right" label="操作" width="150" align="center">
         <template slot-scope="scope">
-          <el-button type="success" size="small" @click="openDialog(scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteAlarm(scope.row.alarm_id)">刪除</el-button>
+          <el-button type="success" size="small" @click="openDialog(scope.row)"
+          >编辑</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            @click="deleteAlarm(scope.row.alarm_id)"
+          >刪除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
 
     <operating-dialog
+      v-if="showDialog"
       :show-dialog="showDialog"
       :raw-data="selectedData"
       @hideDialog="showDialog = false"
@@ -32,8 +64,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import OperatingDialog from './OperatingDialog'
+
 import SearchArea from '@/components/SearchArea'
+import { formatDateTimeSlash } from '@/utils/dateProcess'
+
+import OperatingDialog from './OperatingDialog'
 
 export default {
   name: 'RemindSetting',
@@ -50,10 +85,13 @@ export default {
   },
   computed: {
     ...mapState({
-      queryList: state => state.setting.alarm.dataList
+      queryList: (state) => state.setting.alarm.dataList
     })
   },
   methods: {
+    formatDateTime(row, column, cellValue) {
+      return formatDateTimeSlash(cellValue)
+    },
     search() {
       this.$store
         .dispatch('GetAlarmList', this.conditions)

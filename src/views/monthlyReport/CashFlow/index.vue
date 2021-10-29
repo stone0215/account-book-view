@@ -700,8 +700,8 @@ export default {
         result = this.$store.dispatch('UpdateJournalData', data)
       } else result = this.$store.dispatch('AddJournalData', data)
 
-      result.then((data) => {
-        this.fetchData()
+      result.then(() => {
+        this.fetchData(this.thisMonth)
       })
     },
     deleteJournal(id) {

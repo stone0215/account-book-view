@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"/>
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -27,7 +27,15 @@ export default {
     },
     chartData: {
       type: Object,
-      required: true
+      default: null
+    },
+    xBar: {
+      type: Array,
+      default: null
+    },
+    lineName: {
+      type: Array,
+      default: () => ['first', 'second']
     }
   },
   data() {
@@ -57,7 +65,11 @@ export default {
 
     // 监听侧边栏的变化
     this.sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.addEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -67,7 +79,11 @@ export default {
       window.removeEventListener('resize', this.__resizeHandler)
     }
 
-    this.sidebarElm && this.sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
+    this.sidebarElm &&
+      this.sidebarElm.removeEventListener(
+        'transitionend',
+        this.sidebarResizeHandler
+      )
 
     this.chart.dispose()
     this.chart = null
@@ -78,10 +94,10 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ firstData, secondData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.xBar,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -89,7 +105,7 @@ export default {
         },
         grid: {
           left: 10,
-          right: 10,
+          right: 25,
           bottom: 20,
           top: 30,
           containLabel: true
@@ -107,44 +123,47 @@ export default {
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: this.lineName
         },
-        series: [{
-          name: 'expected', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
+        series: [
+          {
+            name: this.lineName[0],
+            itemStyle: {
+              normal: {
                 color: '#FF005A',
-                width: 2
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2
+                }
               }
-            }
+            },
+            smooth: true,
+            type: 'line',
+            data: firstData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
           },
-          smooth: true,
-          type: 'line',
-          data: expectedData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: 'actual',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
+          {
+            name: this.lineName[1],
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
                 color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
               }
-            }
-          },
-          data: actualData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+            },
+            data: secondData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
+          }
+        ]
       })
     },
     initChart() {

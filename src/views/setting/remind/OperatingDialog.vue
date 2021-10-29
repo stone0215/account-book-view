@@ -16,7 +16,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="內容">
-        <el-input v-model="form.content" autocomplete="off"/>
+        <el-input v-model="form.content" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="結束日期">
+        <el-date-picker
+          v-model="form.due_date"
+          type="date"
+          placeholder="選擇日期"
+        />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -27,6 +34,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     showDialog: {
@@ -40,15 +49,21 @@ export default {
   },
   data() {
     return {
-      form: {}
+      form: { due_date: null }
     }
   },
   watch: {
-    rawData(newData) {
-      if (newData) {
-        this.form = JSON.parse(JSON.stringify(newData))
-      } else {
-        this.form = {}
+    rawData: {
+      immediate: true,
+      handler(newData) {
+        if (newData) {
+          this.form = JSON.parse(JSON.stringify(newData))
+          if (this.form.due_date) {
+            this.form.due_date = moment(`${this.form.due_date} UTC`)
+          }
+        } else {
+          this.form = { due_date: null }
+        }
       }
     }
   },
@@ -62,7 +77,7 @@ export default {
         result = this.$store.dispatch('UpdateAlarmData', this.form)
       } else result = this.$store.dispatch('AddAlarmData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog()
       })
     }

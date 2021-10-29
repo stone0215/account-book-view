@@ -1,46 +1,74 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-used">
+          <svg-icon icon-class="chart" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">New Visits</div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num"/>
+          <div class="card-panel-text">預算使用率</div>
+          <span class="card-panel-num"
+          >{{ summaryObj.spending }} / {{ budget }} =
+            {{ ((summaryObj.spending / budget) * 100).toFixed(2) }}%</span
+            >
+            <!-- <count-to
+            :start-val="0"
+            :end-val="102400"
+            :duration="2600"
+            class="card-panel-num"
+          /> -->
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-freedom">
+          <svg-icon icon-class="guide" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Messages</div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num"/>
+          <div class="card-panel-text">財務自由度(淨值/每月或年支出)</div>
+          <count-to
+            :start-val="0"
+            :end-val="summaryObj.freedom"
+            :duration="3600"
+            class="card-panel-num"
+          />
+          %
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-work-freedom">
+          <svg-icon icon-class="guide" class-name="card-panel-icon" />
+        </div>
+        <div class="card-panel-description">
+          <div class="card-panel-text">工作自由度(所有被動收入/所有收入)</div>
+          <count-to
+            :start-val="0"
+            :end-val="summaryObj.workFreedom"
+            :duration="3000"
+            class="card-panel-num"
+          />
+          %
+        </div>
+      </div>
+    </el-col>
+    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel">
+        <div class="card-panel-icon-wrapper icon-return-rate">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">Purchases</div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num"/>
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">Shoppings</div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num"/>
+          <div class="card-panel-text">淨資產成長率</div>
+
+          <count-to
+            :start-val="0"
+            :end-val="summaryObj.netAssetGrowth"
+            :duration="3200"
+            class="card-panel-num"
+          />
+          %
         </div>
       </div>
     </el-col>
@@ -54,9 +82,38 @@ export default {
   components: {
     CountTo
   },
-  methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+  props: {
+    period: {
+      type: String,
+      default: null
+    },
+    periodType: {
+      type: String,
+      default: null
+    },
+    summaryObj: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {
+      budget: 0
+    }
+  },
+  watch: {
+    period: {
+      immediate: true,
+      handler(newValue) {
+        this.$store
+          .dispatch('GetBudgetUsed', {
+            type: this.periodType,
+            dateValue: newValue
+          })
+          .then((response) => {
+            this.budget = response.data
+          })
+      }
     }
   }
 }
@@ -64,10 +121,12 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
-  .card-panel-col{
-    margin-bottom: 32px;
+  margin-top: 10px;
+
+  .card-panel-col {
+    margin-bottom: 20px;
   }
+
   .card-panel {
     height: 108px;
     cursor: pointer;
@@ -76,36 +135,36 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
     &:hover {
       .card-panel-icon-wrapper {
         color: #fff;
       }
-      .icon-people {
-         background: #40c9c6;
-      }
-      .icon-message {
-        background: #36a3f7;
-      }
-      .icon-money {
+      .icon-used {
         background: #f4516c;
       }
-      .icon-shopping {
-        background: #34bfa3
+      .icon-work-freedom {
+        background: #36a3f7;
+      }
+      .icon-return-rate {
+        background: #40c9c6;
+      }
+      .icon-freedom {
+        background: #34bfa3;
       }
     }
-    .icon-people {
-      color: #40c9c6;
-    }
-    .icon-message {
-      color: #36a3f7;
-    }
-    .icon-money {
+    .icon-used {
       color: #f4516c;
     }
-    .icon-shopping {
-      color: #34bfa3
+    .icon-work-freedom {
+      color: #36a3f7;
+    }
+    .icon-return-rate {
+      color: #40c9c6;
+    }
+    .icon-freedom {
+      color: #34bfa3;
     }
     .card-panel-icon-wrapper {
       float: left;

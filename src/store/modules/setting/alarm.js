@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import {
   addAlarmData,
   deleteAlarmData,
@@ -20,6 +22,9 @@ export default {
     UPDATE_ALARM_DATA_LIST: (state, data) => {
       state.dataList.map(item => {
         if (item.alarm_id === data.alarm_id) {
+          if (data.due_date) {
+            data.due_date = moment(data.due_date).format('YYYY-MM-DD')
+          }
           item = Object.assign(item, data)
         }
       })

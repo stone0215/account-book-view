@@ -1,101 +1,168 @@
 <template>
   <div class="dashboard-editor-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData"/>
+    <panel-group
+      :period="dateValue"
+      :period-type="periodType"
+      :summary-obj="summaryObj"
+    />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData"/>
-    </el-row>
-
-    <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart/>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart/>
-        </div>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart/>
-        </div>
-      </el-col>
+    <el-row style="background: #fff; padding: 16px 16px 0; margin-bottom: 20px">
+      <line-chart
+        v-if="summaryObj.assetBalanceChart"
+        :chart-data="lineChartData"
+        :x-bar="xBar"
+        :line-name="['資產', '負債']"
+      />
     </el-row>
 
     <el-row :gutter="8">
       <el-col
-        :xs="{span: 24}"
-        :sm="{span: 12}"
-        :md="{span: 12}"
-        :lg="{span: 6}"
-        :xl="{span: 6}"
-        style="margin-bottom:30px;"
+        :xs="{ span: 24 }"
+        :sm="{ span: 12 }"
+        :md="{ span: 12 }"
+        :lg="{ span: 6 }"
+        :xl="{ span: 6 }"
+        style="margin-bottom: 30px"
       >
-        <todo-list/>
+        <todo-list />
       </el-col>
       <el-col
-        :xs="{span: 24}"
-        :sm="{span: 12}"
-        :md="{span: 12}"
-        :lg="{span: 6}"
-        :xl="{span: 6}"
-        style="margin-bottom:30px;"
+        :xs="{ span: 24 }"
+        :sm="{ span: 12 }"
+        :md="{ span: 12 }"
+        :lg="{ span: 6 }"
+        :xl="{ span: 6 }"
+        style="margin-bottom: 30px"
       >
-        <box-card/>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <mallki class-name="mallki-text" text="提醒" />
+          </div>
+          <div
+            v-for="(item, index) in alarmList"
+            :key="index"
+            class="text item"
+          >
+            <div>{{ item.date }}</div>
+            <div>{{ item.content }}</div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col
+        :xs="{ span: 24 }"
+        :sm="{ span: 12 }"
+        :md="{ span: 12 }"
+        :lg="{ span: 6 }"
+        :xl="{ span: 6 }"
+        style="margin-bottom: 30px"
+      >
+        <box-card />
+      </el-col>
+      <el-col
+        :xs="{ span: 24 }"
+        :sm="{ span: 12 }"
+        :md="{ span: 12 }"
+        :lg="{ span: 6 }"
+        :xl="{ span: 6 }"
+        style="margin-bottom: 30px"
+      >
+        <el-card class="box-card">
+          <div slot="header" class="box-card-header">
+            <img src="./components/asset/pic.jpg" >
+          </div>
+          <div class="conditon">
+            <el-date-picker
+              v-if="periodType === 'month'"
+              v-model="dateValue"
+              type="month"
+              value-format="yyyyMM"
+              placeholder="請選擇"
+              @change="fetchData"
+            />
+            <el-date-picker
+              v-else
+              v-model="dateValue"
+              type="year"
+              value-format="yyyy"
+              placeholder="請選擇"
+              @change="fetchData"
+            />
+            <el-radio-group v-model="periodType" @change="changePeriod">
+              <el-radio-button label="year">年</el-radio-button>
+              <el-radio-button label="month">月</el-radio-button>
+            </el-radio-group>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
+import Mallki from '@/components/TextHoverEffect/Mallki'
+import LineChart from '@/components/Charts/LineChart.vue'
+
 import PanelGroup from './components/PanelGroup'
-import LineChart from './components/LineChart'
-import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
-import BarChart from './components/BarChart'
 import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
-
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
 
 export default {
   name: 'DashboardAdmin',
   components: {
     PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
     TodoList,
-    BoxCard
+    BoxCard,
+    Mallki
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      periodType: 'month',
+      dateValue: null,
+      summaryObj: {},
+      alarmList: []
     }
   },
+  computed: {
+    xBar() {
+      return this.summaryObj.assetBalanceChart.map((item) => item.dateString)
+    },
+    lineChartData() {
+      return {
+        firstData: this.summaryObj.assetBalanceChart.map((item) => item.value),
+        secondData: this.summaryObj.debtBalanceChart.map((item) => item.value)
+      }
+    }
+  },
+  created() {
+    this.dateValue = moment().format('YYYYMM')
+    this.fetchData()
+  },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
+    fetchData() {
+      this.$store
+        .dispatch('GetDashboardSummary', {
+          type: this.periodType,
+          dateValue: this.dateValue
+        })
+        .then((response) => {
+          this.summaryObj = response.data
+        })
+
+      this.$store.dispatch('GetSummaryAlarmList').then((response) => {
+        this.alarmList = response.data
+      })
+    },
+    changePeriod(value) {
+      if (value === 'year') {
+        this.dateValue = moment().format('YYYY')
+      } else {
+        this.dateValue = moment().format('YYYYMM')
+      }
+
+      this.fetchData()
     }
   }
 }
@@ -103,12 +170,47 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
-  padding: 32px;
+  padding: 20px 32px;
   background-color: rgb(240, 242, 245);
+
   .chart-wrapper {
     background: #fff;
     padding: 16px 16px 0;
     margin-bottom: 32px;
+  }
+
+  .box-card {
+    .box-card-header {
+      height: 220px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        transition: all 0.2s linear;
+        &:hover {
+          transform: scale(1.1, 1.1);
+          filter: contrast(130%);
+        }
+      }
+    }
+
+    .conditon {
+      text-align: center;
+    }
+  }
+
+  .text {
+    font-size: 16px;
+
+    &.item {
+      margin-bottom: 18px;
+
+      div {
+        min-width: 60px;
+        text-align: left;
+        display: inline-block;
+      }
+    }
   }
 }
 </style>

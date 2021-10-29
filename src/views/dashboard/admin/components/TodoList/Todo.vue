@@ -1,22 +1,28 @@
 <template>
-  <li :class="{ completed: todo.done, editing: editing }" class="todo">
-    <div class="view">
+  <li
+    :class="{ completed: todo.is_done === 'Y', editing: editing }"
+    class="todo"
+  >
+    <div :class="{ checked: todo.is_done === 'Y' }" class="view">
       <input
-        :checked="todo.done"
+        :checked="todo.is_done === 'Y'"
         class="toggle"
         type="checkbox"
-        @change="toggleTodo( todo)">
-      <label @dblclick="editing = true" v-text="todo.text"/>
-      <button class="destroy" @click="deleteTodo( todo )"/>
+        @change="toggleTodo(todo)"
+      >
+      <label v-text="todo.target_year" />
+      <label @dblclick="editing = true" v-text="todo.setting_value" />
+      <button class="destroy" @click="deleteTodo(todo)" />
     </div>
     <input
       v-focus="editing"
       v-show="editing"
-      :value="todo.text"
+      :value="todo.setting_value"
       class="edit"
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
-      @blur="doneEdit">
+      @blur="cancelEdit"
+    >
   </li>
 </template>
 
@@ -49,29 +55,27 @@ export default {
     deleteTodo(todo) {
       this.$emit('deleteTodo', todo)
     },
-    editTodo({ todo, value }) {
-      this.$emit('editTodo', { todo, value })
-    },
+    // editTodo({ todo, value }) {
+    //   this.$emit('editTodo', { todo, value })
+    // },
     toggleTodo(todo) {
       this.$emit('toggleTodo', todo)
     },
     doneEdit(e) {
       const value = e.target.value.trim()
-      const { todo } = this
       if (!value) {
-        this.deleteTodo({
-          todo
-        })
+        this.deleteTodo(this.todo)
       } else if (this.editing) {
-        this.editTodo({
-          todo,
-          value
+        const data = JSON.parse(JSON.stringify(this.todo))
+        data.setting_value = value
+        this.$store.dispatch('UpdateTarget', data).then(() => {
+          this.editing = false
+          this.$emit('editTodo', { todo: this.todo, value })
         })
-        this.editing = false
       }
     },
     cancelEdit(e) {
-      e.target.value = this.todo.text
+      e.target.value = this.todo.setting_value
       this.editing = false
     }
   }

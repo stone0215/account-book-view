@@ -11,6 +11,7 @@ import setting from './modules/setting/index'
 import tagsView from './modules/tagsView'
 import user from './modules/user'
 import report from './modules/yearReport/index'
+import dashboard from './modules/dashboard/index'
 
 import getters from './getters'
 
@@ -27,7 +28,8 @@ const store = new Vuex.Store({
     setting,
     tagsView,
     user,
-    report
+    report,
+    dashboard
   },
   getters
 })

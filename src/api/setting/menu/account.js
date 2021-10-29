@@ -18,7 +18,7 @@ export function addAccountData(data) {
 
 export function updateAccountData(data) {
   return request({
-    url: `/account/${data.account_id}`,
+    url: `/account/${data.id}`,
     method: 'put',
     data: data
   })

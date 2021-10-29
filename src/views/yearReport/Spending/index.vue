@@ -1,6 +1,6 @@
 <template>
   <div class="page spending-report">
-    <div class="position-right">
+    <div class="conditon position-right">
       <el-date-picker
         v-if="periodType === 'month'"
         v-model="dateValue"
@@ -265,6 +265,10 @@ export default {
 
 <style lang="scss" scoped>
 .spending-report {
+  .conditon {
+    margin-bottom: 10px;
+  }
+
   .down-area {
     width: 100%;
     display: flex;
