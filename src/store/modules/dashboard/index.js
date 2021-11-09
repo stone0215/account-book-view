@@ -1,5 +1,6 @@
 import {
     addTarget,
+    checkFxRate,
     deleteTarget,
     getAlarmList,
     getBudgetUsed,
@@ -38,6 +39,9 @@ export default {
         },
         DeleteTarget({ commit }, id) {
             return deleteTarget(id)
+        },
+        CheckFxRate({ commit }) {
+            return checkFxRate()
         }
     }
 }
