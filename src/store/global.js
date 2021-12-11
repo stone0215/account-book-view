@@ -1,5 +1,4 @@
-import { checkServerAlive } from '@/api/global'
-// import { getWalletSelectionGroups } from '@/api/util'
+import { checkFxRate, checkInvoice, checkServerAlive } from '@/api/global'
 
 export default {
   state: {
@@ -22,6 +21,12 @@ export default {
             reject(error)
           })
       })
+    },
+    CheckFxRate({ commit }) {
+      return checkFxRate()
+    },
+    CheckInvoice({ commit }) {
+      return checkInvoice()
     }
   }
 }

@@ -38,6 +38,13 @@
           autocomplete="off"
         />
       </el-form-item>
+      <el-form-item label="電子發票載具號碼">
+        <el-input
+          v-model="form.carrier_no"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
       <el-form-item label="是否列入總資產">
         <el-radio-group v-model="form.is_calculate">
           <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{

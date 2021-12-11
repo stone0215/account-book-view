@@ -56,6 +56,13 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="電子發票載具號碼">
+        <el-input
+          v-model="form.carrier_no"
+          class="input-medium"
+          autocomplete="off"
+        />
+      </el-form-item>
       <el-form-item label="是否啟用">
         <el-radio-group v-model="form.in_use">
           <el-radio label="Y">是</el-radio>

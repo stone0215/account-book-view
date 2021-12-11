@@ -57,10 +57,3 @@ export function deleteTarget(id) {
     method: 'delete'
   })
 }
-
-export function checkFxRate() {
-  return request({
-    url: '/dashboard/checkFxRate',
-    method: 'post'
-  })
-}

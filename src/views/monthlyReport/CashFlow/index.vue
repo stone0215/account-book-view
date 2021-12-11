@@ -236,7 +236,8 @@
                 >
                   <template
                     v-if="
-                      scope.row.actionSubSelectionGroup[0] &&
+                      scope.row.actionSubSelectionGroup &&
+                        scope.row.actionSubSelectionGroup[0] &&
                         scope.row.actionSubSelectionGroup[0].selections
                     "
                   >
