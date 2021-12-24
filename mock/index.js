@@ -1,9 +1,26 @@
 import Mock from 'mockjs'
 
 Mock.mock('/mock/global/server-alive', 'get', () => {
-  return { data: { data: true, status: 1 } }
+  return {
+    status: 1,
+    data: true,
+    msg: 'success'
+  }
 })
 
-Mock.mock('/mock/account/selection', 'get', () => {
-  return { data: true }
+Mock.mock('/mock/global/checkFxRate', 'post', () => {
+  return {
+    status: 1,
+    data: true,
+    msg: ''
+  }
 })
+
+import './common'
+import './dashboard'
+import './liability'
+import './monthlyReport'
+import './otherAssets'
+import './setting/index'
+import './setting/menu'
+import './yearReport'
