@@ -12,7 +12,7 @@ Mock.mock('/mock/liability/loan', 'get', () => {
         loan_id: 1,
         loan_name: '房貸',
         loan_type: 'mortgage',
-        remaining: 2000300,
+        remaining: 4970000,
         repayed: 'N',
         total_payed: 0
       },
@@ -22,10 +22,10 @@ Mock.mock('/mock/liability/loan', 'get', () => {
         grace_expire_date: 'Mon, 30 Aug 2021 16:00:00 GMT',
         loan_id: 2,
         loan_name: '信用貸款',
-        loan_type: 'mortgage',
-        remaining: 1000000,
+        loan_type: 'unsecured',
+        remaining: 0,
         repayed: 'Y',
-        total_payed: 0
+        total_payed: 1000000
       }
     ],
     msg: 'success'

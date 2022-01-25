@@ -13,7 +13,7 @@ Mock.mock(/\/mock\/journal\/(\d{6})/, 'get', () => {
   return {
     status: 1,
     data: {
-      gainLoss: -83,
+      gainLoss: -563,
       journalList: [
         {
           action_main: '1',
@@ -24,8 +24,7 @@ Mock.mock(/\/mock\/journal\/(\d{6})/, 'get', () => {
           action_sub_type: 'Floating',
           distinct_number: 372,
           isEditMode: false,
-          note:
-            '\u30109030192001\u301192\u7121\u925b\u6c7d\u6cb9\u6298\u62b5\u984d -3, \u3010113F 12092005\u3011\uff19\uff12\u7121\u925b\u6c7d\u6cb9 86, ',
+          note: '蛋餅',
           spend_date: 'Fri, 03 Dec 2021 16:00:00 GMT',
           spend_way: '3',
           spend_way_table: 'Credit_Card',
@@ -37,17 +36,34 @@ Mock.mock(/\/mock\/journal\/(\d{6})/, 'get', () => {
           action_main: '92',
           action_main_table: 'Code',
           action_main_type: 'Fixed',
-          action_sub: 'No',
+          action_sub: '15',
           action_sub_table: 'Code',
           action_sub_type: 'Fixed',
           distinct_number: 374,
           isEditMode: false,
-          note: '\u73a9\u5177 580, \u6298\u62b5 -100, ',
-          spend_date: 'Fri, 03 Dec 2021 16:00:00 GMT',
+          note: '電費',
+          spend_date: 'Fri, 17 Dec 2021 16:00:00 GMT',
           spend_way: '1',
           spend_way_table: 'Account',
           spend_way_type: 'cash',
           spending: -480,
+          vesting_month: '202112'
+        },
+        {
+          action_main: 'LoanRepayment',
+          action_main_table: 'Loan',
+          action_main_type: 'undefined',
+          action_sub: '',
+          action_sub_table: '',
+          action_sub_type: '',
+          distinct_number: 374,
+          isEditMode: false,
+          note: '房貸',
+          spend_date: 'Fri, 24 Dec 2021 16:00:00 GMT',
+          spend_way: '2',
+          spend_way_table: 'Account',
+          spend_way_type: 'normal',
+          spending: -30000,
           vesting_month: '202112'
         }
       ]
@@ -100,13 +116,22 @@ Mock.mock(/\/mock\/journal\/expenditure-ratio\/(\d{6})/, 'get', () => {
         {
           name: 'Floating',
           value: 83
+        },
+        {
+          name: 'Fixed',
+          value: 480
         }
       ],
       expendingOuterPie: [
         {
-          name: '\u4e3b\u98df',
+          name: '主食',
           type: 'Floating',
           value: -83
+        },
+        {
+          name: '生活基本',
+          type: 'Fixed',
+          value: -480
         }
       ]
     },
@@ -131,8 +156,8 @@ Mock.mock(/\/mock\/journal\/expenditure-budget\/(\d{6})/, 'get', () => {
       {
         budget: -3000,
         name: '\u751f\u6d3b\u57fa\u672c',
-        quota: -3000,
-        spending: null,
+        quota: -2520,
+        spending: -480,
         type: 'Fixed'
       },
       {
@@ -156,14 +181,14 @@ Mock.mock(/\/mock\/journal\/liability\/(\d{6})/, 'get', () => {
         balance: 217,
         name: '現金回饋信用卡',
         payment: null,
-        spending: 217,
+        spending: 83,
         type: '信用卡'
       },
       {
-        balance: 250,
+        balance: 4970000,
         name: '房貸',
-        payment: 300,
-        spending: 50,
+        payment: 30000,
+        spending: 0,
         type: '貸款'
       }
     ],

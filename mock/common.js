@@ -184,7 +184,7 @@ Mock.mock('/mock/util/code-selection-group', 'get', () => {
             key: 92,
             table: 'Code',
             type: 'Fixed',
-            value: '生活費'
+            value: '生活基本'
           }
         ],
         title: 'Fixed'
@@ -196,7 +196,7 @@ Mock.mock('/mock/util/code-selection-group', 'get', () => {
             key: 1,
             table: 'Code',
             type: 'Floating',
-            value: '伙食費'
+            value: '主食'
           }
         ],
         title: 'Floating'
@@ -224,16 +224,33 @@ Mock.mock('/mock/util/code-selection-group', 'get', () => {
           }
         ],
         title: 'Passive'
+      },
+      {
+        selections: [
+          {
+            index: null,
+            key: 5,
+            table: 'Loan',
+            type: 'LoanRepayment',
+            value: '繳貸款'
+          }
+        ],
+        title: 'Passive'
       }
     ],
     msg: 'success'
   }
 })
 
-Mock.mock(/\/mock\/util\/code-selection-group\/(\d)/, 'get', () => {
-  return {
+Mock.mock(/\/mock\/util\/code-selection-group\/(\d)/, 'get', options => {
+  let returnValue = {
     status: 1,
-    data: [
+    msg: 'success'
+  }
+
+  const type = options.url.substring(options.url.lastIndexOf('/') + 1)
+  if (type === '1') {
+    returnValue.data = [
       {
         selections: [
           {
@@ -253,9 +270,76 @@ Mock.mock(/\/mock\/util\/code-selection-group\/(\d)/, 'get', () => {
         ],
         title: '浮動支出'
       }
-    ],
-    msg: 'success'
+    ]
+  } else if (type === '92') {
+    returnValue.data = [
+      {
+        selections: [
+          {
+            index: null,
+            key: 15,
+            table: 'Code',
+            type: 'Fixed',
+            value: '水電瓦斯'
+          },
+          {
+            index: null,
+            key: 16,
+            table: 'Code',
+            type: 'Fixed',
+            value: '房租'
+          }
+        ],
+        title: '固定支出'
+      }
+    ]
+  } else if (type === '77') {
+    returnValue.data = [
+      {
+        selections: [
+          {
+            index: null,
+            key: 17,
+            table: 'Code',
+            type: 'Income',
+            value: '薪資'
+          },
+          {
+            index: null,
+            key: 18,
+            table: 'Code',
+            type: 'Income',
+            value: '加班費'
+          }
+        ],
+        title: '固定支出'
+      }
+    ]
+  } else if (type === '77') {
+    returnValue.data = [
+      {
+        selections: [
+          {
+            index: null,
+            key: 19,
+            table: 'Code',
+            type: 'Passive',
+            value: '利息'
+          },
+          {
+            index: null,
+            key: 20,
+            table: 'Code',
+            type: 'Passive',
+            value: '股息'
+          }
+        ],
+        title: '固定支出'
+      }
+    ]
   }
+
+  return returnValue
 })
 
 Mock.mock('/mock/other-asset/items', 'get', () => {

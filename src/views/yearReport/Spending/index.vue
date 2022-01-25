@@ -109,11 +109,19 @@ export default {
           type: this.periodType,
           dateValue: this.dateValue
         })
-        .then((response) => {
+        .then(response => {
           this.sourceList = response.data
           this.chartCategory = [
-            ...new Set(response.data.map((item) => item.dateString))
+            ...new Set(response.data.map(item => item.dateString))
           ].sort()
+
+          if (this.chartCategory.indexOf(this.dateValue) === -1) {
+            this.dateValue = moment(
+              Math.max.apply(null, this.chartCategory) +
+                (this.dateType === 'month' ? '01' : '0101')
+            ).format(this.dateType === 'month' ? 'YYYYMM' : 'YYYY')
+          }
+
           this.generateChartContent()
         })
     },
@@ -130,7 +138,7 @@ export default {
     },
     getSum(dateString, type) {
       const result = this.sourceList.filter(
-        (item) => item.dateString === dateString && item.type === type
+        item => item.dateString === dateString && item.type === type
       )
 
       return result.reduce((sum, item) => sum + item.amount, 0)
@@ -177,7 +185,7 @@ export default {
       const spendingAmountList = []
       const spendingRateList = []
 
-      this.chartCategory.forEach((time) => {
+      this.chartCategory.forEach(time => {
         let incomeAmount = 0
         let spendingAmount = 0
 
@@ -185,7 +193,7 @@ export default {
         if (this.type === 'income' || this.type === 'all') {
           const incomes = this.getIncomeByInput(time)
 
-          incomes.forEach((item) => {
+          incomes.forEach(item => {
             if (item.type === '主動收入') incomeList.push(item.amount)
             else passiveList.push(item.amount)
           })
@@ -198,7 +206,7 @@ export default {
         if (this.type === 'spending' || this.type === 'all') {
           const spendings = this.getSpendingByInput(time)
 
-          spendings.forEach((item) => {
+          spendings.forEach(item => {
             if (item.type === '浮動支出') floatingList.push(item.amount)
             else if (item.type === '固定支出') fixedList.push(item.amount)
             else loanList.push(item.amount)

@@ -61,7 +61,6 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">淨資產成長率</div>
-
           <count-to
             :start-val="0"
             :end-val="summaryObj.netAssetGrowth"
@@ -110,7 +109,7 @@ export default {
             type: this.periodType,
             dateValue: newValue
           })
-          .then((response) => {
+          .then(response => {
             this.budget = response.data
           })
       }
