@@ -124,6 +124,9 @@
         </div>
         <div class="right-side">
           <el-button type="primary" @click="addTempJournalData">新增</el-button>
+          <el-button type="primary" @click="checkInvoice"
+          >匯入本月消費紀錄</el-button
+          >
           <el-table
             :data="journalDataList"
             stripe
@@ -146,7 +149,7 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column label="方式" align="center" width="160">
+            <el-table-column label="方式" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
                   :value="
@@ -179,7 +182,7 @@
                 </el-select>
               </template>
             </el-table-column>
-            <el-table-column label="主選單" align="center" width="160">
+            <el-table-column label="主選單" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
                   :value="
@@ -216,17 +219,16 @@
                 </el-select>
               </template>
             </el-table-column>
-            <el-table-column label="副選單" align="center" width="160">
+            <el-table-column label="副選單" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
+                  v-show="scope.row.action_sub || scope.row.isEditMode"
                   :value="
-                    scope.row.action_sub
-                      ? scope.row.action_sub +
-                        '/' +
-                        scope.row.action_sub_type +
-                        '/' +
-                        scope.row.action_sub_table
-                      : null
+                    scope.row.action_sub +
+                      '/' +
+                      scope.row.action_sub_type +
+                      '/' +
+                      scope.row.action_sub_table
                   "
                   :disabled="!scope.row.isEditMode || !scope.row.action_main"
                   placeholder="請選擇"
@@ -266,7 +268,12 @@
                 </el-select>
               </template>
             </el-table-column>
-            <el-table-column label="金額" header-align="center" align="right">
+            <el-table-column
+              label="金額"
+              header-align="center"
+              align="right"
+              width="120"
+            >
               <template slot-scope="scope">
                 <span
                   v-if="!scope.row.isEditMode"
@@ -286,7 +293,7 @@
               label="備註"
               prop="asset_index"
               header-align="center"
-              width="400"
+              width="350"
             >
               <template slot-scope="scope">
                 <span v-if="!scope.row.isEditMode">{{ scope.row.note }}</span>
@@ -506,6 +513,7 @@ export default {
         spending: null,
         note: null,
         isEditMode: true,
+        invoice_number: null,
         actionSubSelectionGroup: []
       })
     },
@@ -652,7 +660,13 @@ export default {
             row.spend_way_type === 'normal' ||
             row.spend_way_type === 'finance'
           ) {
-            this.accountSelectionGroups.push(this.otherAssetGroup)
+            if (
+              !this.accountSelectionGroups.some(
+                (item) => item.title === this.otherAssetGroup.title
+              )
+            ) {
+              this.accountSelectionGroups.push(this.otherAssetGroup)
+            }
           } else if (row.spend_way_type === 'cash') {
             this.otherAssetGroup.selections =
               this.otherAssetGroup.selections.filter(
@@ -770,6 +784,12 @@ export default {
           colspan: 0
         }
       }
+    },
+    checkInvoice() {
+      this.$store.dispatch('CheckData', {
+        type: 'invoice',
+        data: { period: this.thisMonth }
+      })
     }
   }
 }

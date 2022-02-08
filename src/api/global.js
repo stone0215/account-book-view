@@ -7,16 +7,10 @@ export function checkServerAlive() {
   })
 }
 
-export function checkFxRate() {
+export function checkData({ type, data = { period: '' } }) {
   return request({
-    url: '/global/checkFxRate',
-    method: 'post'
-  })
-}
-
-export function checkInvoice() {
-  return request({
-    url: '/global/checkInvoice',
-    method: 'post'
+    url: `/global/check/${type}`,
+    method: 'post',
+    data
   })
 }

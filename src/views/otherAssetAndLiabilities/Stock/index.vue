@@ -19,7 +19,7 @@
       />
       <el-table-column label="現價" prop="now_price" align="right" />
       <el-table-column label="持有股數" prop="hold_amount" align="right" />
-      <el-table-column label="賣出股數" prop="sold_amount" align="right" />
+      <!-- <el-table-column label="賣出股數" prop="sold_amount" align="right" /> -->
       <el-table-column label="買均價" prop="buy_price" align="right" />
       <el-table-column label="賣均價" prop="sold_price" align="right" />
       <el-table-column

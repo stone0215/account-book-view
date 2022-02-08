@@ -48,3 +48,8 @@ export const estateExcuteType = [
   { key: 'sold', value: '賣出' },
   { key: 'marketValue', value: '市值' }
 ]
+
+export const vestingNation = [
+  { key: 'TW', value: '台灣' },
+  { key: 'US', value: '美國' }
+]

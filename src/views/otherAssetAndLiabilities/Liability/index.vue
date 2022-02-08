@@ -31,7 +31,7 @@
       />
       <el-table-column label="貸款總金額" prop="amount" align="right" />
       <el-table-column label="剩餘金額" prop="remaining" align="right" />
-      <el-table-column label="總償還金額" prop="total_payed" align="right" />
+      <el-table-column label="總花費金額" prop="total_payed" align="right" />
       <el-table-column
         :formatter="mappingYesNo"
         label="是否清償"

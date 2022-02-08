@@ -96,15 +96,17 @@ export default {
 
       const source = [['type'].concat([...typeList])]
       nameList.forEach((item) => {
-        source.push([
-          item,
-          this.inputList.find(
-            (y) => y.name === item && y.type === [...typeList][0]
-          ).value,
-          this.inputList.find(
-            (y) => y.name === item && y.type === [...typeList][1]
-          ).value
-        ])
+        const temp = [item]
+        for (const type of [...typeList]) {
+          const rows = this.inputList.find(
+            (y) => y.name === item && y.type === type
+          )
+          if (rows) {
+            temp.push(rows.value)
+          }
+        }
+
+        if (temp.length > 1) source.push(temp)
       })
 
       const series = []

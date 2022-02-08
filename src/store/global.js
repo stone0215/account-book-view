@@ -1,4 +1,4 @@
-import { checkFxRate, checkInvoice, checkServerAlive } from '@/api/global'
+import { checkData, checkServerAlive } from '@/api/global'
 
 export default {
   state: {
@@ -22,11 +22,8 @@ export default {
           })
       })
     },
-    CheckFxRate({ commit }) {
-      return checkFxRate()
-    },
-    CheckInvoice({ commit }) {
-      return checkInvoice()
+    CheckData({ commit }, conditions) {
+      return checkData(conditions)
     }
   }
 }

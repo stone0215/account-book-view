@@ -19,6 +19,16 @@
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="國別">
+        <el-select v-model="form.vesting_nation" placeholder="選擇國別">
+          <el-option
+            v-for="item in vestingNation"
+            :key="item.key"
+            :label="item.value"
+            :value="item.key"
+          />
+        </el-select>
+      </el-form-item>
       <el-form-item label="是否啟用">
         <el-radio-group v-model="form.in_use">
           <el-radio v-for="item in yesNo" :key="item.key" :label="item.key">{{
@@ -44,6 +54,7 @@
 
 <script>
 import { otherAssetType, yesNo } from '@/assets/commonData/global'
+import { vestingNation } from '@/assets/commonData/otherAssets'
 
 export default {
   props: {
@@ -58,9 +69,10 @@ export default {
   },
   data() {
     return {
-      form: {},
       otherAssetType,
-      yesNo
+      vestingNation,
+      yesNo,
+      form: {}
     }
   },
   watch: {
@@ -78,7 +90,7 @@ export default {
         result = this.$store.dispatch('UpdateOtherAssetData', this.form)
       } else result = this.$store.dispatch('AddOtherAssetData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog()
       })
     }

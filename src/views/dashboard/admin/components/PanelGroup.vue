@@ -31,6 +31,7 @@
             :start-val="0"
             :end-val="summaryObj.freedom"
             :duration="3600"
+            :decimals="2"
             class="card-panel-num"
           />
           %
@@ -48,6 +49,7 @@
             :start-val="0"
             :end-val="summaryObj.workFreedom"
             :duration="3000"
+            :decimals="2"
             class="card-panel-num"
           />
           %
@@ -66,6 +68,7 @@
             :start-val="0"
             :end-val="summaryObj.netAssetGrowth"
             :duration="3200"
+            :decimals="2"
             class="card-panel-num"
           />
           %

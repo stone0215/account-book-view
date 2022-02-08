@@ -47,9 +47,9 @@ export default {
   },
   data() {
     return {
-      form: {},
       otherAssetType,
-      yesNo
+      yesNo,
+      form: {}
     }
   },
   watch: {
@@ -70,7 +70,7 @@ export default {
         result = this.$store.dispatch('UpdateStockAssetData', this.form)
       } else result = this.$store.dispatch('AddStockAssetData', this.form)
 
-      result.then(data => {
+      result.then((data) => {
         this.hideDialog()
       })
     }

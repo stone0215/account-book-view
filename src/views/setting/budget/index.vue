@@ -5,8 +5,11 @@
         type="primary"
         class="btn-medium"
         @click="isEditMode = !isEditMode"
-      >{{ getEditButtonText }}</el-button>
-      <el-button type="danger" class="btn-large" @click="createNextYearBudget">建立下一年度預算</el-button>
+      >{{ getEditButtonText }}</el-button
+      >
+      <el-button type="danger" class="btn-large" @click="createNextYearBudget"
+      >建立下一年度預算</el-button
+      >
       <span class="fr">
         年度：
         <el-input-number
@@ -18,9 +21,9 @@
       </span>
     </div>
     <p>浮動支出：</p>
-    <list-table :is-edit-mode="isEditMode" :raw-data="floatingList"/>
+    <list-table :is-edit-mode="isEditMode" :raw-data="floatingList" />
     <p>固定支出：</p>
-    <list-table :is-edit-mode="isEditMode" :raw-data="stableList"/>
+    <list-table :is-edit-mode="isEditMode" :raw-data="stableList" />
   </div>
 </template>
 
@@ -40,9 +43,9 @@ export default {
   },
   computed: {
     ...mapState({
-      yearRange: state => state.setting.budget.yearRange,
-      floatingList: state => state.setting.budget.dataList.floatingList,
-      stableList: state => state.setting.budget.dataList.stableList
+      yearRange: (state) => state.setting.budget.yearRange,
+      floatingList: (state) => state.setting.budget.dataList.floatingList,
+      stableList: (state) => state.setting.budget.dataList.stableList
     }),
     getEditButtonText() {
       return this.isEditMode ? '送出' : '編輯'
@@ -50,7 +53,7 @@ export default {
   },
   created() {
     this.$store.dispatch('GetBudgetRange').then(() => {
-      this.thisYear = new Date().getFullYear()
+      this.thisYear = this.yearRange.max
       this.search()
     })
   },

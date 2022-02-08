@@ -1,5 +1,5 @@
 // set function parseTime,formatTime to filter
-import moment from 'moment'
+import { formatDateTimeSlash } from '@/utils/dateProcess'
 
 export { parseTime, formatTime } from '@/utils'
 
@@ -50,5 +50,5 @@ export function toThousandFilter(num) {
 }
 
 export const formatDate = utcDateTime => {
-  return utcDateTime ? moment(utcDateTime).format('YYYY-MM-DD') : ''
+  return utcDateTime ? formatDateTimeSlash(utcDateTime) : ''
 }
