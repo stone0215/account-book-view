@@ -8,7 +8,8 @@ module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath:
+      process.env.NODE_ENV === 'production' ? '/account-book-view/' : '/', // github pages use REPO name
     proxyTable: {
       '/api': {
         target: 'http://localhost:5000/',
@@ -69,7 +70,8 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/',
+    assetsPublicPath:
+      process.env.NODE_ENV === 'production' ? '/account-book-view/' : '/', // github pages use REPO name
 
     /**
      * Source Maps
