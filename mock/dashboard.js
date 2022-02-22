@@ -148,11 +148,11 @@ Mock.mock('/mock/dashboard/alarm', 'get', () => {
     status: 1,
     data: [
       {
-        content: '這是提醒1',
+        content: '繳保費',
         date: '12/13'
       },
       {
-        content: '這是提醒2',
+        content: '信用卡扣款日',
         date: '01/13'
       }
     ],
@@ -240,7 +240,7 @@ Mock.mock(/\/mock\/dashboard\/gift\/(\d{4})/, 'get', () => {
       },
       {
         amount: 2000000,
-        owner: '另一半',
+        owner: '父母',
         rate: 90.9
       }
     ],

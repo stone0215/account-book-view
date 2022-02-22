@@ -8,11 +8,11 @@ Mock.mock('/mock/global/server-alive', 'get', () => {
   }
 })
 
-Mock.mock('/mock/global/checkFxRate', 'post', () => {
+Mock.mock(/\/mock\/global\/check\/(fx|invoice|stock)/, 'post', () => {
   return {
     status: 1,
     data: true,
-    msg: ''
+    msg: 'success'
   }
 })
 

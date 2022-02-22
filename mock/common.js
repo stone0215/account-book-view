@@ -196,7 +196,7 @@ Mock.mock('/mock/util/code-selection-group', 'get', () => {
             key: 1,
             table: 'Code',
             type: 'Floating',
-            value: '主食'
+            value: '3C'
           }
         ],
         title: 'Floating'
@@ -258,14 +258,14 @@ Mock.mock(/\/mock\/util\/code-selection-group\/(\d)/, 'get', options => {
             key: 13,
             table: 'Code',
             type: 'Floating',
-            value: '早餐'
+            value: '手機'
           },
           {
             index: null,
             key: 14,
             table: 'Code',
             type: 'Floating',
-            value: '午餐'
+            value: '電視'
           }
         ],
         title: '浮動支出'
@@ -315,7 +315,7 @@ Mock.mock(/\/mock\/util\/code-selection-group\/(\d)/, 'get', options => {
         title: '固定支出'
       }
     ]
-  } else if (type === '77') {
+  } else if (type === '117') {
     returnValue.data = [
       {
         selections: [

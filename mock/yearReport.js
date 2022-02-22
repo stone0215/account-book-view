@@ -182,7 +182,13 @@ Mock.mock('/mock/report/asset', 'get', () => {
       {
         amount: 1000000,
         assetType: '\u4fdd\u96aa',
-        detailType: null,
+        detailType: 'USD',
+        name: '美元儲蓄險'
+      },
+      {
+        amount: 1000000,
+        assetType: '\u4fdd\u96aa',
+        detailType: 'TWD',
         name: '儲蓄險'
       },
       {
