@@ -23,7 +23,7 @@
           <el-table-column label="金額" header-align="center" align="right">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount | toThousandFilter }}
+                {{ scope.row.amount | toThousandFilter(2) }}
               </span>
             </template>
           </el-table-column>
@@ -60,7 +60,7 @@
             ]"
             class="money"
           >
-            {{ totalAssetAmount | toThousandFilter }}
+            {{ totalAssetAmount | toThousandFilter(2) }}
           </span>
         </p>
       </div>
@@ -86,7 +86,9 @@
             ]"
             class="money"
           >
-            {{ (totalAssetAmount - totalLiabilityAmount) | toThousandFilter }}
+            {{
+              (totalAssetAmount - totalLiabilityAmount) | toThousandFilter(2)
+            }}
           </span>
         </p>
       </div>

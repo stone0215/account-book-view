@@ -36,7 +36,7 @@
             <el-table-column label="金額" header-align="center" align="right">
               <template slot-scope="scope">
                 <span>
-                  {{ scope.row.amount | toThousandFilter }}
+                  {{ scope.row.amount | toThousandFilter(2) }}
                 </span>
               </template>
             </el-table-column>

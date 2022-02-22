@@ -43,8 +43,8 @@ export function numberFormatter(num, digits) {
   return num.toString()
 }
 
-export function toThousandFilter(num) {
-  return (+num || 0)
+export function toThousandFilter(num, fixedFloatNum) {
+  return (fixedFloatNum ? (+num || 0).toFixed(fixedFloatNum) : (+num || 0))
     .toString()
     .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }

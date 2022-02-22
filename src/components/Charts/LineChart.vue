@@ -127,31 +127,14 @@ export default {
         },
         series: [
           {
-            name: this.lineName[0],
-            itemStyle: {
-              normal: {
-                color: '#FF005A',
-                lineStyle: {
-                  color: '#FF005A',
-                  width: 2
-                }
-              }
-            },
-            smooth: true,
-            type: 'line',
-            data: firstData,
-            animationDuration: 2800,
-            animationEasing: 'cubicInOut'
-          },
-          {
             name: this.lineName[1],
             smooth: true,
             type: 'line',
             itemStyle: {
               normal: {
-                color: '#3888fa',
+                color: '#FF005A',
                 lineStyle: {
-                  color: '#3888fa',
+                  color: '#FF005A',
                   width: 2
                 },
                 areaStyle: {
@@ -162,6 +145,23 @@ export default {
             data: secondData,
             animationDuration: 2800,
             animationEasing: 'quadraticOut'
+          },
+          {
+            name: this.lineName[0],
+            itemStyle: {
+              normal: {
+                color: '#3888FA',
+                lineStyle: {
+                  color: '#3888FA',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: firstData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
           }
         ]
       })

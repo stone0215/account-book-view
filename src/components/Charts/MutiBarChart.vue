@@ -111,7 +111,13 @@ export default {
 
       const series = []
       typeList.forEach(() => {
-        series.push({ type: 'bar', animationDuration })
+        series.push({
+          type: 'bar',
+          animationDuration,
+          itemStyle: {
+            color: '#8dc1a9'
+          }
+        })
       })
 
       this.chart.setOption({
