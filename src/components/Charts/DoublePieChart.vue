@@ -33,6 +33,14 @@ export default {
       chart: null
     }
   },
+  watch: {
+    innerPie: {
+      deep: true,
+      handler() {
+        this.updateChart()
+      }
+    }
+  },
   mounted() {
     this.initChart()
     this.__resizeHandler = debounce(() => {
@@ -65,6 +73,9 @@ export default {
           })
         }
       })
+      this.updateChart()
+    },
+    updateChart() {
       this.chart.setOption({
         tooltip: {},
         legend: {

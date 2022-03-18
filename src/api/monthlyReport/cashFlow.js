@@ -64,3 +64,10 @@ export function getLiabilitiesByVestingMonth(vestingMonth) {
     method: 'get'
   })
 }
+
+export async function getAllSubCodeList() {
+  return await request({
+    url: '/code/all-sub-code',
+    method: 'get'
+  })
+}

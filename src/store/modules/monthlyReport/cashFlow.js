@@ -1,6 +1,7 @@
 import {
   addJournalData,
   deleteJournalData,
+  getAllSubCodeList,
   getExpenditureBudgetByVestingMonth,
   getExpenditureRatioByVestingMonth,
   getInvestRatioByVestingMonth,
@@ -114,6 +115,9 @@ export default {
     },
     GetLiabilitiesByVestingMonth({ commit }, vestingMonth) {
       return getLiabilitiesByVestingMonth(vestingMonth)
+    },
+    GetAllSubCodeList({ commit }) {
+      return getAllSubCodeList()
     }
   }
 }

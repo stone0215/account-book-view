@@ -30,6 +30,14 @@ export default {
       chart: null
     }
   },
+  watch: {
+    inputList: {
+      deep: true,
+      handler() {
+        this.setChartContent()
+      }
+    }
+  },
   mounted() {
     this.initChart()
     this.setChartContent()

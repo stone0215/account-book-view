@@ -152,6 +152,7 @@
             <el-table-column label="方式" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
+                  v-if="scope.row.isEditMode"
                   :value="
                     scope.row.spend_way
                       ? scope.row.spend_way +
@@ -176,15 +177,19 @@
                       v-for="(item, index) in group.selections"
                       :key="index"
                       :label="item.value"
-                      :value="item.key + '/' + item.type + '/' + item.table"
+                      :value="item.key + '/' + group.title + '/' + item.table"
                     />
                   </el-option-group>
                 </el-select>
+                <span v-else-if="scope.row.spend_way">
+                  {{ getSpendWayName(scope.row) }}</span
+                  >
               </template>
             </el-table-column>
             <el-table-column label="主選單" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
+                  v-if="scope.row.isEditMode"
                   :value="
                     scope.row.action_main
                       ? scope.row.action_main +
@@ -217,12 +222,13 @@
                     />
                   </el-option-group>
                 </el-select>
+                <span v-else> {{ getMainName(scope.row) }}</span>
               </template>
             </el-table-column>
             <el-table-column label="副選單" align="center" width="150">
               <template slot-scope="scope">
                 <el-select
-                  v-show="scope.row.action_sub || scope.row.isEditMode"
+                  v-if="scope.row.isEditMode"
                   :value="
                     scope.row.action_sub +
                       '/' +
@@ -236,36 +242,24 @@
                     (value) => afterSelectedSub(value, scope.row, scope.$index)
                   "
                 >
-                  <template
-                    v-if="
-                      scope.row.actionSubSelectionGroup &&
-                        scope.row.actionSubSelectionGroup[0] &&
-                        scope.row.actionSubSelectionGroup[0].selections
-                    "
+                  <el-option-group
+                    v-for="(group, index) in getSubSelectionGroup(
+                      scope.row.action_main,
+                      scope.row.action_main_table,
+                      scope.row
+                    )"
+                    :key="index"
+                    :label="group.name || group.title"
                   >
-                    <el-option-group
-                      v-for="(group, index) in scope.row
-                      .actionSubSelectionGroup"
-                      :key="index"
-                      :label="group.name || group.title"
-                    >
-                      <el-option
-                        v-for="item in group.selections"
-                        :key="item.key"
-                        :label="item.value"
-                        :value="item.key + '/' + item.type + '/' + item.table"
-                      />
-                    </el-option-group>
-                  </template>
-                  <template v-else>
                     <el-option
-                      v-for="item in scope.row.actionSubSelectionGroup"
+                      v-for="item in group.selections"
                       :key="item.key"
                       :label="item.value"
-                      :value="item.key + '/' + '/'"
+                      :value="item.key + '/' + group.title + '/' + item.table"
                     />
-                  </template>
+                  </el-option-group>
                 </el-select>
+                <span v-else> {{ getSubName(scope.row) }}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -354,6 +348,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import moment from 'moment'
 import { mapState } from 'vuex'
 
@@ -365,7 +360,6 @@ import {
   getCodeSelectionGroups,
   getInsuranceSelectionGroups,
   getLoanSelectionGroups,
-  getSubCodeSelectionGroups,
   getWalletSelectionGroups
 } from '@/api/util'
 import { financialBehavior, otherAssetType } from '@/assets/commonData/global'
@@ -380,7 +374,8 @@ export default {
   data() {
     return {
       otherAssetGroup: {
-        title: '其他資產',
+        title: 'Asset',
+        name: '其他資產',
         selections: otherAssetType
       },
       thisMonth: null,
@@ -397,11 +392,11 @@ export default {
       journalDataList: [],
       innerExpenditureRatio: [],
       outerExpenditureRatio: [],
-      // innerAssetRatio: [],
-      // outerAssetRatio: [],
       assetRecordList: [],
       expenditureBudget: [],
-      liabilities: []
+      liabilities: [],
+      allSubCodeList: [],
+      allInsuranceList: []
     }
   },
   computed: {
@@ -430,6 +425,12 @@ export default {
     this.thisMonth = moment().format('YYYYMM')
     this.getSpendWaySelectionList()
     this.getActionMainSelectionList()
+    this.$store.dispatch('GetAllSubCodeList').then((response) => {
+      this.allSubCodeList = response.data
+    })
+    getInsuranceSelectionGroups().then((response) => {
+      this.allInsuranceList = response.data
+    })
   },
   mounted() {
     // 如果等畫面都準備好才撈資料，下拉選單還是無法即時呈現就要再做處理
@@ -448,7 +449,9 @@ export default {
         .dispatch('GetJournalListByVestingMonth', val)
         .then((response) => {
           this.gainLoss = response
-          this.processDataList()
+          this.journalDataList = JSON.parse(
+            JSON.stringify(this.journalListSource)
+          )
         })
       this.$store
         .dispatch('GetExpenditureRatioByVestingMonth', val)
@@ -467,11 +470,6 @@ export default {
         .dispatch('GetInvestRatioByVestingMonth', val)
         .then((response) => {
           this.assetRecordList = response.data
-          // this.innerAssetRatio = response.data.assetInnerPie
-          // response.data.assetOuterPie.forEach((item) => {
-          //   item.name = getMappingName('asset_type', item.name)
-          // })
-          // this.outerAssetRatio = response.data.assetOuterPie
         })
 
       this.$store
@@ -485,20 +483,6 @@ export default {
         .then((response) => {
           this.liabilities = response.data
         })
-    },
-    async processDataList() {
-      this.journalDataList = []
-      for (const item of this.journalListSource) {
-        const temp = JSON.parse(JSON.stringify(item))
-
-        temp.actionSubSelectionGroup = await this.getSubSelectionGroup(
-          temp.action_main,
-          temp.action_main_table,
-          temp
-        )
-
-        this.journalDataList.push(temp)
-      }
     },
     addTempJournalData() {
       this.journalDataList.push({
@@ -632,25 +616,21 @@ export default {
       rawData.action_main = valueToArray[0]
       rawData.action_main_type = valueToArray[1]
       rawData.action_main_table = valueToArray[2]
-      rawData.actionSubSelectionGroup = await this.getSubSelectionGroup(
-        valueToArray[0],
-        valueToArray[2],
-        rawData
-      )
 
       this.journalDataList[index] = rawData
     },
-    async getSubSelectionGroup(parent_id, table, row) {
-      let returnValue = null
+    getSubSelectionGroup(parent_id, table, row) {
+      let returnValue = []
       // 因 asnyc 只能回 promise，暫存入各資料內取
+      if (table === 'Code') {
+      }
       switch (table) {
-        // case 'Asset':
-        //   returnValue = otherAssetType
-        //   break
-
         case 'Code':
-          await getSubCodeSelectionGroups(parent_id).then((response) => {
-            returnValue = response.data
+          returnValue.push({
+            title: '副選單',
+            selections: this.allSubCodeList.filter(
+              (item) => item.code_group == parent_id
+            )
           })
 
           break
@@ -687,9 +667,7 @@ export default {
           break
 
         case 'Insurance':
-          await getInsuranceSelectionGroups().then((response) => {
-            returnValue = response.data
-          })
+          returnValue = this.allInsuranceList
           break
       }
 
@@ -724,24 +702,19 @@ export default {
         confirmButtonText: '確定',
         cancelButtonText: '取消'
       })
-        .then(async() => {
-          await this.$store.dispatch('DeleteJournalData', id)
-          this.processDataList()
+        .then(() => {
+          this.$store.dispatch('DeleteJournalData', id)
+          this.journalDataList = this.journalDataList.filter((x) => {
+            return x.distinct_number !== id
+          })
         })
 
         .catch(() => {})
     },
     async cancelEdit(index) {
-      const temp = JSON.parse(JSON.stringify(this.journalListSource[index]))
-
-      temp.actionSubSelectionGroup = await this.getSubSelectionGroup(
-        temp.action_main,
-        temp.action_main_table,
-        temp
-      )
       this.journalDataList[index] = Object.assign(
         this.journalDataList[index],
-        temp
+        JSON.parse(JSON.stringify(this.journalListSource[index]))
       )
     },
     closeAccounts() {
@@ -790,6 +763,67 @@ export default {
         type: 'invoice',
         data: { period: this.thisMonth }
       })
+    },
+    getSpendWayName(row) {
+      if (row.spend_way === 'No') return ''
+
+      const target = this.spendWaySelectionGroup.find(
+        (group) =>
+          group.title === row.spend_way_type ||
+          (!group.name && group.title === '信用卡')
+      )
+
+      if (target) {
+        return this.spendWaySelectionGroup
+          .find((group) => group.title === row.spend_way_type)
+          .selections.find(
+            (item) =>
+              item.key == row.spend_way && item.table === row.spend_way_table
+          ).value
+      }
+
+      return ''
+    },
+    getMainName(row) {
+      if (!row.action_main || row.action_main === 'No') return ''
+
+      if (row.action_main_table === 'Code') {
+        return this.codeSelectionGroups
+          .find((group) => group.title === row.action_main_type)
+          .selections.find((item) => item.key == row.action_main).value
+      } else {
+        return financialBehavior.find(
+          (item) =>
+            item.key == row.action_main && item.table === row.action_main_table
+        ).value
+      }
+    },
+    getSubName(row) {
+      if (!row.action_sub || row.action_sub === 'No') return ''
+
+      if (row.action_sub_table === 'Code') {
+        return this.allSubCodeList.find((item) => item.key == row.action_sub)
+          .value
+      } else {
+        const target = this.spendWaySelectionGroup.find(
+          (group) => group.title === row.action_sub_type
+        )
+
+        if (target) {
+          return this.spendWaySelectionGroup
+            .find((group) => group.title === row.action_sub_type)
+            .selections.find(
+              (item) =>
+                item.key == row.action_sub &&
+                item.table === row.action_sub_table
+            ).value
+        } else if (this.allInsuranceList[0].title === row.action_sub_type) {
+          return this.allInsuranceList[0].selections.find(
+            (item) =>
+              item.key == row.action_sub && item.table === row.action_sub_table
+          ).value
+        }
+      }
     }
   }
 }

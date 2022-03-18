@@ -31,7 +31,12 @@
     <div class="down-area">
       <div>
         <el-button type="text" @click="changeChart('income')">收入</el-button>
-        <el-table :data="incomes" header-cell-class-name="table-header">
+        <el-table
+          :data="incomes"
+          :summary-method="getSummaries"
+          header-cell-class-name="table-header"
+          show-summary
+        >
           <el-table-column
             label="分類"
             prop="type"
@@ -49,7 +54,12 @@
       </div>
       <div>
         <el-button type="text" @click="changeChart('spending')">支出</el-button>
-        <el-table :data="spendings" header-cell-class-name="table-header">
+        <el-table
+          :data="spendings"
+          :summary-method="getSummaries"
+          header-cell-class-name="table-header"
+          show-summary
+        >
           <el-table-column
             label="分類"
             prop="type"
@@ -59,7 +69,7 @@
           <el-table-column label="金額" header-align="center" align="right">
             <template slot-scope="scope">
               <span>
-                {{ scope.row.amount | toThousandFilter }}
+                {{ scope.row.amount | toThousandFilter(2) }}
               </span>
             </template>
           </el-table-column>
@@ -74,6 +84,7 @@ import moment from 'moment'
 
 import BarChart from '@/components/Charts/BarChart'
 import { getMappingName } from '@/utils/codeMapping'
+import { getSummaries } from '@/utils/index'
 
 export default {
   name: 'SpendingReport',
@@ -103,6 +114,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    getSummaries,
     fetchData() {
       this.$store
         .dispatch('GetSpendingList', {
@@ -115,12 +127,12 @@ export default {
             ...new Set(response.data.map((item) => item.dateString))
           ].sort()
 
-          if (this.chartCategory.indexOf(this.dateValue) === -1) {
-            this.dateValue = moment(
-              Math.max.apply(null, this.chartCategory) +
-                (this.dateType === 'month' ? '01' : '0101')
-            ).format(this.dateType === 'month' ? 'YYYYMM' : 'YYYY')
-          }
+          // if (this.chartCategory.indexOf(this.dateValue) === -1) {
+          //   this.dateValue = moment(
+          //     Math.max.apply(null, this.chartCategory) +
+          //       (this.dateType === 'month' ? '01' : '0101')
+          //   ).format(this.dateType === 'month' ? 'YYYYMM' : 'YYYY')
+          // }
 
           this.generateChartContent()
         })
@@ -167,7 +179,7 @@ export default {
         },
         {
           type: '貸款支出',
-          amount: this.getSum(input, 'Loan')
+          amount: this.getSum(input, 'Loan') * -1 // 因為利息與償還本金不同性質
         }
       ]
     },
@@ -219,7 +231,7 @@ export default {
         if (this.type === 'all') {
           spendingRateList.push(
             incomeAmount
-              ? (spendingAmount / incomeAmount).toFixed(2) * 100
+              ? (Math.abs(spendingAmount) / incomeAmount).toFixed(2) * 100
               : spendingAmount
           )
         }

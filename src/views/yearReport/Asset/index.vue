@@ -25,7 +25,9 @@
           {{ item }}
           <el-table
             :data="getTableContent(item)"
+            :summary-method="getSummaries"
             header-cell-class-name="table-header"
+            show-summary
           >
             <el-table-column
               label="名稱"
@@ -51,6 +53,7 @@
 import moment from 'moment'
 
 import PieChart from '@/components/Charts/PieChart'
+import { getSummaries } from '@/utils/index'
 
 export default {
   name: 'AssetReport',
@@ -101,6 +104,7 @@ export default {
     this.fetchData()
   },
   methods: {
+    getSummaries,
     fetchData() {
       this.$store.dispatch('GetAssetList').then((response) => {
         this.sourceList = response.data

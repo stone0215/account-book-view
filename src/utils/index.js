@@ -1,6 +1,4 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
+import { toThousandFilter } from '@/filters/index'
 
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
@@ -31,7 +29,7 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value] }
     if (result.length > 0 && value < 10) {
       value = '0' + value
     }
@@ -134,11 +132,11 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"') +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"') +
+    '"}'
   )
 }
 
@@ -293,4 +291,32 @@ export function uniqueArr(arr) {
 
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
+}
+
+export function getSummaries({ columns, data }) {
+  const sums = []
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = '合計'
+      return
+    }
+
+    const values = data.map((item) => Number(item.amount))
+    if (!values.every((value) => isNaN(value))) {
+      sums[index] = toThousandFilter(
+        values.reduce((prev, curr) => {
+          const value = Number(curr)
+          if (!isNaN(value)) {
+            return prev + curr
+          } else {
+            return prev
+          }
+        }, 0)
+        , 3)
+    } else {
+      sums[index] = 'N/A'
+    }
+  })
+
+  return sums
 }
