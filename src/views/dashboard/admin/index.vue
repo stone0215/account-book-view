@@ -74,6 +74,7 @@
             <el-date-picker
               v-if="periodType === 'month'"
               v-model="dateValue"
+              :picker-options="pickerOptions"
               type="month"
               value-format="yyyyMM"
               placeholder="請選擇"
@@ -82,6 +83,7 @@
             <el-date-picker
               v-else
               v-model="dateValue"
+              :picker-options="pickerOptions"
               type="year"
               value-format="yyyy"
               placeholder="請選擇"
@@ -122,6 +124,9 @@ export default {
       periodType: 'month',
       dateValue: null,
       summaryObj: {},
+      pickerOptions: {
+        disabledDate: this.disabledDate
+      },
       alarmList: []
     }
   },
@@ -141,6 +146,11 @@ export default {
     this.fetchData()
   },
   methods: {
+    disabledDate(time) {
+      return this.periodType === 'month'
+        ? moment(time).format('YYYYMM') > moment().format('YYYYMM')
+        : moment(time).format('YYYY') > moment().format('YYYY')
+    },
     fetchData() {
       this.$store
         .dispatch('GetDashboardSummary', {
