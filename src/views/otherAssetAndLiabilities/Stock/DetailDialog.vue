@@ -5,6 +5,9 @@
     width="80%"
     @close="hideDialog"
   >
+    <el-button class="right" type="primary" @click="openMaintainDetailDialog()">
+      新增
+    </el-button>
     <el-table :data="queryList" stripe header-cell-class-name="table-header">
       <el-table-column
         :formatter="formatDateTime"
@@ -41,11 +44,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="openMaintainDetailDialog()">
-        新增
-      </el-button>
-    </div>
+    <div slot="footer" class="dialog-footer"/>
 
     <operating-dialog
       :show-dialog="showMaintainDialog"
@@ -138,3 +137,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.right{
+  display: block;
+  margin-left: auto;
+}
+</style>

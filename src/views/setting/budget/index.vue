@@ -71,7 +71,7 @@ export default {
         }
       )
         .then(() => {
-          this.$store.dispatch('BulkInsertBudget', this.yearRange.max + 1)
+          this.$store.dispatch('BulkInsertBudget', this.thisYear + 1)
         })
         .catch(() => {})
     }

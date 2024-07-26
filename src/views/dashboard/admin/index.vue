@@ -11,7 +11,7 @@
         v-if="summaryObj.assetBalanceChart"
         :chart-data="lineChartData"
         :x-bar="xBar"
-        :line-name="['資產', '負債']"
+        :line-name="['帳戶','不動產','保險','股票', '負債']"
       />
     </el-row>
 
@@ -56,7 +56,7 @@
         :xl="{ span: 6 }"
         style="margin-bottom: 30px"
       >
-        <box-card />
+        <box-card :year="getThisYaer" />
       </el-col>
       <el-col
         :xs="{ span: 24 }"
@@ -132,13 +132,21 @@ export default {
   },
   computed: {
     xBar() {
-      return this.summaryObj.assetBalanceChart.map((item) => item.dateString)
+      return [...new Set(this.summaryObj.assetBalanceChart.map((item) => item.dateString))]
     },
     lineChartData() {
       return {
-        firstData: this.summaryObj.assetBalanceChart.map((item) => item.value),
-        secondData: this.summaryObj.debtBalanceChart.map((item) => item.value)
+        firstData: this.summaryObj.assetBalanceChart.filter(item => item.type === 'account').map((item) => item.value),
+        secondData: this.summaryObj.assetBalanceChart.filter(item => item.type === 'estate').map((item) => item.value),
+        thirdData: this.summaryObj.assetBalanceChart.filter(item => item.type === 'insurance').map((item) => item.value),
+        fourthData: this.summaryObj.assetBalanceChart.filter(item => item.type === 'stock').map((item) => item.value),
+        fifthData: this.summaryObj.debtBalanceChart.map((item) => item.value)
       }
+    },
+    getThisYaer() {
+      return this.dateValue.length > 4
+        ? this.dateValue.substr(0, 4)
+        : this.dateValue
     }
   },
   created() {

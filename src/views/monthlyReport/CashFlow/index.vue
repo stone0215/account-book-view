@@ -124,9 +124,12 @@
         </div>
         <div class="right-side">
           <el-button type="primary" @click="addTempJournalData">新增</el-button>
-          <el-button type="primary" @click="checkInvoice"
-          >匯入本月消費紀錄</el-button
-          >
+          <el-button type="primary" @click="checkInvoice">
+            匯入本月消費紀錄
+          </el-button>
+          <el-button type="primary" @click="openStockPriceDialog = true">
+            取得最後一日股價
+          </el-button>
           <el-table
             :data="journalDataList"
             stripe
@@ -149,7 +152,13 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column label="方式" align="center" width="150">
+            <el-table-column
+              sortable
+              prop="spend_way"
+              label="方式"
+              align="center"
+              width="150"
+            >
               <template slot-scope="scope">
                 <el-select
                   v-if="scope.row.isEditMode"
@@ -186,7 +195,13 @@
                   >
               </template>
             </el-table-column>
-            <el-table-column label="主選單" align="center" width="150">
+            <el-table-column
+              sortable
+              prop="action_main"
+              label="主選單"
+              align="center"
+              width="150"
+            >
               <template slot-scope="scope">
                 <el-select
                   v-if="scope.row.isEditMode"
@@ -225,7 +240,13 @@
                 <span v-else> {{ getMainName(scope.row) }}</span>
               </template>
             </el-table-column>
-            <el-table-column label="副選單" align="center" width="150">
+            <el-table-column
+              sortable
+              prop="action_sub"
+              label="副選單"
+              align="center"
+              width="150"
+            >
               <template slot-scope="scope">
                 <el-select
                   v-if="scope.row.isEditMode"
@@ -344,6 +365,14 @@
         </div>
       </div>
     </div>
+
+    <FillStockPriceDialog
+      v-if="openStockPriceDialog"
+      :show-dialog="openStockPriceDialog"
+      :this-month="thisMonth"
+      :default-date="getDefaultDate"
+      @hideDialog="openStockPriceDialog = false"
+    />
   </div>
 </template>
 
@@ -365,10 +394,13 @@ import {
 import { financialBehavior, otherAssetType } from '@/assets/commonData/global'
 import { getMappingName } from '@/utils/codeMapping'
 
+import FillStockPriceDialog from './FillStockPriceDialog'
+
 export default {
   name: 'CashFlow',
   components: {
     DoublePie,
+    FillStockPriceDialog,
     MutiBarChart
   },
   data() {
@@ -380,6 +412,7 @@ export default {
       },
       thisMonth: null,
       gainLoss: 0,
+      openStockPriceDialog: false,
       pickerOptions: {
         disabledDate: this.disabledDate
       },
@@ -486,7 +519,7 @@ export default {
     },
     addTempJournalData() {
       this.journalDataList.push({
-        distinct_number: this.journalDataList.length + 1,
+        distinct_number: null,
         vesting_month: this.thisMonth,
         spend_date: null,
         spend_way: null,
@@ -594,12 +627,12 @@ export default {
       return returnValue
     },
     afterSelectedWay(value, rawData, index) {
-      rawData.action_main = ''
-      rawData.action_main_type = ''
-      rawData.action_main_table = ''
-      rawData.action_sub = ''
-      rawData.action_sub_type = ''
-      rawData.action_sub_table = ''
+      // rawData.action_main = ''
+      // rawData.action_main_type = ''
+      // rawData.action_main_table = ''
+      // rawData.action_sub = ''
+      // rawData.action_sub_type = ''
+      // rawData.action_sub_table = ''
 
       const valueToArray = value.split('/')
       rawData.spend_way = valueToArray[0]
@@ -627,7 +660,8 @@ export default {
       switch (table) {
         case 'Code':
           returnValue.push({
-            title: '副選單',
+            name: '副選單',
+            title: row.action_main_type,
             selections: this.allSubCodeList.filter(
               (item) => item.code_group == parent_id
             )

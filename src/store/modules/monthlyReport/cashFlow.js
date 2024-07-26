@@ -1,5 +1,6 @@
 import {
   addJournalData,
+  addStockPrice,
   deleteJournalData,
   getAllSubCodeList,
   getExpenditureBudgetByVestingMonth,
@@ -7,6 +8,7 @@ import {
   getInvestRatioByVestingMonth,
   getJournalListByVestingMonth,
   getLiabilitiesByVestingMonth,
+  getStockPriceList,
   setMonthlySummary,
   updateJournalData
 } from '@/api/monthlyReport/cashFlow'
@@ -22,12 +24,6 @@ export default {
     ADD_JOURNAL_DATA_TO_LIST: (state, data) => {
       state.journalDataList.push(data)
     },
-    // UPDATE_JOURNAL_DATA: (state, data) => {
-    //   state.journalDataList[data.index] = Object.assign(
-    //     state.journalDataList[data.index],
-    //     data
-    //   )
-    // },
     UPDATE_JOURNAL_DATA_LIST: (state, data) => {
       state.journalDataList.map(item => {
         if (item.distinct_number === data.distinct_number) {
@@ -118,6 +114,20 @@ export default {
     },
     GetAllSubCodeList({ commit }) {
       return getAllSubCodeList()
+    },
+    GetStockPriceList({ commit }, vestingMonth) {
+      return getStockPriceList(vestingMonth)
+    },
+    AddStockPrice({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        addStockPrice(data)
+          .then(() => {
+            resolve(true)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     }
   }
 }

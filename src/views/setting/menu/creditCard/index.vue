@@ -30,7 +30,7 @@
     >
       <el-table-column label="信用卡名稱" prop="card_name" />
       <el-table-column
-        label="信用卡名稱"
+        label="後四碼"
         prop="card_no"
         header-align="center"
         align="right"

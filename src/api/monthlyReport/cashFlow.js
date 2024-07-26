@@ -71,3 +71,18 @@ export async function getAllSubCodeList() {
     method: 'get'
   })
 }
+
+export async function getStockPriceList(vestingMonth) {
+  return await request({
+    url: `/stock/price/${vestingMonth}`,
+    method: 'get'
+  })
+}
+
+export function addStockPrice(data) {
+  return request({
+    url: '/stock/price',
+    method: 'post',
+    data: data
+  })
+}

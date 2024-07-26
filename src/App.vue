@@ -14,7 +14,7 @@ export default {
     this.$store.dispatch('CheckData', { type: 'fx' })
 
     // 檢查發票
-    this.$store.dispatch('CheckData', { type: 'invoice' })
+    // this.$store.dispatch('CheckData', { type: 'invoice' })
 
     // 檢查股價
     this.$store.dispatch('CheckData', { type: 'stock' })

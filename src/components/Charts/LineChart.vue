@@ -94,7 +94,7 @@ export default {
         this.__resizeHandler()
       }
     },
-    setOptions({ firstData, secondData } = {}) {
+    setOptions({ firstData, secondData, thirdData, fourthData, fifthData } = {}) {
       this.chart.setOption({
         xAxis: {
           data: this.xBar,
@@ -127,7 +127,7 @@ export default {
         },
         series: [
           {
-            name: this.lineName[1],
+            name: this.lineName[4],
             smooth: true,
             type: 'line',
             itemStyle: {
@@ -142,7 +142,7 @@ export default {
                 }
               }
             },
-            data: secondData,
+            data: fifthData,
             animationDuration: 2800,
             animationEasing: 'quadraticOut'
           },
@@ -160,6 +160,57 @@ export default {
             smooth: true,
             type: 'line',
             data: firstData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },
+          {
+            name: this.lineName[1],
+            itemStyle: {
+              normal: {
+                color: 'brown',
+                lineStyle: {
+                  color: 'brown',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: secondData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },
+          {
+            name: this.lineName[2],
+            itemStyle: {
+              normal: {
+                color: 'green',
+                lineStyle: {
+                  color: 'green',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: thirdData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          },
+          {
+            name: this.lineName[3],
+            itemStyle: {
+              normal: {
+                color: 'purple',
+                lineStyle: {
+                  color: 'purple',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: fourthData,
             animationDuration: 2800,
             animationEasing: 'cubicInOut'
           }
